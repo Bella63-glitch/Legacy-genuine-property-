@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Property Details - Legacy Genuine Properties</title> 
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            color: #002244;
+        }
+
+        header {
+            background-color: #002250;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        nav {
+            flex: 1;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        nav ul li {
+            text-align: left;
+        }
+
+        nav ul li a {
+            color: white; /* Makes navigation links white */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        header img {
+            height: 50px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .content {
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #002244;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .property-image {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .property-details {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .property-details h2 {
+            color: #002244;
+        }
+
+        .property-details p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background-color: #002250;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        #menu {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #menu a {
+            color: white; /* Makes navigation links white */
+            text-decoration: none;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+
+        #menu a:hover {
+            text-decoration: underline;
+        }
+    </style> 
+ </head> 
+ <body> 
+  <header> <a href="index.html"><img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Legacy Genuine Properties Logo"></a> <button class="navbar-toggler" type="button" onclick="toggleMenu()"> <span class="navbar-toggler-icon"><i class="fa fa-bars"></i></span> </button> 
+   <div id="menu"> <a href="index.html">Home</a> <a href="property-listings.html">Property Listings</a> <a href="about-us.html">About Us</a> <a href="detailed-property-listings.html">Detailed Property Listings</a> <a href="admin-panel.html">Admin</a> 
+   </div> 
+  </header> 
+  <div class="content"> 
+   <h1 id="property-title">Property Title</h1> 
+   <img id="property-image" class="property-image" src="" alt="Property Image"> 
+   <div class="property-details"> 
+    <h2 id="property-name">Property Name</h2> 
+    <p><strong>Category:</strong> <span id="property-category">Category Name</span></p> 
+    <p><strong>Subcategory:</strong> <span id="property-subcategory">Subcategory Name</span></p> 
+    <p><strong>Price:</strong> <span id="property-price">$0.00</span></p> 
+    <p id="property-description"><strong>Description:</strong> Property description goes here.</p> 
+   </div> 
+  </div> 
+  <footer> 
+   <p>Contact Us:</p> 
+   <p>Mobile: <a href="tel:0789033037">0789 033 037</a></p> 
+   <p>Email: <a href="mailto:sales@legacygenuineproperties.com">sales@legacygenuineproperties.com</a></p> 
+   <p>© 2024 Legacy Genuine Properties. All rights reserved.</p> 
+  </footer> 
+  <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const property = urlParams.get('property');
+            
+            const properties = {
+                "residential-land": {
+                    title: "Residential Land",
+                    name: "Residential Land",
+                    category: "Lands",
+                    subcategory: "Residential Land",
+                    price: "$200,000",
+                    description: "Prime residential land located in a growing neighborhood. Ideal for building a new home with easy access to local amenities.",
+                    image: "residential-land.jpg"
+                },
+                "villa": {
+                    title: "Luxury Villa",
+                    name: "Villa",
+                    category: "Residential",
+                    subcategory: "Villa",
+                    price: "$1,500,000",
+                    description: "A luxurious villa with stunning architecture and a large garden, perfect for upscale living.",
+                    image: "villa.jpg"
+                },
+                // Add more properties here
+            };
+
+            const selectedProperty = properties[property] || properties["residential-land"];  // Default to 'residential-land' if not found
+
+            document.getElementById("property-title").textContent = selectedProperty.title;
+            document.getElementById("property-name").textContent = selectedProperty.name;
+            document.getElementById("property-category").textContent = selectedProperty.category;
+            document.getElementById("property-subcategory").textContent = selectedProperty.subcategory;
+            document.getElementById("property-price").textContent = selectedProperty.price;
+            document.getElementById("property-description").textContent = selectedProperty.description;
+            document.getElementById("property-image").src = selectedProperty.image;
+            document.getElementById("property-image").alt = selectedProperty.name;
+        });
+    </script> 
+ 
+</body></html>

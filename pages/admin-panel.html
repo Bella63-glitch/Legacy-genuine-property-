@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Admin Panel - Legacy Genuine Properties</title> 
+  <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { text-align: center; color: #002244; }
+        nav { text-align: center; margin-bottom: 20px; }
+        nav a { margin: 0 15px; text-decoration: none; color: #002244; font-weight: bold; }
+        .property { border: 1px solid #ddd; padding: 10px; margin-bottom: 20px; }
+        .property img { max-width: 100%; height: auto; }
+        .hidden { display: none; }
+    </style> 
+ </head> 
+ <body> 
+  <div id="loginDiv"> 
+   <h2>Please enter the password to access the Admin Panel</h2> 
+   <input type="password" id="password" placeholder="Enter Password"> <button onclick="checkPassword()">Submit</button> 
+   <p id="error" style="color: red;"></p> 
+  </div> 
+  <div id="adminPanel" class="hidden"> 
+   <h1>Admin Panel</h1> 
+   <nav>
+        <a href="property-listings.html">Property Listings</a>
+        <a href="detailed-property-listings.html">Detailed Property Listings</a>
+        <a href="about-us.html">About Us</a>
+        <a href="admin-panel.html">Admin Panel</a>
+   </nav>
+   <h1>Property Listings</h1> 
+   <div id="propertyList"></div> 
+   <!-- Embed Google Form --> 
+   <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeljdqdznjT9NiVqO9oXt__1XXvjNhncUl8rVPsFzO5OGgGVA/viewform?embedded=true" width="640" height="715" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe> 
+   <script src="script.js"></script> 
+  </div> 
+  <script>
+    function checkPassword() {
+      var password = document.getElementById('password').value;
+      var correctPassword = 'Adminpanel100%'; // Replace with your desired password
+
+      if (password === correctPassword) {
+        document.getElementById('loginDiv').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+      } else {
+        document.getElementById('error').textContent = 'Incorrect password. Please try again.';
+      }
+    }
+  </script> 
+ 
+<script type="text/javascript" id="dcoder_script">function loadProperties() {
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSHxUuw0dC5P4o1_7UwUjKmRgMCrm88_0UkTcOuey23iWnGIBSyE0gl4nnVbWI3nMcA/pub?output=csv';
+
+    fetch(sheetUrl)
+        .then(response => response.text())
+        .then(data => {
+            const rows = data.split('\n').slice(1); // Skip the header row
+            const propertyList = document.getElementById('propertyList');
+            propertyList.innerHTML = '';
+
+            rows.forEach(row => {
+                const [title, description, price, category, image] = row.split(',');
+                const propertyItem = document.createElement('div');
+                propertyItem.className = 'property';
+                propertyItem.innerHTML = `
+                    <h2>${title}</h2>
+                    <p>${description}</p>
+                    <p>Price: ${price}</p>
+                    <p>Category: ${category}</p>
+                    ${image ? `<img src="${image}" alt="Property Image">` : ''}
+                `;
+                propertyList.appendChild(propertyItem);
+            });
+        })
+        .catch(error => console.error('Error loading properties:', error));
+}
+
+document.addEventListener('DOMContentLoaded', loadProperties);</script><script type="text/javascript" id="dcoder_script">function loadProperties() {
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSHxUuw0dC5P4o1_7UwUjKmRgMCrm88_0UkTcOuey23iWnGIBSyE0gl4nnVbWI3nMcA/pub?output=csv';
+
+    fetch(sheetUrl)
+        .then(response => response.text())
+        .then(data => {
+            const rows = data.split('\n').slice(1); // Skip the header row
+            const propertyList = document.getElementById('propertyList');
+            propertyList.innerHTML = '';
+
+            rows.forEach(row => {
+                const [title, description, price, category, image] = row.split(',');
+                const propertyItem = document.createElement('div');
+                propertyItem.className = 'property';
+                propertyItem.innerHTML = `
+                    <h2>${title}</h2>
+                    <p>${description}</p>
+                    <p>Price: ${price}</p>
+                    <p>Category: ${category}</p>
+                    ${image ? `<img src="${image}" alt="Property Image">` : ''}
+                `;
+                propertyList.appendChild(propertyItem);
+            });
+        })
+        .catch(error => console.error('Error loading properties:', error));
+}
+
+document.addEventListener('DOMContentLoaded', loadProperties);</script></body></html>
