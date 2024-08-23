@@ -118,14 +118,40 @@
   </style> 
  </head> 
  <body> 
-  <header> <a href="index.html"><img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo"></a> 
-   <nav> <a href="index.html">Home</a> <a href="property-listings.html">Listings</a> <a href="about-us.html">About Us</a> <a href="detailed-property-listings.html">Details</a> <a href="admin-panel.html" style="display:none;">Admin Panel</a> <!-- Hidden admin panel link --> 
-   </nav> 
+  <header> 
+    <a href="index.html"><img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo"></a> 
+    <nav> 
+      <a href="index.html">Home</a> 
+      <a href="property-listings.html">Listings</a> 
+      <a href="about-us.html">About Us</a> 
+      <a href="detailed-property-listings.html">Details</a> 
+      <a href="admin-panel.html" style="display:none;">Admin Panel</a> <!-- Hidden admin panel link --> 
+    </nav> 
   </header> 
   <h1>Property Listings</h1> 
-  <div class="filter-section"> <select id="sectionFilter"> <option value="all">All Sections</option> <option value="buyers">Buyers</option> <option value="sellers">Sellers</option> <option value="tenants">Tenants</option> <option value="landlords">Landlords</option> </select> <select id="propertyTypeFilter"> <option value="all">All Property Types</option> <option value="lands">Lands</option> <option value="residential">Residential</option> <option value="commercial">Commercial</option> <option value="industrial">Industrial</option> <option value="agriculture">Agriculture</option> <option value="government">Government</option> </select> <select id="subcategoryFilter"> <option value="all">All Subcategories</option> </select> 
+  <div class="filter-section"> 
+    <select id="sectionFilter"> 
+      <option value="all">All Sections</option> 
+      <option value="buyers">Buyers</option> 
+      <option value="sellers">Sellers</option> 
+      <option value="tenants">Tenants</option> 
+      <option value="landlords">Landlords</option> 
+    </select> 
+    <select id="propertyTypeFilter"> 
+      <option value="all">All Property Types</option> 
+      <option value="lands">Lands</option> 
+      <option value="residential">Residential</option> 
+      <option value="commercial">Commercial</option> 
+      <option value="industrial">Industrial</option> 
+      <option value="agriculture">Agriculture</option> 
+      <option value="government">Government</option> 
+    </select> 
+    <select id="subcategoryFilter"> 
+      <option value="all">All Subcategories</option> 
+    </select> 
   </div> 
-  <div class="property-listings"> <!-- Example Property Box --> 
+  <div class="property-listings"> 
+   <!-- Example Property Box --> 
    <div class="property-box" data-section="buyers" data-category="residential" data-subcategory="villa"> 
     <img src="villa.jpg" alt="Villa"> 
     <div class="property-title">
@@ -134,7 +160,8 @@
     <div class="property-description">
       Luxury villa available for buyers. 
     </div> 
-   </div> <!-- Add more property boxes as needed --> 
+   </div> 
+   <!-- Add more property boxes as needed --> 
   </div> 
   <footer> 
    <p>© 2024 Property Listings. All rights reserved.</p> 
@@ -226,4 +253,5 @@
     });
   </script> 
  
-</body></html>
+</body>
+</html>
