@@ -32,7 +32,6 @@
           <li class="nav-item"><a class="nav-link" href="property-listings.html">Property Listings</a></li>
           <li class="nav-item"><a class="nav-link" href="detailed-property-listings.html">Detailed Property Listings</a></li>
           <li class="nav-item"><a class="nav-link" href="about-us.html">About Us</a></li>
-          <li class="nav-item"><a class="nav-link" href="admin-panel.html">Admin Panel</a></li>
         </ul>
       </div>
     </nav>
@@ -67,9 +66,9 @@
   </div>
 
   <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-storage.js"></script>
 
   <script>
     // Firebase configuration
@@ -84,17 +83,18 @@
     };
 
     // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database(app);
-    const storage = firebase.storage(app);
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const storage = firebase.storage();
 
     function checkPassword() {
-      var password = document.getElementById('password').value;
-      var correctPassword = 'Adminpanel100%';
+      const password = document.getElementById('password').value;
+      const correctPassword = 'Adminpanel100%';
 
       if (password === correctPassword) {
         document.getElementById('loginDiv').style.display = 'none';
         document.getElementById('adminPanel').style.display = 'block';
+        loadProperties();
       } else {
         document.getElementById('error').textContent = 'Incorrect password. Please try again.';
       }
@@ -135,7 +135,7 @@
       if (image) {
         const imageRef = storage.ref('images/' + image.name);
         imageRef.put(image).then((snapshot) => {
-          imageRef.getDownloadURL().then((downloadURL) => {
+          snapshot.ref.getDownloadURL().then((downloadURL) => {
             saveProperty(title, description, price, category, downloadURL);
           });
         }).catch((error) => {
@@ -164,8 +164,6 @@
       const propertyRef = db.ref('properties/' + id);
       propertyRef.remove();
     }
-
-    document.addEventListener('DOMContentLoaded', loadProperties);
   </script>
 </body>
-</html>
+</html/>
