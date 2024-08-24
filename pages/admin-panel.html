@@ -70,8 +70,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js"></script>
+
   <script>
-    // Your web app's Firebase configuration
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCscDzpLBrDu-Sq0AAkW34sc60oPzCW2NQ",
       authDomain: "legacy-c3712.firebaseapp.com",
@@ -83,9 +84,9 @@
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const storage = firebase.storage();
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(app);
+    const storage = firebase.storage(app);
 
     function checkPassword() {
       var password = document.getElementById('password').value;
@@ -134,7 +135,7 @@
       if (image) {
         const imageRef = storage.ref('images/' + image.name);
         imageRef.put(image).then((snapshot) => {
-          snapshot.ref.getDownloadURL().then((downloadURL) => {
+          imageRef.getDownloadURL().then((downloadURL) => {
             saveProperty(title, description, price, category, downloadURL);
           });
         }).catch((error) => {
