@@ -1,43 +1,95 @@
 <!doctype html>
-<html lang="en"> 
- <head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Admin Panel - Legacy Genuine Properties</title> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Legacy Genuine Properties</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        h1 { text-align: center; color: #002244; }
-        nav { text-align: center; margin-bottom: 20px; }
-        nav a { margin: 0 15px; text-decoration: none; color: #002244; font-weight: bold; }
-        .property { border: 1px solid #ddd; padding: 10px; margin-bottom: 20px; }
-        .property img { max-width: 100%; height: auto; }
-        .hidden { display: none; }
-    </style> 
- </head> 
- <body> 
-  <div id="loginDiv"> 
-   <h2>Please enter the password to access the Admin Panel</h2> 
-   <input type="password" id="password" placeholder="Enter Password"> <button onclick="checkPassword()">Submit</button> 
-   <p id="error" style="color: red;"></p> 
-  </div> 
-  <div id="adminPanel" class="hidden"> 
-   <h1>Admin Panel</h1> 
-   <nav>
-        <a href="property-listings.html">Property Listings</a>
-        <a href="detailed-property-listings.html">Detailed Property Listings</a>
-        <a href="about-us.html">About Us</a>
-        <a href="admin-panel.html">Admin Panel</a>
-   </nav>
-   <h1>Property Listings</h1> 
-   <div id="propertyList"></div> 
-   <!-- Embed Google Form --> 
-   <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeljdqdznjT9NiVqO9oXt__1XXvjNhncUl8rVPsFzO5OGgGVA/viewform?embedded=true" width="640" height="715" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe> 
-   <script src="script.js"></script> 
-  </div> 
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h1 { text-align: center; color: #002244; }
+    .property { border: 1px solid #ddd; padding: 10px; margin-bottom: 20px; border-radius: 5px; }
+    .property img { max-width: 100%; height: auto; }
+    .hidden { display: none; }
+    .btn-custom { background-color: #002244; color: white; }
+  </style>
+</head>
+<body>
+  <div id="loginDiv" class="text-center">
+    <h2>Please enter the password to access the Admin Panel</h2>
+    <div class="input-group mb-3">
+      <input type="password" id="password" class="form-control" placeholder="Enter Password">
+      <button class="btn btn-primary" onclick="checkPassword()">Submit</button>
+    </div>
+    <p id="error" style="color: red;"></p>
+  </div>
+
+  <div id="adminPanel" class="hidden">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Admin Panel</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item"><a class="nav-link" href="property-listings.html">Property Listings</a></li>
+          <li class="nav-item"><a class="nav-link" href="detailed-property-listings.html">Detailed Property Listings</a></li>
+          <li class="nav-item"><a class="nav-link" href="about-us.html">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="admin-panel.html">Admin Panel</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <h1 class="my-4">Manage Property Listings</h1>
+      <div id="propertyList"></div>
+      <h2 class="my-4">Add New Property</h2>
+      <form id="propertyForm" onsubmit="return false;">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="form-control" id="title" required>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" id="description" rows="3" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="price" class="form-label">Price</label>
+          <input type="number" class="form-control" id="price" required>
+        </div>
+        <div class="mb-3">
+          <label for="category" class="form-label">Category</label>
+          <input type="text" class="form-control" id="category" required>
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Image</label>
+          <input type="file" class="form-control" id="image" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-custom" onclick="addProperty()">Add Property</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js"></script>
   <script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCscDzpLBrDu-Sq0AAkW34sc60oPzCW2NQ",
+      authDomain: "legacy-c3712.firebaseapp.com",
+      databaseURL: "https://legacy-c3712-default-rtdb.firebaseio.com",
+      projectId: "legacy-c3712",
+      storageBucket: "legacy-c3712.appspot.com",
+      messagingSenderId: "1011446343827",
+      appId: "1:1011446343827:web:30643cdf24e4e5687c4566"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const storage = firebase.storage();
+
     function checkPassword() {
       var password = document.getElementById('password').value;
-      var correctPassword = 'Adminpanel100%'; // Replace with your desired password
+      var correctPassword = 'Adminpanel100%';
 
       if (password === correctPassword) {
         document.getElementById('loginDiv').style.display = 'none';
@@ -46,60 +98,73 @@
         document.getElementById('error').textContent = 'Incorrect password. Please try again.';
       }
     }
-  </script> 
- 
-<script type="text/javascript" id="dcoder_script">function loadProperties() {
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSHxUuw0dC5P4o1_7UwUjKmRgMCrm88_0UkTcOuey23iWnGIBSyE0gl4nnVbWI3nMcA/pub?output=csv';
 
-    fetch(sheetUrl)
-        .then(response => response.text())
-        .then(data => {
-            const rows = data.split('\n').slice(1); // Skip the header row
-            const propertyList = document.getElementById('propertyList');
-            propertyList.innerHTML = '';
+    function loadProperties() {
+      const propertiesRef = db.ref('properties');
 
-            rows.forEach(row => {
-                const [title, description, price, category, image] = row.split(',');
-                const propertyItem = document.createElement('div');
-                propertyItem.className = 'property';
-                propertyItem.innerHTML = `
-                    <h2>${title}</h2>
-                    <p>${description}</p>
-                    <p>Price: ${price}</p>
-                    <p>Category: ${category}</p>
-                    ${image ? `<img src="${image}" alt="Property Image">` : ''}
-                `;
-                propertyList.appendChild(propertyItem);
-            });
-        })
-        .catch(error => console.error('Error loading properties:', error));
-}
+      propertiesRef.on('value', (snapshot) => {
+        const properties = snapshot.val();
+        const propertyList = document.getElementById('propertyList');
+        propertyList.innerHTML = '';
 
-document.addEventListener('DOMContentLoaded', loadProperties);</script><script type="text/javascript" id="dcoder_script">function loadProperties() {
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSHxUuw0dC5P4o1_7UwUjKmRgMCrm88_0UkTcOuey23iWnGIBSyE0gl4nnVbWI3nMcA/pub?output=csv';
+        for (let id in properties) {
+          const property = properties[id];
+          const propertyItem = document.createElement('div');
+          propertyItem.className = 'property';
+          propertyItem.innerHTML = `
+            <h2>${property.title}</h2>
+            <p>${property.description}</p>
+            <p>Price: ${property.price}</p>
+            <p>Category: ${property.category}</p>
+            ${property.imageURL ? `<img src="${property.imageURL}" alt="Property Image">` : ''}
+            <button class="btn btn-danger" onclick="deleteProperty('${id}')">Delete</button>
+          `;
+          propertyList.appendChild(propertyItem);
+        }
+      });
+    }
 
-    fetch(sheetUrl)
-        .then(response => response.text())
-        .then(data => {
-            const rows = data.split('\n').slice(1); // Skip the header row
-            const propertyList = document.getElementById('propertyList');
-            propertyList.innerHTML = '';
+    function addProperty() {
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const price = document.getElementById('price').value;
+      const category = document.getElementById('category').value;
+      const image = document.getElementById('image').files[0];
 
-            rows.forEach(row => {
-                const [title, description, price, category, image] = row.split(',');
-                const propertyItem = document.createElement('div');
-                propertyItem.className = 'property';
-                propertyItem.innerHTML = `
-                    <h2>${title}</h2>
-                    <p>${description}</p>
-                    <p>Price: ${price}</p>
-                    <p>Category: ${category}</p>
-                    ${image ? `<img src="${image}" alt="Property Image">` : ''}
-                `;
-                propertyList.appendChild(propertyItem);
-            });
-        })
-        .catch(error => console.error('Error loading properties:', error));
-}
+      if (image) {
+        const imageRef = storage.ref('images/' + image.name);
+        imageRef.put(image).then((snapshot) => {
+          snapshot.ref.getDownloadURL().then((downloadURL) => {
+            saveProperty(title, description, price, category, downloadURL);
+          });
+        }).catch((error) => {
+          console.error('Error uploading image:', error);
+        });
+      } else {
+        saveProperty(title, description, price, category, '');
+      }
+    }
 
-document.addEventListener('DOMContentLoaded', loadProperties);</script></body></html>
+    function saveProperty(title, description, price, category, imageURL) {
+      const propertiesRef = db.ref('properties');
+      const newPropertyRef = propertiesRef.push();
+      newPropertyRef.set({
+        title: title,
+        description: description,
+        price: price,
+        category: category,
+        imageURL: imageURL
+      });
+
+      document.getElementById('propertyForm').reset();
+    }
+
+    function deleteProperty(id) {
+      const propertyRef = db.ref('properties/' + id);
+      propertyRef.remove();
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProperties);
+  </script>
+</body>
+</html>
