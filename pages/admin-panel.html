@@ -4,26 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="file"],
+        button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #message {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Upload Property</h1>
     <form id="propertyForm">
+        <h1>Upload Property</h1>
         <label for="propertyName">Property Name:</label>
-        <input type="text" id="propertyName" name="propertyName" required><br>
+        <input type="text" id="propertyName" name="propertyName" required>
 
         <label for="propertyType">Property Type:</label>
-        <input type="text" id="propertyType" name="propertyType" required><br>
+        <input type="text" id="propertyType" name="propertyType" required>
 
         <label for="propertyLocation">Location:</label>
-        <input type="text" id="propertyLocation" name="propertyLocation" required><br>
+        <input type="text" id="propertyLocation" name="propertyLocation" required>
 
         <label for="propertyPrice">Price:</label>
-        <input type="text" id="propertyPrice" name="propertyPrice" required><br>
+        <input type="text" id="propertyPrice" name="propertyPrice" required>
 
         <label for="propertyImage">Image:</label>
-        <input type="file" id="propertyImage" name="propertyImage" accept="image/*" required><br>
+        <input type="file" id="propertyImage" name="propertyImage" accept="image/*" required>
 
         <button type="submit" id="uploadButton">Upload Property</button>
+
+        <div id="message"></div>
     </form>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
@@ -50,8 +104,8 @@
 
         // Add event listener for form submission
         document.getElementById('propertyForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            uploadProperty();
+            event.preventDefault(); // Prevent the default form submission
+            uploadProperty(); // Call the upload function
         });
 
         function uploadProperty() {
@@ -62,9 +116,11 @@
             const propertyLocation = document.getElementById('propertyLocation').value;
             const propertyPrice = document.getElementById('propertyPrice').value;
             const propertyImage = document.getElementById('propertyImage').files[0];
+            const messageElement = document.getElementById('message');
 
             if (!propertyImage) {
-                console.error("No image selected.");
+                messageElement.textContent = "No image selected.";
+                messageElement.style.color = "red";
                 return;
             }
 
@@ -77,6 +133,8 @@
                 }, 
                 (error) => {
                     console.error("Upload failed:", error);
+                    messageElement.textContent = "Upload failed: " + error.message;
+                    messageElement.style.color = "red";
                 }, 
                 () => {
                     uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
@@ -103,12 +161,20 @@
             database.ref().update(updates)
                 .then(() => {
                     console.log("Property data saved successfully.");
-                    alert("Property uploaded successfully!");
+                    const messageElement = document.getElementById('message');
+                    messageElement.textContent = "Property uploaded successfully!";
+                    messageElement.style.color = "green";
                 })
                 .catch((error) => {
                     console.error("Data could not be saved:", error);
+                    const messageElement = document.getElementById('message');
+                    messageElement.textContent = "Data could not be saved: " + error.message;
+                    messageElement.style.color = "red";
                 });
         }
     </script>
+</body>
+</html>
+                
 </body>
 </html/>
