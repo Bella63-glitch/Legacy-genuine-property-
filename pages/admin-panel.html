@@ -1,79 +1,144 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>Admin Panel - Property Upload</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        form {
-            background: #fff;
+            background-color: #002244; /* Dark blue */
+            color: white;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            color: #002244;
+        }
+        h2 {
+            text-align: center;
+            color: #002244; /* Dark blue */
         }
         label {
-            display: block;
-            margin-bottom: 5px;
             font-weight: bold;
         }
-        input[type="text"],
-        input[type="file"],
-        button {
+        input[type="text"], input[type="number"], input[type="file"] {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
             border: 1px solid #ccc;
-            box-sizing: border-box;
+            border-radius: 5px;
         }
         button {
-            background-color: #4CAF50;
+            background-color: #28a745; /* Green */
             color: white;
+            padding: 10px;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
+            width: 100%;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #218838;
         }
-        #message {
+        .success-message, .error-message {
             text-align: center;
             margin-top: 10px;
             font-weight: bold;
         }
+        .success-message {
+            color: green;
+        }
+        .error-message {
+            color: red;
+        }
     </style>
 </head>
 <body>
-    <form id="propertyForm">
-        <h1>Upload Property</h1>
-        <label for="propertyName">Property Name:</label>
-        <input type="text" id="propertyName" name="propertyName" required>
+    <div class="container">
+        <h2>Upload New Property</h2>
+        <form id="propertyForm">
+            <label for="propertyName">Property Name:</label>
+            <input type="text" id="propertyName" required>
 
-        <label for="propertyType">Property Type:</label>
-        <input type="text" id="propertyType" name="propertyType" required>
+            <label for="category">Category:</label>
+            <input type="text" id="category" required>
 
-        <label for="propertyLocation">Location:</label>
-        <input type="text" id="propertyLocation" name="propertyLocation" required>
+            <label for="subcategory">Subcategory:</label>
+            <input type="text" id="subcategory" required>
 
-        <label for="propertyPrice">Price:</label>
-        <input type="text" id="propertyPrice" name="propertyPrice" required>
+            <label for="price">Price:</label>
+            <input type="number" id="price" required>
 
-        <label for="propertyImage">Image:</label>
-        <input type="file" id="propertyImage" name="propertyImage" accept="image/*" required>
+            <label for="location">Location:</label>
+            <input type="text" id="location" required>
+
+            <label for="propertyImage">Property Image:</label>
+            <input type="file" id="propertyImage" accept="image/*" required>
+
+            <button type="button" onclick="uploadProperty()">Upload Property</button>
+        </form>
+        <div class="success-message" id="successMessage" style="display:none;">Property uploaded successfully!</div>
+        <div class="error-message" id="errorMessage" style="display:none;">Error uploading property. Please try again.</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+        const supabaseUrl = 'https://cvdpmxkrqnpeozqypscy.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2ZHBteGtycW5wZW96cXlwc2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjQ1OTM1MTQsImV4cCI6MjA0MDE2OTUxNH0.6GlhIzxjR_VnsFwxHbCL417Q4rb3KDH8rNQ3_KExJuE';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        async function uploadProperty() {
+            const propertyName = document.getElementById('propertyName').value;
+            const category = document.getElementById('category').value;
+            const subcategory = document.getElementById('subcategory').value;
+            const price = document.getElementById('price').value;
+            const location = document.getElementById('location').value;
+            const propertyImage = document.getElementById('propertyImage').files[0];
+
+            if (!propertyName || !category || !subcategory || !price || !location || !propertyImage) {
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+                return;
+            }
+
+            try {
+                // Upload image to Supabase Storage
+                const { data: uploadData, error: uploadError } = await supabase.storage
+                    .from('property-images')
+                    .upload(`images/${Date.now()}_${propertyImage.name}`, propertyImage);
+
+                if (uploadError) throw uploadError;
+
+                const imageUrl = `${supabaseUrl}/storage/v1/object/public/${uploadData.Key}`;
+
+                // Insert property details into Supabase database
+                const { data, error } = await supabase
+                    .from('properties')
+                    .insert([
+                        { name: propertyName, category, subcategory, price, location, image_url: imageUrl }
+                    ]);
+
+                if (error) throw error;
+
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+                document.getElementById('propertyForm').reset();
+            } catch (error) {
+                console.error('Error uploading property:', error.message);
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
 
         <button type="submit" id="uploadButton">Upload Property</button>
 
