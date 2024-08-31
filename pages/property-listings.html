@@ -1,197 +1,188 @@
 <!doctype html>
 <html lang="en"> 
-<head> 
+ <head> 
   <meta charset="UTF-8"> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <title>Property Details - Legacy Genuine Properties</title> 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: white;
-      margin: 0;
-      padding: 0;
-      color: #002244;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            color: #002244;
+        }
 
-    header {
-      background-color: #002250;
-      color: white;
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+        header {
+            background-color: #002250;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-    nav {
-      flex: 1;
-    }
+        nav {
+            flex: 1;
+        }
 
-    nav ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-    nav ul li {
-      text-align: left;
-    }
+        nav ul li {
+            text-align: left;
+        }
 
-    nav ul li a {
-      color: white; /* Makes navigation links white */
-      text-decoration: none;
-      font-weight: bold;
-    }
+        nav ul li a {
+            color: white; /* Makes navigation links white */
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-    header img {
-      height: 50px;
-      cursor: pointer;
-      margin-left: auto;
-    }
+        header img {
+            height: 50px;
+            cursor: pointer;
+            margin-left: auto;
+        }
 
-    .content {
-      padding: 40px 20px;
-    }
+        .content {
+            padding: 40px 20px;
+        }
 
-    h1 {
-      color: #002244;
-      text-align: center;
-      margin-bottom: 20px;
-    }
+        h1 {
+            color: #002244;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    .property-image {
-      display: block;
-      margin: 0 auto 20px auto;
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-    }
+        .property-image {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
 
-    .property-details {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+        .property-details {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-    .property-details h2 {
-      color: #002244;
-    }
+        .property-details h2 {
+            color: #002244;
+        }
 
-    .property-details p {
-      font-size: 18px;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
+        .property-details p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
 
-    footer {
-      background-color: #002250;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
+        footer {
+            background-color: #002250;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
 
-    footer p {
-      margin: 5px 0;
-    }
+        footer p {
+            margin: 5px 0;
+        }
 
-    #menu {
-      display: flex;
-      flex-direction: column;
-    }
+        #menu {
+            display: flex;
+            flex-direction: column;
+        }
 
-    #menu a {
-      color: white; /* Makes navigation links white */
-      text-decoration: none;
-      margin: 5px 0;
-      font-weight: bold;
-    }
+        #menu a {
+            color: white; /* Makes navigation links white */
+            text-decoration: none;
+            margin: 5px 0;
+            font-weight: bold;
+        }
 
-    #menu a:hover {
-      text-decoration: underline;
-    }
-  </style> 
-</head> 
-<body> 
-  <header>
+        #menu a:hover {
+            text-decoration: underline;
+        }
+    </style> 
+ </head> 
+ <body> 
+  <header> 
     <a href="index.html"><img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Legacy Genuine Properties Logo"></a>
-    <button class="navbar-toggler" type="button" onclick="toggleMenu()">
-      <span class="navbar-toggler-icon"><i class="fa fa-bars"></i></span>
-    </button> 
-    <div id="menu">
-      <a href="property-listings.html">Property Listings</a>
-      <a href="about-us.html">About Us</a>
-      <a href="detailed-property-listings.html">Detailed Property Listings</a>
-      <a href="admin-panel.html">Admin</a>
+    <button class="navbar-toggler" type="button" onclick="toggleMenu()"> <span class="navbar-toggler-icon"><i class="fa fa-bars"></i></span> </button> 
+    <div id="menu"> 
+      <a href="index.html">Home</a> 
+      <a href="property-listings.html">Property Listings</a> 
+      <a href="about-us.html">About Us</a> 
+      <a href="detailed-property-listings.html">Detailed Property Listings</a> 
+      <a href="admin-panel.html">Admin</a> 
     </div> 
   </header> 
   <div class="content"> 
-    <h1 id="property-title">Property Title</h1> 
-    <img id="property-image" class="property-image" src="" alt="Property Image"> 
-    <div class="property-details"> 
-      <h2 id="property-name">Property Name</h2> 
-      <p><strong>Category:</strong> <span id="property-category">Category Name</span></p> 
-      <p><strong>Subcategory:</strong> <span id="property-subcategory">Subcategory Name</span></p> 
-      <p><strong>Price:</strong> <span id="property-price">$0.00</span></p> 
-      <p id="property-description"><strong>Description:</strong> Property description goes here.</p> 
-    </div> 
+   <h1 id="property-title">Property Title</h1> 
+   <img id="property-image" class="property-image" src="" alt="Property Image"> 
+   <div class="property-details"> 
+    <h2 id="property-name">Property Name</h2> 
+    <p><strong>Category:</strong> <span id="property-category">Category Name</span></p> 
+    <p><strong>Subcategory:</strong> <span id="property-subcategory">Subcategory Name</span></p> 
+    <p><strong>Price:</strong> <span id="property-price">$0.00</span></p> 
+    <p id="property-description"><strong>Description:</strong> Property description goes here.</p> 
+   </div> 
   </div> 
   <footer> 
-    <p>Contact Us:</p> 
-    <p>Mobile: <a href="tel:0789033037">0789 033 037</a></p> 
-    <p>Email: <a href="mailto:sales@legacygenuineproperties.com">sales@legacygenuineproperties.com</a></p> 
-    <p>© 2024 Legacy Genuine Properties. All rights reserved.</p> 
+   <p>Contact Us:</p> 
+   <p>Mobile: <a href="tel:0789033037">0789 033 037</a></p> 
+   <p>Email: <a href="mailto:sales@legacygenuineproperties.com">sales@legacygenuineproperties.com</a></p> 
+   <p>© 2024 Legacy Genuine Properties. All rights reserved.</p> 
   </footer> 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js";
-    import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-storage.js";
+  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js"></script>
+  <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
+            authDomain: "legacy-genuine-properties.firebaseapp.com",
+            databaseURL: "https://legacy-genuine-properties-default-rtdb.firebaseio.com",
+            projectId: "legacy-genuine-properties",
+            storageBucket: "legacy-genuine-properties.appspot.com",
+            messagingSenderId: "795578734998",
+            appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
+            measurementId: "G-RRZ7M9TW8T"
+        };
 
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
-      authDomain: "legacy-genuine-properties.firebaseapp.com",
-      projectId: "legacy-genuine-properties",
-      storageBucket: "legacy-genuine-properties.appspot.com",
-      messagingSenderId: "795578734998",
-      appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
-      measurementId: "G-RRZ7M9TW8T"
-    };
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const property = urlParams.get('property');
 
-    document.addEventListener("DOMContentLoaded", async function () {
-      const urlParams = new URLSearchParams(window.location.search);
-      const propertyId = urlParams.get('property');
-      
-      if (propertyId) {
-        const propertyDoc = await getDoc(doc(db, "properties", propertyId));
-        if (propertyDoc.exists()) {
-          const propertyData = propertyDoc.data();
-          
-          document.getElementById("property-title").textContent = propertyData.title || "Property Title";
-          document.getElementById("property-name").textContent = propertyData.name || "Property Name";
-          document.getElementById("property-category").textContent = propertyData.category || "Category Name";
-          document.getElementById("property-subcategory").textContent = propertyData.subcategory || "Subcategory Name";
-          document.getElementById("property-price").textContent = propertyData.price || "$0.00";
-          document.getElementById("property-description").textContent = propertyData.description || "Property description goes here.";
-          
-          if (propertyData.imagePath) {
-            const imageRef = ref(storage, propertyData.imagePath);
-            const imageUrl = await getDownloadURL(imageRef);
-            document.getElementById("property-image").src = imageUrl;
-            document.getElementById("property-image").alt = propertyData.name;
-          }
-        } else {
-          console.error("No such document!");
-        }
-      } else {
-        console.error("No property ID in URL");
-      }
-    });
-  </script> 
+            db.collection("properties").doc(property).get().then((doc) => {
+                if (doc.exists) {
+                    const propertyData = doc.data();
+
+                    document.getElementById("property-title").textContent = propertyData.title || "Property Title";
+                    document.getElementById("property-name").textContent = propertyData.name || "Property Name";
+                    document.getElementById("property-category").textContent = propertyData.category || "Category Name";
+                    document.getElementById("property-subcategory").textContent = propertyData.subcategory || "Subcategory Name";
+                    document.getElementById("property-price").textContent = propertyData.price || "$0.00";
+                    document.getElementById("property-description").textContent = propertyData.description || "Property description goes here.";
+                    document.getElementById("property-image").src = propertyData.imageURL || "";
+                    document.getElementById("property-image").alt = propertyData.name || "Property Image";
+                } else {
+                    console.log("No such document!");
+                }
+            }).catch((error) => {
+                console.error("Error fetching document: ", error);
+            });
+        });
+  </script>
 </body>
-</html>
+</html/>
