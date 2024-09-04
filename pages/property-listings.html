@@ -1,188 +1,306 @@
 <!doctype html>
-<html lang="en"> 
- <head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Property Details - Legacy Genuine Properties</title> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Listings - Unified Filters</title>
   <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: white;
-            margin: 0;
-            padding: 0;
-            color: #002244;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: white;
+      margin: 0;
+      padding: 0;
+      color: #002244;
+    }
 
-        header {
-            background-color: #002250;
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+    header {
+      background-color: #002250;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
 
-        nav {
-            flex: 1;
-        }
+    header img {
+      height: 50px;
+    }
 
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+    nav {
+      display: flex;
+      gap: 10px;
+    }
 
-        nav ul li {
-            text-align: left;
-        }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      display: block;
+      border-radius: 5px;
+      font-size: 14px;
+    }
 
-        nav ul li a {
-            color: white; /* Makes navigation links white */
-            text-decoration: none;
-            font-weight: bold;
-        }
+    nav a:hover {
+      background-color: #003366;
+    }
 
-        header img {
-            height: 50px;
-            cursor: pointer;
-            margin-left: auto;
-        }
+    h1 {
+      text-align: center;
+      color: #002244;
+      margin: 20px 0;
+    }
 
-        .content {
-            padding: 40px 20px;
-        }
+    .filter-section {
+      display: flex;
+      flex-direction: column;
+      margin: 20px;
+      gap: 10px;
+      background-image: url('https://i.postimg.cc/Qxr7NMBF/istockphoto-1212170511-612x612.jpg');
+      background-size: cover;
+      background-position: center;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-        h1 {
-            color: #002244;
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    .filter-section select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #002244;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #002244;
+      width: 100%;
+    }
 
-        .property-image {
-            display: block;
-            margin: 0 auto 20px auto;
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
+    .property-listings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin: 20px;
+    }
 
-        .property-details {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+    .property-box {
+      background-color: #002244;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      color: white;
+      cursor: pointer;
+    }
 
-        .property-details h2 {
-            color: #002244;
-        }
+    .property-box img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
 
-        .property-details p {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
+    footer {
+      background-color: #002250;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+    }
 
-        footer {
-            background-color: #002250;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+    @media (min-width: 768px) {
+      .filter-section {
+        flex-direction: row;
+        justify-content: space-between;
+      }
 
-        footer p {
-            margin: 5px 0;
-        }
-
-        #menu {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #menu a {
-            color: white; /* Makes navigation links white */
-            text-decoration: none;
-            margin: 5px 0;
-            font-weight: bold;
-        }
-
-        #menu a:hover {
-            text-decoration: underline;
-        }
-    </style> 
- </head> 
- <body> 
+      .filter-section select {
+        width: 30%;
+      }
+    }
+  </style>
+</head>
+<body>
   <header> 
-    <a href="index.html"><img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Legacy Genuine Properties Logo"></a>
-    <button class="navbar-toggler" type="button" onclick="toggleMenu()"> <span class="navbar-toggler-icon"><i class="fa fa-bars"></i></span> </button> 
-    <div id="menu"> 
+    <a href="index.html"><img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo"></a>
+    <nav> 
       <a href="index.html">Home</a> 
-      <a href="property-listings.html">Property Listings</a> 
+      <a href="property-listings.html">Listings</a> 
       <a href="about-us.html">About Us</a> 
-      <a href="detailed-property-listings.html">Detailed Property Listings</a> 
-      <a href="admin-panel.html">Admin</a> 
-    </div> 
+      <a href="detailed-property-listings.html">Details</a> 
+      <a href="admin-panel.html" style="display:none;">Admin Panel</a> <!-- Hidden admin panel link --> 
+    </nav> 
   </header> 
-  <div class="content"> 
-   <h1 id="property-title">Property Title</h1> 
-   <img id="property-image" class="property-image" src="" alt="Property Image"> 
-   <div class="property-details"> 
-    <h2 id="property-name">Property Name</h2> 
-    <p><strong>Category:</strong> <span id="property-category">Category Name</span></p> 
-    <p><strong>Subcategory:</strong> <span id="property-subcategory">Subcategory Name</span></p> 
-    <p><strong>Price:</strong> <span id="property-price">$0.00</span></p> 
-    <p id="property-description"><strong>Description:</strong> Property description goes here.</p> 
-   </div> 
+  <h1>Property Listings</h1> 
+  <div class="filter-section"> 
+    <select id="sectionFilter"> 
+      <option value="all">All Sections</option> 
+      <option value="buyers">Buyers</option> 
+      <option value="sellers">Sellers</option> 
+      <option value="tenants">Tenants</option> 
+      <option value="landlords">Landlords</option> 
+    </select> 
+    <select id="propertyTypeFilter"> 
+      <option value="all">All Property Types</option> 
+      <option value="lands">Lands</option> 
+      <option value="residential">Residential</option> 
+      <option value="commercial">Commercial</option> 
+      <option value="industrial">Industrial</option> 
+      <option value="agriculture">Agriculture</option> 
+      <option value="government">Government</option> 
+    </select> 
+    <select id="subcategoryFilter"> 
+      <option value="all">All Subcategories</option> 
+    </select> 
+  </div> 
+  <div class="property-listings" id="propertyListings"> 
+    <!-- Property listings will be dynamically added here from Firebase --> 
   </div> 
   <footer> 
-   <p>Contact Us:</p> 
-   <p>Mobile: <a href="tel:0789033037">0789 033 037</a></p> 
-   <p>Email: <a href="mailto:sales@legacygenuineproperties.com">sales@legacygenuineproperties.com</a></p> 
-   <p>© 2024 Legacy Genuine Properties. All rights reserved.</p> 
+    <p>© 2024 Property Listings. All rights reserved.</p> 
   </footer> 
-  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js"></script>
+
+  <!-- Firebase SDK and Firestore Setup -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
   <script>
-        // Your Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
-            authDomain: "legacy-genuine-properties.firebaseapp.com",
-            databaseURL: "https://legacy-genuine-properties-default-rtdb.firebaseio.com",
-            projectId: "legacy-genuine-properties",
-            storageBucket: "legacy-genuine-properties.appspot.com",
-            messagingSenderId: "795578734998",
-            appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
-            measurementId: "G-RRZ7M9TW8T"
-        };
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
+      authDomain: "legacy-genuine-properties.firebaseapp.com",
+      databaseURL: "https://legacy-genuine-properties-default-rtdb.firebaseio.com",
+      projectId: "legacy-genuine-properties",
+      storageBucket: "legacy-genuine-properties.appspot.com",
+      messagingSenderId: "795578734998",
+      appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
+      measurementId: "G-RRZ7M9TW8T"
+    };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const property = urlParams.get('property');
+    // Fetch property types and subcategories from Firestore
+    function fetchFilters() {
+      db.collection("filters").get().then((querySnapshot) => {
+        const sectionFilter = document.getElementById("sectionFilter");
+        const propertyTypeFilter = document.getElementById("propertyTypeFilter");
+        const subcategoryFilter = document.getElementById("subcategoryFilter");
 
-            db.collection("properties").doc(property).get().then((doc) => {
-                if (doc.exists) {
-                    const propertyData = doc.data();
+        let subcategories = {};
 
-                    document.getElementById("property-title").textContent = propertyData.title || "Property Title";
-                    document.getElementById("property-name").textContent = propertyData.name || "Property Name";
-                    document.getElementById("property-category").textContent = propertyData.category || "Category Name";
-                    document.getElementById("property-subcategory").textContent = propertyData.subcategory || "Subcategory Name";
-                    document.getElementById("property-price").textContent = propertyData.price || "$0.00";
-                    document.getElementById("property-description").textContent = propertyData.description || "Property description goes here.";
-                    document.getElementById("property-image").src = propertyData.imageURL || "";
-                    document.getElementById("property-image").alt = propertyData.name || "Property Image";
-                } else {
-                    console.log("No such document!");
-                }
-            }).catch((error) => {
-                console.error("Error fetching document: ", error);
-            });
+        querySnapshot.forEach((doc) => {
+          const filter = doc.data();
+          
+          // Populate section filter
+          if (!sectionFilter.querySelector(`option[value="${filter.section}"]`)) {
+            const sectionOption = document.createElement("option");
+            sectionOption.value = filter.section;
+            sectionOption.textContent = filter.section.charAt(0).toUpperCase() + filter.section.slice(1);
+            sectionFilter.appendChild(sectionOption);
+          }
+
+          // Populate property type filter
+          if (!propertyTypeFilter.querySelector(`option[value="${filter.type}"]`)) {
+            const typeOption = document.createElement("option");
+            typeOption.value = filter.type;
+            typeOption.textContent = filter.type.charAt(0).toUpperCase() + filter.type.slice(1);
+            propertyTypeFilter.appendChild(typeOption);
+          }
+
+          // Map subcategories
+          if (!subcategories[filter.type]) {
+            subcategories[filter.type] = [];
+          }
+          if (filter.subcategory && !subcategories[filter.type].includes(filter.subcategory)) {
+            subcategories[filter.type].push(filter.subcategory);
+          }
         });
+
+        // Event listeners to update subcategory filter based on property type
+        propertyTypeFilter.addEventListener('change', (event) => {
+          const selectedType = event.target.value;
+          subcategoryFilter.innerHTML = '<option value="all">All Subcategories</option>';
+          if (subcategories[selectedType]) {
+            subcategories[selectedType].forEach(subcat => {
+              const subcatOption = document.createElement("option");
+              subcatOption.value = subcat;
+              subcatOption.textContent = subcat.charAt(0).toUpperCase() + subcat.slice(1);
+              subcategoryFilter.appendChild(subcatOption);
+            });
+          }
+        });
+      });
+    }
+
+    // Fetch properties from Firestore and display them
+    function fetchProperties() {
+      db.collection("properties").get().then((querySnapshot) => {
+        const propertyListings = document.getElementById("propertyListings");
+        propertyListings.innerHTML = ''; // Clear existing listings
+
+        querySnapshot.forEach((doc) => {
+          const property = doc.data();
+          const propertyBox = document.createElement("div");
+          propertyBox.className = "property-box";
+
+          propertyBox.innerHTML = `
+            <img src="${property.imageUrl}" alt="${property.title}">
+            <h3>${property.title}</h3>
+            <p>${property.description}</p>
+          `;
+
+          propertyListings.appendChild(propertyBox);
+        });
+      });
+    }
+
+    // Call the fetchFilters and fetchProperties functions when the page loads
+    window.onload = function() {fetchFilters();
+      fetchProperties();
+    };
+
+    // Event listener to filter properties based on user selections
+    document.getElementById("sectionFilter").addEventListener("change", filterProperties);
+    document.getElementById("propertyTypeFilter").addEventListener("change", filterProperties);
+    document.getElementById("subcategoryFilter").addEventListener("change", filterProperties);
+
+    function filterProperties() {
+      const section = document.getElementById("sectionFilter").value;
+      const propertyType = document.getElementById("propertyTypeFilter").value;
+      const subcategory = document.getElementById("subcategoryFilter").value;
+
+      let query = db.collection("properties");
+
+      if (section !== "all") {
+        query = query.where("section", "==", section);
+      }
+
+      if (propertyType !== "all") {
+        query = query.where("type", "==", propertyType);
+      }
+
+      if (subcategory !== "all") {
+        query = query.where("subcategory", "==", subcategory);
+      }
+
+      query.get().then((querySnapshot) => {
+        const propertyListings = document.getElementById("propertyListings");
+        propertyListings.innerHTML = ''; // Clear existing listings
+
+        querySnapshot.forEach((doc) => {
+          const property = doc.data();
+          const propertyBox = document.createElement("div");
+          propertyBox.className = "property-box";
+
+          propertyBox.innerHTML = `
+            <img src="${property.imageUrl}" alt="${property.title}">
+            <h3>${property.title}</h3>
+            <p>${property.description}</p>
+          `;
+
+          propertyListings.appendChild(propertyBox);
+        });
+      });
+    }
   </script>
 </body>
 </html/>
