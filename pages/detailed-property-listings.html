@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en"> 
-<head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Property Details</title> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Details</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -41,26 +41,20 @@
     .property-details {
       max-width: 900px;
       margin: 20px auto;
+      padding: 20px;
       background-color: white;
       border-radius: 10px;
-      padding: 20px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     .property-details img {
       width: 100%;
+      height: auto;
       border-radius: 10px;
-      margin-bottom: 20px;
     }
 
     .property-details h1 {
-      margin: 0 0 10px;
-      font-size: 2em;
-    }
-
-    .property-details p {
-      margin: 5px 0;
-      font-size: 1.1em;
+      margin-top: 0;
     }
 
     footer {
@@ -70,24 +64,24 @@
       padding: 10px;
       margin-top: 40px;
     }
-  </style> 
-</head> 
-<body> 
-  <header> 
+  </style>
+</head>
+<body>
+  <header>
     <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" onclick="window.location.href='index.html';">
-    <nav> 
+    <nav>
       <a href="index.html">Home</a>
-      <a href="about-us.html">About Us</a> 
-    </nav> 
-  </header> 
+      <a href="index.html#about">About Us</a>
+    </nav>
+  </header>
 
   <section class="property-details" id="property-details">
     <!-- Property details will be dynamically inserted here -->
-  </section> 
+  </section>
 
-  <footer> 
-    <p>© 2024 Property Management. All Rights Reserved.</p> 
-  </footer> 
+  <footer>
+    <p>© 2024 Property Management. All Rights Reserved.</p>
+  </footer>
 
   <script type="module">
     // Firebase Initialization
@@ -111,8 +105,8 @@
 
     // DOM Elements
     const propertyDetails = document.getElementById('property-details');
-
-    // Get Property ID from URL
+    
+    // Get property ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const propertyId = urlParams.get('id');
 
