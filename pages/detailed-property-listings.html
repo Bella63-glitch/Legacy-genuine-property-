@@ -1,88 +1,150 @@
-<!doctype html>
-<html lang="en"> 
- <head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Property Details</title> 
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Details</title>
   <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .navbar {
-            background-color: #002244;
-        }
-        .navbar-brand, .nav-link {
-            color: white !important;
-        }
-        .property-details {
-            margin: 30px 0;
-        }
-        .whatsapp-icon {
-            width: 30px;
-            height: 30px;
-            margin-left: 10px;
-        }
-        /* Adjust logo size */
-        .navbar-brand img {
-            width: 50px;
-            height: 50px;
-        }
-    </style> 
- </head> 
- <body> 
-  <nav class="navbar navbar-expand-lg"> <a class="navbar-brand" href="index.html"> <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Your Logo"> </a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button> 
-   <div class="collapse navbar-collapse" id="navbarNav"> 
-    <ul class="navbar-nav ml-auto"> 
-     <li class="nav-item"> <a class="nav-link" href="index.html">Home</a> </li> 
-     <li class="nav-item"> <a class="nav-link" href="about-us.html">About Us</a> </li> 
-     <li class="nav-item"> <a class="nav-link" href="property-listings.html">Property Listings</a> </li> 
-    </ul> 
-   </div> 
-  </nav> 
-  <div class="container"> 
-   <div class="property-details"> 
-    <h2 id="property-title"></h2> 
-    <p id="property-price"></p> 
-    <p id="property-location"></p> 
-    <p id="property-description"></p> <a href="https://wa.me/+254700000000?text=I'm interested in this property" target="_blank"> <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-icon"> Contact us on WhatsApp </a> 
-   </div> 
-  </div> 
-  <script>
-    // Sample property data based on propertyId
-    const properties = {
-        1: {
-            title: 'Beautiful Mansion in Karen',
-            price: 'KSh 25,000,000',
-            location: 'Karen, Nairobi',
-            description: 'A luxurious mansion located in the serene environment of Karen. It features 5 bedrooms, a large garden, and modern amenities.',
-        },
-        2: {
-            title: 'Modern Apartment in Westlands',
-            price: 'KSh 10,000,000',
-            location: 'Westlands, Nairobi',
-            description: 'This modern apartment is located in the heart of Westlands. It includes 3 bedrooms, a spacious living room, and a rooftop swimming pool.',
-        }
-        // You can add more properties here
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #002244;
+      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header img {
+      height: 40px;
+      margin-left: 20px;
+      cursor: pointer;
+    }
+
+    nav {
+      margin-right: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 15px;
+      font-size: 0.9em;
+    }
+
+    .property-details-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .property-details-container img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .property-details-container h2 {
+      margin-bottom: 20px;
+    }
+
+    .property-details-container p {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background-color: #002244;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" onclick="window.location.href='index.html';">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about-us.html">About Us</a>
+    </nav>
+  </header>
+
+  <div class="property-details-container" id="property-details-container">
+    <!-- Property details will be dynamically inserted here -->
+  </div>
+
+  <footer>
+    <p>© 2024 Property Management. All Rights Reserved.</p>
+  </footer>
+
+  <script type="module">
+    // Firebase Initialization
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
+      authDomain: "legacy-genuine-properties.firebaseapp.com",
+      databaseURL: "https://legacy-genuine-properties-default-rtdb.firebaseio.com",
+      projectId: "legacy-genuine-properties",
+      storageBucket: "legacy-genuine-properties.appspot.com",
+      messagingSenderId: "795578734998",
+      appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
     };
 
-    // Get propertyId from URL
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Function to retrieve property details based on property ID
+    function getPropertyDetails(propertyId) {
+      const propertyRef = ref(database, `properties/${propertyId}`);
+      get(propertyRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const property = snapshot.val();
+          displayPropertyDetails(property);
+        } else {
+          document.getElementById('property-details-container').innerHTML = '<p>Property not found.</p>';
+        }
+      }).catch((error) => {
+        console.error('Error fetching property details:', error);
+      });
+    }
+
+    // Function to display property details on the page
+    function displayPropertyDetails(property) {
+      const propertyDetailsContainer = document.getElementById('property-details-container');
+      propertyDetailsContainer.innerHTML = `
+        <img src="${property.imageUrl}" alt="Property Image">
+        <h2>${property.title}</h2>
+        <p><strong>Location:</strong> ${property.location}</p>
+        <p><strong>Price:</strong> ${property.price}</p>
+        <p><strong>Description:</strong> ${property.description}</p>
+      `;
+    }
+
+    // Get property ID from URL query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const propertyId = urlParams.get('propertyId');
 
-    // Check if propertyId exists in properties data
-    if (propertyId && properties[propertyId]) {
-        const property = properties[propertyId];
-        document.getElementById('property-title').innerText = property.title;
-        document.getElementById('property-price').innerText = 'Price: ' + property.price;
-        document.getElementById('property-location').innerText = 'Location: ' + property.location;
-        document.getElementById('property-description').innerText = property.description;
+    // If a property ID exists, fetch and display the property details
+    if (propertyId) {
+      getPropertyDetails(propertyId);
     } else {
-        document.querySelector('.property-details').innerHTML = '<p>Property not found.</p>';
+      document.getElementById('property-details-container').innerHTML = '<p>No property selected.</p>';
     }
-</script> 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script> 
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
- </body>
-</html/>
+  </script>
+
+</body>
+</html>
