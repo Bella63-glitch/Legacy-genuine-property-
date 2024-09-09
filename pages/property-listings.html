@@ -1,269 +1,241 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Real Estate Properties</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #002244;
-      color: white;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    header img {
-      height: 40px;
-      margin-left: 20px;
-    }
-
-    nav {
-      margin-right: 20px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 15px;
-      font-size: 0.9em;
-    }
-
-    .filter-section {
-      background-image: url('https://i.postimg.cc/Qxr7NMBF/istockphoto-1212170511-612x612.jpg');
-      background-size: cover;
-      background-position: center;
-      border-radius: 20px; /* Round corners */
-      padding: 20px;
-      margin: 40px auto;
-      width: 80%; /* Adjust width for a rectangle shape */
-      max-width: 600px; /* Maximum width */
-      height: auto; /* Adjust height to fit content */
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .filter-content {
-      width: 100%;
-      display: flex;
-      flex-direction: column; /* Stack filters vertically */
-      align-items: center;
-      gap: 10px; /* Space between filters */
-    }
-
-    .filter-content select {
-      padding: 10px; /* Increase padding for better appearance */
-      width: 80%; /* Adjust width to fit the container */
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .property-listings {
-      max-width: 900px;
-      margin: 20px auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
-
-    .property-card {
-      background-color: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s;
-    }
-
-    .property-card:hover {
-      transform: translateY(-10px);
-    }
-
-    .property-card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
-
-    .property-details {
-      padding: 15px;
-    }
-
-    .property-details h3 {
-      margin: 0 0 10px;
-      font-size: 1.2em;
-    }
-
-    .property-details p {
-      margin: 5px 0;
-    }
-
-    footer {
-      background-color: #002244;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      margin-top: 40px;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo"> <!-- Updated logo URL -->
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#about">About Us</a>
-    </nav>
-  </header>
-
-  <section class="filter-section">
-    <div class="filter-content">
-      <select id="sectionFilter">
-        <option value="">Section</option>
-        <option value="buyers">Buyers</option>
-        <option value="sellers">Sellers</option>
-        <option value="tenants">Tenants</option>
-        <option value="landlords">Landlords</option>
-        <option value="decoration">Property Decoration & Supervision</option>
-        <option value="construction">Property Construction & Demolition</option>
-        <option value="supplies">Construction Supplies</option>
-      </select>
-
-      <select id="categoryFilter">
-        <option value="">Category</option>
-        <option value="lands">Lands</option>
-        <option value="residential">Residential</option>
-        <option value="commercial">Commercial</option>
-        <option value="industrial">Industrial</option>
-        <option value="agriculture">Agriculture</option>
-        <option value="government">Government</option>
-      </select>
-
-      <select id="subcategoryFilter">
-        <option value="">Subcategory</option>
-      </select>
-    </div>
-  </section>
-
-  <section class="property-listings" id="property-listings">
-    <!-- Properties will be displayed here dynamically -->
-  </section>
-
-  <footer>
-    <p>&copy; 2024 Property Management. All Rights Reserved.</p>
-  </footer>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
-      authDomain: "legacy-genuine-properties.firebaseapp.com",
-      databaseURL: "https://legacy-genuine-properties-default-rtdb.firebaseio.com",
-      projectId: "legacy-genuine-properties",
-      storageBucket: "legacy-genuine-properties.appspot.com",
-      messagingSenderId: "795578734998",
-      appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    // References
-    const propertyListings = document.getElementById('property-listings');
-    const sectionFilter = document.getElementById('sectionFilter');
-    const categoryFilter = document.getElementById('categoryFilter');
-    const subcategoryFilter = document.getElementById('subcategoryFilter');
-
-    // Populate subcategory filter based on category selection
-    const subcategories = {
-      lands: ['Residential Lands', 'Commercial Lands', 'Industrial Lands'],
-      residential: ['Apartments', 'Mansionettes', 'Bungalows', 'Villas'],
-      commercial: ['Offices', 'Institutions', 'Shopping', 'Hotels'],
-      industrial: ['Factories', 'Warehouse/Distribution', 'Flexible Spaces', 'Special Purpose'],
-      agriculture: ['Green Homes', 'Flower Homes', 'Flexible Spaces', 'Special Purpose'],
-      government: ['Affordable Homes']
-    };
-
-    categoryFilter.addEventListener('change', () => {
-      const category = categoryFilter.value;
-      subcategoryFilter.innerHTML = '<option value="">Subcategory</option>';
-      if (subcategories[category]) {
-        subcategories[category].forEach(subcategory => {
-          const option = document.createElement('option');
-          option.value = subcategory.toLowerCase().replace(/ /g, '-');
-          option.textContent = subcategory;
-          subcategoryFilter.appendChild(option);
-        });
+<!doctype html>
+<html lang="en"> 
+  <head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Real Estate Properties</title> 
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
       }
-    });
 
-    // Fetch properties from Firebase
-    const propertiesRef = ref(database, 'properties');
-    onValue(propertiesRef, (snapshot) => {
-      const properties = snapshot.val();
-      displayProperties(properties);
-    });
-
-    // Display properties
-    function displayProperties(properties) {
-      propertyListings.innerHTML = ''; // Clear existing listings
-      for (let id in properties) {
-        const property = properties[id];
-        const card = `
-          <div class="property-card">
-            <img src="${property.image}" alt="${property.title}">
-            <div class="property-details">
-              <h3>${property.title}</h3>
-              <p>Price: ${property.price}</p>
-              <p>Location: ${property.location}</p>
-              <p>Category: ${property.category}</p>
-              <p>Subcategory: ${property.subcategory}</p>
-            </div>
-          </div>
-        `;
-        propertyListings.innerHTML += card;
+      header {
+        background-color: #002244;
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-    }
 
-    // Event listeners for filters
-    sectionFilter.addEventListener('change', applyFilters);
-    categoryFilter.addEventListener('change', applyFilters);
-    subcategoryFilter.addEventListener('change', applyFilters);
+      header img {
+        height: 40px;
+        margin-left: 20px;
+        cursor: pointer;
+      }
 
-    // Function to apply filters
-    function applyFilters() {
-      const section = sectionFilter.value;
-      const category = categoryFilter.value;
-      const subcategory = subcategoryFilter.value;
+      nav {
+        margin-right: 20px;
+      }
 
+      nav a {
+        color: white;
+        text-decoration: none;
+        margin-left: 15px;
+        font-size: 0.9em;
+      }
+
+      .filter-section {
+        background-image: url('https://i.postimg.cc/Qxr7NMBF/istockphoto-1212170511-612x612.jpg');
+        background-size: cover;
+        background-position: center;
+        border-radius: 20px;
+        padding: 20px;
+        margin: 40px auto;
+        width: 80%;
+        max-width: 600px;
+        height: auto;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .filter-content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .filter-content select {
+        padding: 10px;
+        width: 80%;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      .property-listings {
+        max-width: 900px;
+        margin: 20px auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+
+      .property-card {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+        cursor: pointer;
+      }
+
+      .property-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .property-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+      }
+
+      .property-details {
+        padding: 15px;
+      }
+
+      .property-details h3 {
+        margin: 0 0 10px;
+        font-size: 1.2em;
+      }
+
+      .property-details p {
+        margin: 5px 0;
+      }
+
+      footer {
+        background-color: #002244;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        margin-top: 40px;
+      }
+    </style> 
+  </head> 
+  <body> 
+    <header> 
+      <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" onclick="window.location.href='index.html';">
+      <nav> 
+        <a href="index.html">Home</a>
+        <a href="#about">About Us</a> 
+      </nav> 
+    </header> 
+
+    <section class="filter-section"> 
+      <div class="filter-content"> 
+        <select id="sectionFilter"> 
+          <option value="">Section</option>
+          <option value="buyers">Buyers</option>
+          <option value="sellers">Sellers</option>
+          <option value="tenants">Tenants</option>
+          <option value="landlords">Landlords</option>
+          <option value="decoration">Property Decoration & Supervision</option>
+          <option value="construction">Property Construction & Demolition</option>
+          <option value="supplies">Construction Supplies</option>
+        </select> 
+        <select id="categoryFilter"> 
+          <option value="">Category</option>
+          <option value="lands">Lands</option>
+          <option value="residential">Residential</option>
+          <option value="commercial">Commercial</option>
+          <option value="industrial">Industrial</option>
+          <option value="agriculture">Agriculture</option>
+          <option value="government">Government</option>
+        </select> 
+        <select id="subcategoryFilter"> 
+          <option value="">Subcategory</option>
+        </select> 
+      </div> 
+    </section> 
+
+    <section class="property-listings" id="property-listings">
+      <!-- Properties will be dynamically inserted here -->
+    </section> 
+
+    <footer> 
+      <p>© 2024 Property Management. All Rights Reserved.</p> 
+    </footer> 
+
+    <script type="module">
+      // Firebase Initialization
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+      import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+      // Your Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
+        authDomain: "legacy-genuine-properties.firebaseapp.com",
+        databaseURL: "https://legacy-genuine-properties-default-rtdb.firebaseio.com",
+        projectId: "legacy-genuine-properties",
+        storageBucket: "legacy-genuine-properties.appspot.com",
+        messagingSenderId: "795578734998",
+        appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      // DOM Elements
+      const propertyListings = document.getElementById('property-listings');
+      const sectionFilter = document.getElementById('sectionFilter');
+      const categoryFilter = document.getElementById('categoryFilter');
+      const subcategoryFilter = document.getElementById('subcategoryFilter');
+
+      // Subcategories Mapping
+      const subcategories = {
+        lands: ['Residential Lands', 'Commercial Lands', 'Industrial Lands'],
+        residential: ['Apartments', 'Mansionettes', 'Bungalows', 'Villas'],
+        commercial: ['Offices', 'Institutions', 'Shopping', 'Hotels'],
+        industrial: ['Factories', 'Warehouse/Distribution', 'Flexible Spaces', 'Special Purpose'],
+        agriculture: ['Green Homes', 'Flower Homes', 'Flexible Spaces', 'Special Purpose'],
+        government: ['Affordable Homes']
+      };
+
+      // Populate Subcategories based on Category Selection
+      categoryFilter.addEventListener('change', () => {
+        const category = categoryFilter.value;
+        subcategoryFilter.innerHTML = '<option value="">Subcategory</option>';
+        if (subcategories[category]) {
+          subcategories[category].forEach(subcategory => {
+            const option = document.createElement('option');
+            option.value = subcategory.toLowerCase().replace(/ /g, '-');
+            option.textContent = subcategory;
+            subcategoryFilter.appendChild(option);
+          });
+        }
+      });
+
+      // Fetch properties from Firebase Database
+      const propertiesRef = ref(database, 'properties');
       onValue(propertiesRef, (snapshot) => {
         const properties = snapshot.val();
-        const filteredProperties = {};
+        displayProperties(properties);
+      });
 
+      // Function to Display Properties
+      function displayProperties(properties) {
+        propertyListings.innerHTML = '';  // Clear existing properties
         for (let id in properties) {
           const property = properties[id];
-
-          if (
-            (section === '' || property.section === section) &&
-            (category === '' || property.category === category) &&
-            (subcategory === '' || property.subcategory === subcategory)
-          ) {
-            filteredProperties[id] = property;
-          }
+          const card = `
+            <div class="property-card" onclick="window.location.href='detailed-property-listings.html?id=${id}'">
+              <img src="${property.image}" alt="${property.title}">
+              <div class="property-details">
+                <h3>${property.title}</h3>
+                <p>Price: ${property.price}</p>
+                <p>Location: ${property.location}</p>
+                <p>Category: ${property.category}</p>
+                <p>Subcategory: ${property.subcategory}</p>
+              </div>
+            </div>
+          `;
+          propertyListings.innerHTML += card;  // Add property to the page
         }
-
-        displayProperties(filteredProperties);
-      });
-    }
-  </script>
-</body>
-</html>
+      }
+    </script> 
+  </body>
+</html/>
