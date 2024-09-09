@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Property Details</title>
+<!doctype html>
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Property Details</title> 
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -38,27 +38,29 @@
       font-size: 0.9em;
     }
 
-    .property-details-container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
+    .property-details {
+      max-width: 900px;
+      margin: 20px auto;
       background-color: white;
       border-radius: 10px;
+      padding: 20px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .property-details-container img {
+    .property-details img {
       width: 100%;
-      height: auto;
+      border-radius: 10px;
       margin-bottom: 20px;
     }
 
-    .property-details-container h2 {
-      margin-bottom: 20px;
+    .property-details h1 {
+      margin: 0 0 10px;
+      font-size: 2em;
     }
 
-    .property-details-container p {
-      margin-bottom: 10px;
+    .property-details p {
+      margin: 5px 0;
+      font-size: 1.1em;
     }
 
     footer {
@@ -68,31 +70,31 @@
       padding: 10px;
       margin-top: 40px;
     }
-  </style>
-</head>
-<body>
-
-  <header>
+  </style> 
+</head> 
+<body> 
+  <header> 
     <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" onclick="window.location.href='index.html';">
-    <nav>
+    <nav> 
       <a href="index.html">Home</a>
-      <a href="about-us.html">About Us</a>
-    </nav>
-  </header>
+      <a href="about-us.html">About Us</a> 
+    </nav> 
+  </header> 
 
-  <div class="property-details-container" id="property-details-container">
+  <section class="property-details" id="property-details">
     <!-- Property details will be dynamically inserted here -->
-  </div>
+  </section> 
 
-  <footer>
-    <p>© 2024 Property Management. All Rights Reserved.</p>
-  </footer>
+  <footer> 
+    <p>© 2024 Property Management. All Rights Reserved.</p> 
+  </footer> 
 
   <script type="module">
     // Firebase Initialization
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
+    // Your Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
       authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -107,44 +109,44 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    // Function to retrieve property details based on property ID
-    function getPropertyDetails(propertyId) {
+    // DOM Elements
+    const propertyDetails = document.getElementById('property-details');
+
+    // Get Property ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const propertyId = urlParams.get('id');
+
+    // Fetch property details from Firebase
+    if (propertyId) {
       const propertyRef = ref(database, `properties/${propertyId}`);
       get(propertyRef).then((snapshot) => {
         if (snapshot.exists()) {
           const property = snapshot.val();
           displayPropertyDetails(property);
         } else {
-          document.getElementById('property-details-container').innerHTML = '<p>Property not found.</p>';
+          propertyDetails.innerHTML = '<p>No property found.</p>';
         }
       }).catch((error) => {
-        console.error('Error fetching property details:', error);
+        console.error('Error fetching property:', error);
+        propertyDetails.innerHTML = '<p>Error fetching property details.</p>';
       });
-    }
-
-    // Function to display property details on the page
-    function displayPropertyDetails(property) {
-      const propertyDetailsContainer = document.getElementById('property-details-container');
-      propertyDetailsContainer.innerHTML = `
-        <img src="${property.imageUrl}" alt="Property Image">
-        <h2>${property.title}</h2>
-        <p><strong>Location:</strong> ${property.location}</p>
-        <p><strong>Price:</strong> ${property.price}</p>
-        <p><strong>Description:</strong> ${property.description}</p>
-      `;
-    }
-
-    // Get property ID from URL query parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const propertyId = urlParams.get('propertyId');
-
-    // If a property ID exists, fetch and display the property details
-    if (propertyId) {
-      getPropertyDetails(propertyId);
     } else {
-      document.getElementById('property-details-container').innerHTML = '<p>No property selected.</p>';
+      propertyDetails.innerHTML = '<p>Property ID not provided.</p>';
+    }
+
+    // Function to Display Property Details
+    function displayPropertyDetails(property) {
+      const detailsHtml = `
+        <img src="${property.image}" alt="${property.title}">
+        <h1>${property.title}</h1>
+        <p><strong>Price:</strong> ${property.price}</p>
+        <p><strong>Location:</strong> ${property.location}</p>
+        <p><strong>Category:</strong> ${property.category}</p>
+        <p><strong>Subcategory:</strong> ${property.subcategory}</p>
+        <p><strong>Description:</strong> ${property.description || 'No description available.'}</p>
+      `;
+      propertyDetails.innerHTML = detailsHtml;
     }
   </script>
-
 </body>
 </html>
