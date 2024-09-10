@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en"> 
-<head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Real Estate Properties</title> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Estate Properties</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -113,20 +113,20 @@
       padding: 10px;
       margin-top: 40px;
     }
-  </style> 
-</head> 
-<body> 
-  <header> 
+  </style>
+</head>
+<body>
+  <header>
     <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" onclick="window.location.href='index.html';">
-    <nav> 
+    <nav>
       <a href="index.html">Home</a>
-      <a href="about-us.html">About Us</a> 
-    </nav> 
-  </header> 
+      <a href="about-us.html">About Us</a>
+    </nav>
+  </header>
 
-  <section class="filter-section"> 
-    <div class="filter-content"> 
-      <select id="sectionFilter"> 
+  <section class="filter-section">
+    <div class="filter-content">
+      <select id="sectionFilter">
         <option value="">Section</option>
         <option value="buyers">Buyers</option>
         <option value="sellers">Sellers</option>
@@ -135,8 +135,8 @@
         <option value="decoration">Property Decoration & Supervision</option>
         <option value="construction">Property Construction & Demolition</option>
         <option value="supplies">Construction Supplies</option>
-      </select> 
-      <select id="categoryFilter"> 
+      </select>
+      <select id="categoryFilter">
         <option value="">Category</option>
         <option value="lands">Lands</option>
         <option value="residential">Residential</option>
@@ -144,20 +144,20 @@
         <option value="industrial">Industrial</option>
         <option value="agriculture">Agriculture</option>
         <option value="government">Government</option>
-      </select> 
-      <select id="subcategoryFilter"> 
+      </select>
+      <select id="subcategoryFilter">
         <option value="">Subcategory</option>
-      </select> 
-    </div> 
-  </section> 
+      </select>
+    </div>
+  </section>
 
   <section class="property-listings" id="property-listings">
     <!-- Properties will be dynamically inserted here -->
-  </section> 
+  </section>
 
-  <footer> 
-    <p>© 2024 Property Management. All Rights Reserved.</p> 
-  </footer> 
+  <footer>
+    <p>© 2024 Property Management. All Rights Reserved.</p>
+  </footer>
 
   <script type="module">
     // Firebase Initialization
@@ -236,6 +236,6 @@
         propertyListings.innerHTML += card;  // Add property to the page
       }
     }
-  </script> 
+  </script>
 </body>
 </html>
