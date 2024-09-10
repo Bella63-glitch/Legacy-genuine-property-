@@ -24,7 +24,6 @@
     header img {
       height: 40px;
       margin-left: 20px;
-      cursor: pointer;
     }
 
     nav {
@@ -36,6 +35,10 @@
       text-decoration: none;
       margin-left: 15px;
       font-size: 0.9em;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
     }
 
     .filter-section {
@@ -117,10 +120,10 @@
 </head>
 <body>
   <header>
-    <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" onclick="window.location.href='/index.html';">
+    <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo">
     <nav>
-      <a href="/index.html">Home</a>
-      <a href="/pages/about-us.html">About Us</a>
+      <a href="../index.html">Home</a>
+      <a href="../about-us.html">About Us</a>
     </nav>
   </header>
 
@@ -222,7 +225,7 @@
       for (let id in properties) {
         const property = properties[id];
         const card = `
-          <div class="property-card" onclick="window.location.href='/pages/detailed-property-listings.html?id=${id}'">
+          <div class="property-card" onclick="window.location.href='detailed-property-listings.html?id=${id}'">
             <img src="${property.image}" alt="${property.title}">
             <div class="property-details">
               <h3>${property.title}</h3>
