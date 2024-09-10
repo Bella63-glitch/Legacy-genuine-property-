@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Property Details</title>
+  <title>Property Details - Legacy Genuine Properties</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -15,32 +17,35 @@
     header {
       background-color: #002244;
       color: white;
-      padding: 10px;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     header img {
-      height: 40px;
-      margin-left: 20px;
+      height: 50px;
       cursor: pointer;
     }
 
     nav {
-      margin-right: 20px;
+      display: flex;
+      gap: 20px;
     }
 
     nav a {
       color: white;
       text-decoration: none;
-      margin-left: 15px;
-      font-size: 0.9em;
+      font-size: 16px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
     }
 
     .property-details {
       max-width: 900px;
-      margin: 20px auto;
+      margin: 40px auto;
       padding: 20px;
       background-color: white;
       border-radius: 10px;
@@ -51,27 +56,39 @@
       width: 100%;
       height: auto;
       border-radius: 10px;
+      margin-bottom: 20px;
     }
 
     .property-details h1 {
       margin-top: 0;
+      color: #002244;
+    }
+
+    .property-details p {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    .property-details strong {
+      font-weight: bold;
     }
 
     footer {
       background-color: #002244;
       color: white;
       text-align: center;
-      padding: 10px;
+      padding: 20px;
       margin-top: 40px;
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" onclick="window.location.href='index.html';">
+    <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" onclick="window.location.href='../index.html';">
     <nav>
-      <a href="index.html">Home</a>
-      <a href="index.html#about">About Us</a>
+      <a href="../index.html">Home</a>
+      <a href="../pages/about.html">About Us</a>
+      <a href="../pages/property-listings.html">Property Listings</a>
     </nav>
   </header>
 
@@ -80,7 +97,7 @@
   </section>
 
   <footer>
-    <p>© 2024 Property Management. All Rights Reserved.</p>
+    <p>© 2024 Legacy Genuine Properties. All Rights Reserved.</p>
   </footer>
 
   <script type="module">
@@ -143,4 +160,4 @@
     }
   </script>
 </body>
-</html>
+</html/>
