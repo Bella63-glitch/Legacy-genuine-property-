@@ -206,7 +206,11 @@
           subcategoryFilter.appendChild(option);
         });
       }
+      filterProperties();
     });
+
+    sectionFilter.addEventListener('change', filterProperties);
+    subcategoryFilter.addEventListener('change', filterProperties);
 
     // Fetch properties from Firebase Database
     const propertiesRef = ref(database, 'properties');
@@ -215,24 +219,39 @@
       displayProperties(properties);
     });
 
-    // Function to Display Properties
-    function displayProperties(properties) {
+    // Filter and Display Properties
+    function filterProperties() {
+      const section = sectionFilter.value;
+      const category = categoryFilter.value;
+      const subcategory = subcategoryFilter.value;
+
+      // Apply filters and display properties
+      displayProperties(properties, { section, category, subcategory });
+    }
+
+    function displayProperties(properties, filters = {}) {
       propertyListings.innerHTML = '';  // Clear existing properties
       for (let id in properties) {
         const property = properties[id];
-        const card = `
-          <div class="property-card" onclick="window.location.href='detailed-property-listings.html?id=${id}'">
-            <img src="${property.image}" alt="${property.title}">
-            <div class="property-details">
-              <h3>${property.title}</h3>
-              <p>Price: ${property.price}</p>
-              <p>Location: ${property.location}</p>
-              <p>Category: ${property.category}</p>
-              <p>Subcategory: ${property.subcategory}</p>
+        const matchesFilters = (!filters.section || property.section === filters.section) &&
+                               (!filters.category || property.category === filters.category) &&
+                               (!filters.subcategory || property.subcategory === filters.subcategory);
+
+        if (matchesFilters) {
+          const card = `
+            <div class="property-card" onclick="window.location.href='detailed-property-listings.html?id=${id}'">
+              <img src="${property.image}" alt="${property.title}" onerror="this.src='default-image.jpg';">
+              <div class="property-details">
+                <h3>${property.title}</h3>
+                <p>Price: ${property.price}</p>
+                <p>Location: ${property.location}</p>
+                <p>Category: ${property.category}</p>
+                <p>Subcategory: ${property.subcategory}</p>
+              </div>
             </div>
-          </div>
-        `;
-        propertyListings.innerHTML += card;  // Add property to the page
+          `;
+          propertyListings.innerHTML += card;  // Add property to the page
+        }
       }
     }
   </script>
