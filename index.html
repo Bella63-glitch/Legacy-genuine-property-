@@ -28,19 +28,6 @@
         .hero-content h1 {
             font-size: 20px; /* Adjusted font size */
         }
-        .btn-green {
-            background-color: green;
-            color: white;
-            padding: 15px 30px;
-            font-size: 18px;
-            border: 2px solid white;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .btn-green:hover {
-            background-color: darkgreen;
-            border-color: darkgreen;
-        }
         .services-container {
             display: flex;
             flex-direction: column;
@@ -73,6 +60,13 @@
             background-color: #128C7E;
             color: white;
         }
+        .testimonial {
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
   </style>
  </head>
  <body>
@@ -101,7 +95,6 @@
    <section class="hero-section" style="background-image: url('https://i.postimg.cc/Y0xTLW7j/IMG-20240817-180149.jpg');">
     <div class="hero-content">
      <h1>Our Passion is Helping You Build a Real Estate Empire</h1>
-     <a href="pages/section.html" class="btn btn-green mt-3">Browse Listings</a>
     </div>
    </section>
    <!-- Services Section -->
@@ -113,32 +106,37 @@
      <!-- Service Boxes -->
      <div class="col-md-12 mb-3">
       <div class="service-box p-3 bg-success text-black text-center">
-       <h4>Property Buyers Solution</h4>
+       <h4><a href="pages/category-buyers.html" class="text-white">Buyers</a></h4>
       </div>
      </div>
      <div class="col-md-12 mb-3">
       <div class="service-box p-3 bg-success text-black text-center">
-       <h4>Property Sellers Solution</h4>
+       <h4><a href="pages/category-sellers.html" class="text-white">Sellers</a></h4>
       </div>
      </div>
      <div class="col-md-12 mb-3">
       <div class="service-box p-3 bg-success text-black text-center">
-       <h4>Estate Formation &amp; Management Solutions</h4>
+       <h4><a href="pages/category-tenants.html" class="text-white">Tenants</a></h4>
       </div>
      </div>
      <div class="col-md-12 mb-3">
       <div class="service-box p-3 bg-success text-black text-center">
-       <h4>Property Tenants Solutions</h4>
+       <h4><a href="pages/category-landlords.html" class="text-white">Landlords</a></h4>
       </div>
      </div>
      <div class="col-md-12 mb-3">
       <div class="service-box p-3 bg-success text-black text-center">
-       <h4>Property Landlord Solution</h4>
+       <h4><a href="pages/category-decoration.html" class="text-white">Property Decoration & Improvements</a></h4>
       </div>
      </div>
      <div class="col-md-12 mb-3">
       <div class="service-box p-3 bg-success text-black text-center">
-       <h4>Property Decoration &amp; Improvements</h4>
+       <h4><a href="pages/category-construction-demolition.html" class="text-white">Property Construction & Demolition</a></h4>
+      </div>
+     </div>
+     <div class="col-md-12 mb-3">
+      <div class="service-box p-3 bg-success text-black text-center">
+       <h4><a href="pages/category-supplies.html" class="text-white">Construction Supplies</a></h4>
       </div>
      </div>
     </div>
