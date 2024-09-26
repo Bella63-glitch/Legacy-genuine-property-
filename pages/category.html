@@ -5,30 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <title>Categories - Legacy Genuine Properties</title> 
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet"> 
   <style>
-        /* Similar styles as sections.html */
-        .tab { margin: 15px 0; }
-        .btn-green { background-color: green; color: white; padding: 15px 30px; font-size: 18px; border: 2px solid white; border-radius: 5px; text-decoration: none; display: block; }
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .tab { margin: 15px 0; position: relative; }
+        .btn-green { background-color: green; color: white; padding: 15px 30px; font-size: 18px; border: 2px solid white; border-radius: 5px; text-decoration: none; display: block; width: 100%; }
         .btn-green:hover { background-color: darkgreen; border-color: darkgreen; }
         header { background-color: #002244; }
         .navbar { background-color: #002244; }
         .navbar .nav-link { color: white; }
         .navbar .nav-link:hover { color: #f0ad4e; }
+        .dropdown-menu { display: none; position: absolute; top: 50px; left: 0; z-index: 1; width: 100%; background-color: #002244; border: 1px solid #ccc; border-radius: 5px; padding: 10px; }
+        .dropdown-menu a { color: white; text-decoration: none; display: block; padding: 10px; font-size: 16px; }
+        .dropdown-menu a:hover { background-color: #001a33; }
+        .tab:hover .dropdown-menu { display: block; }
     </style> 
  </head> 
  <body> 
   <nav class="navbar navbar-expand-lg navbar-dark"> 
-   <div class="container"> <a class="navbar-brand" href="index.html"> <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" width="120"> </a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button> 
+   <div class="container"> 
+    <a class="navbar-brand" href="index.html"> 
+     <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" width="120"> 
+    </a> 
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> 
+     <span class="navbar-toggler-icon"></span> 
+    </button> 
     <div class="collapse navbar-collapse" id="navbarNav"> 
      <ul class="navbar-nav ml-auto"> 
-      <li class="nav-item"> <a class="nav-link" href="index.html">Home</a> </li> 
-      <li class="nav-item"> <a class="nav-link" href="buyers.html">Buyers</a> </li> 
-      <li class="nav-item"> <a class="nav-link" href="sellers.html">Sellers</a> </li> 
-      <li class="nav-item"> <a class="nav-link" href="tenant.html">Tenants</a> </li> 
-      <li class="nav-item"> <a class="nav-link" href="landlord.html">Landlords</a> </li> 
-      <li class="nav-item"> <a class="nav-link" href="property-decoration.html">Property Decoration &amp; Improvement</a> </li> 
-      <li class="nav-item"> <a class="nav-link" href="property-construction.html">Construction &amp; Demolition</a> </li> 
-      <li class="nav-item"> <a class="nav-link" href="construction-supplies.html">Construction Supplies</a> </li> 
+      <li class="nav-item"> 
+       <a class="nav-link" href="index.html">Home</a> 
+      </li> 
+      <li class="nav-item"> 
+       <a class="nav-link" href="about-us.html">About Us</a> 
+      </li> 
      </ul> 
     </div> 
    </div> 
@@ -37,17 +49,56 @@
    <section class="py-5 text-center"> 
     <div class="container"> 
      <h1>Select a Category</h1> 
-     <div class="tab"> <a class="btn-green" href="subcategory.html?category=lands&amp;subcategory=residential">Lands</a> 
+     <div class="tab"> 
+      <a class="btn-green">Lands</a> 
+      <div class="dropdown-menu"> 
+       <a href="subcategory.html?category=lands&amp;subcategory=residential">Residential Lands</a> 
+       <a href="subcategory.html?category=lands&amp;subcategory=commercial">Commercial Lands</a> 
+       <a href="subcategory.html?category=lands&amp;subcategory=industrial">Industrial Lands</a> 
+      </div> 
      </div> 
-     <div class="tab"> <a class="btn-green" href="subcategory.html?category=residential&amp;subcategory=apartment">Residential</a> 
+     <div class="tab"> 
+      <a class="btn-green">Residential</a> 
+      <div class="dropdown-menu"> 
+       <a href="subcategory.html?category=residential&amp;subcategory=apartment">Apartment</a> 
+       <a href="subcategory.html?category=residential&amp;subcategory=mansionette">Mansionette</a> 
+       <a href="subcategory.html?category=residential&amp;subcategory=bungalows">Bungalows</a> 
+       <a href="subcategory.html?category=residential&amp;subcategory=villas">Villas</a> 
+       <a href="subcategory.html?category=residential&amp;subcategory=farmhouse">Farmhouse</a> 
+      </div> 
      </div> 
-     <div class="tab"> <a class="btn-green" href="subcategory.html?category=commercial&amp;subcategory=offices">Commercial</a> 
+     <div class="tab"> 
+      <a class="btn-green">Commercial</a> 
+      <div class="dropdown-menu"> 
+       <a href="subcategory.html?category=commercial&amp;subcategory=offices">Offices</a> 
+       <a href="subcategory.html?category=commercial&amp;subcategory=institution">Institution</a> 
+       <a href="subcategory.html?category=commercial&amp;subcategory=shopping">Shopping</a> 
+       <a href="subcategory.html?category=commercial&amp;subcategory=hotels">Hotels</a> 
+       <a href="subcategory.html?category=commercial&amp;subcategory=special-purpose">Special Purpose</a> 
+      </div> 
      </div> 
-     <div class="tab"> <a class="btn-green" href="subcategory.html?category=industrial&amp;subcategory=factories">Industrial</a> 
+     <div class="tab"> 
+      <a class="btn-green">Industrial</a> 
+      <div class="dropdown-menu"> 
+       <a href="subcategory.html?category=industrial&amp;subcategory=factories">Factories</a> 
+       <a href="subcategory.html?category=industrial&amp;subcategory=warehouse-distribution">Warehouse/Distribution</a> 
+       <a href="subcategory.html?category=industrial&amp;subcategory=flexible-spaces">Flexible Spaces</a> 
+       <a href="subcategory.html?category=industrial&amp;subcategory=special-purpose">Special Purpose</a> 
+      </div> 
      </div> 
-     <div class="tab"> <a class="btn-green" href="subcategory.html?category=agriculture&amp;subcategory=greenhomes">Agriculture</a> 
+     <div class="tab"> 
+      <a class="btn-green">Agriculture</a> 
+      <div class="dropdown-menu"> 
+       <a href="subcategory.html?category=agriculture&amp;subcategory=green-homes">Green Homes</a> 
+       <a href="subcategory.html?category=agriculture&amp;subcategory=flower-homes">Flower Homes</a> 
+       <a href="subcategory.html?category=agriculture&amp;subcategory=flexible-spaces">Flexible Spaces</a> 
+      </div> 
      </div> 
-     <div class="tab"> <a class="btn-green" href="subcategory.html?<a class=" btn-green">Government</a> 
+     <div class="tab"> 
+      <a class="btn-green">Government</a> 
+      <div class="dropdown-menu"> 
+       <a href="subcategory.html?category=government&amp;subcategory=affordable-homes">Affordable Homes</a> 
+      </div> 
      </div> 
     </div> 
    </section> 
@@ -55,5 +106,5 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script> 
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
- 
-</body></html>
+ </body>
+</html>
