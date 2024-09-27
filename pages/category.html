@@ -10,37 +10,71 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
-
-        .tab { margin: 15px 0; position: relative; }
-        .btn-green { background-color: green; color: white; padding: 15px 30px; font-size: 18px; border: 2px solid white; border-radius: 5px; text-decoration: none; display: block; width: 100%; }
-        .btn-green:hover { background-color: darkgreen; border-color: darkgreen; }
-        header { background-color: #002244; }
-        .navbar { background-color: #002244; }
-        .navbar .nav-link { color: white; }
-        .navbar .nav-link:hover { color: #f0ad4e; }
-        .dropdown-menu { display: none; position: absolute; top: 50px; left: 0; z-index: 1; width: 100%; background-color: #002244; border: 1px solid #ccc; border-radius: 5px; padding: 10px; }
-        .dropdown-menu a { color: white; text-decoration: none; display: block; padding: 10px; font-size: 16px; }
-        .dropdown-menu a:hover { background-color: #001a33; }
-        .tab:hover .dropdown-menu { display: block; }
+        .tab {
+            margin: 15px 0;
+            position: relative;
+        }
+        .btn-green {
+            background-color: green;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: 2px solid white;
+            border-radius: 5px;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+        }
+        .btn-green:hover {
+            background-color: darkgreen;
+            border-color: darkgreen;
+        }
+        header {
+            background-color: #002244;
+        }
+        .navbar {
+            background-color: #002244;
+        }
+        .navbar .nav-link {
+            color: white;
+        }
+        .navbar .nav-link:hover {
+            color: #f0ad4e;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            background-color: #002244;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .dropdown-menu a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .dropdown-menu a:hover {
+            background-color: #001a33;
+        }
+        .tab:hover .dropdown-menu {
+            display: block;
+        }
     </style> 
  </head> 
  <body> 
   <nav class="navbar navbar-expand-lg navbar-dark"> 
-   <div class="container"> 
-    <a class="navbar-brand" href="index.html"> 
-     <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" width="120"> 
-    </a> 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> 
-     <span class="navbar-toggler-icon"></span> 
-    </button> 
+   <div class="container"> <a class="navbar-brand" href="index.html"> <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" width="120"> </a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button> 
     <div class="collapse navbar-collapse" id="navbarNav"> 
      <ul class="navbar-nav ml-auto"> 
-      <li class="nav-item"> 
-       <a class="nav-link" href="index.html">Home</a> 
-      </li> 
-      <li class="nav-item"> 
-       <a class="nav-link" href="about-us.html">About Us</a> 
-      </li> 
+      <li class="nav-item"> <a class="nav-link" href="index.html">Home</a> </li> 
+      <li class="nav-item"> <a class="nav-link" href="about-us.html">About Us</a> </li> 
      </ul> 
     </div> 
    </div> 
@@ -49,61 +83,34 @@
    <section class="py-5 text-center"> 
     <div class="container"> 
      <h1>Select a Category</h1> 
-     <div class="tab"> 
-      <a class="btn-green">Lands</a> 
-      <div class="dropdown-menu"> 
-       <a href="property-listings.html?category=lands&subcategory=residential">Residential Lands</a> 
-       <a href="property-listings.html?category=lands&subcategory=commercial">Commercial Lands</a> 
-       <a href="property-listings.html?category=lands&subcategory=industrial">Industrial Lands</a> 
+     <div class="tab"> <a class="btn-green">Lands</a> 
+      <div class="dropdown-menu"> <a href="property-listings.html?category=lands&amp;subcategory=residential">Residential Lands</a> <a href="property-listings.html?category=lands&amp;subcategory=commercial">Commercial Lands</a> <a href="property-listings.html?category=lands&amp;subcategory=industrial">Industrial Lands</a> 
       </div> 
      </div> 
-     <div class="tab"> 
-      <a class="btn-green">Residential</a> 
-      <div class="dropdown-menu"> 
-       <a href="property-listings.html?category=residential&subcategory=apartment">Apartment</a> 
-       <a href="property-listings.html?category=residential&subcategory=mansionette">Mansionette</a> 
-       <a href="property-listings.html?category=residential&subcategory=bungalows">Bungalows</a> 
-       <a href="property-listings.html?category=residential&subcategory=villas">Villas</a> 
-       <a href="property-listings.html?category=residential&subcategory=farmhouse">Farmhouse</a> 
+     <div class="tab"> <a class="btn-green">Residential</a> 
+      <div class="dropdown-menu"> <a href="property-listings.html?category=residential&amp;subcategory=apartment">Apartment</a> <a href="property-listings.html?category=residential&amp;subcategory=mansionette">Mansionette</a> <a href="property-listings.html?category=residential&amp;subcategory=bungalows">Bungalows</a> <a href="property-listings.html?category=residential&amp;subcategory=villas">Villas</a> <a href="property-listings.html?category=residential&amp;subcategory=farmhouse">Farmhouse</a> 
       </div> 
      </div> 
-     <div class="tab"> 
-      <a class="btn-green">Commercial</a> 
-      <div class="dropdown-menu"> 
-       <a href="property-listings.html?category=commercial&subcategory=offices">Offices</a> 
-       <a href="property-listings.html?category=commercial&subcategory=institution">Institution</a> 
-       <a href="property-listings.html?category=commercial&subcategory=shopping">Shopping</a> 
-       <a href="property-listings.html?category=commercial&subcategory=hotels">Hotels</a> 
-       <a href="property-listings.html?category=commercial&subcategory=special-purpose">Special Purpose</a> 
+     <div class="tab"> <a class="btn-green">Commercial</a> 
+      <div class="dropdown-menu"> <a href="property-listings.html?category=commercial&amp;subcategory=offices">Offices</a> <a href="property-listings.html?category=commercial&amp;subcategory=institution">Institution</a> <a href="property-listings.html?category=commercial&amp;subcategory=shopping">Shopping</a> <a href="property-listings.html?category=commercial&amp;subcategory=hotels">Hotels</a> <a href="property-listings.html?category=commercial&amp;subcategory=special-purpose">Special Purpose</a> 
       </div> 
      </div> 
-     <div class="tab"> 
-      <a class="btn-green">Industrial</a> 
-      <div class="dropdown-menu"> 
-       <a href="property-listings.html?category=industrial&subcategory=factories">Factories</a> 
-       <a href="property-listings.html?category=industrial&subcategory=warehouse-distribution">Warehouse/Distribution</a> 
-       <a href="property-listings.html?category=industrial&subcategory=flexible-spaces">Flexible Spaces</a> 
-       <a href="property-listings.html?category=industrial&subcategory=special-purpose">Special Purpose</a> 
+     <div class="tab"> <a class="btn-green">Industrial</a> 
+      <div class="dropdown-menu"> <a href="property-listings.html?category=industrial&amp;subcategory=factories">Factories</a> <a href="property-listings.html?category=industrial&amp;subcategory=warehouse-distribution">Warehouse/Distribution</a> <a href="property-listings.html?category=industrial&amp;subcategory=flexible-spaces">Flexible Spaces</a> <a href="property-listings.html?category=industrial&amp;subcategory=special-purpose">Special Purpose</a> 
       </div> 
      </div> 
-     <div class="tab"> 
-      <a class="btn-green">Agriculture</a> 
-      <div class="dropdown-menu"> 
-       <a href="property-listings.html?category=agriculture&subcategory=green-homes">Green Homes</a> 
-       <a href="property-listings.html?category=agriculture&subcategory=flower-homes">Flower Homes</a> 
-       <a href="property-listings.html?category=agriculture&subcategory=flexible-spaces">Flexible Spaces</a> 
+     <div class="tab"> <a class="btn-green">Agriculture</a> 
+      <div class="dropdown-menu"> <a href="property-listings.html?category=agriculture&amp;subcategory=green-homes">Green Homes</a> <a href="property-listings.html?category=agriculture&amp;subcategory=flower-homes">Flower Homes</a> <a href="property-listings.html?category=agriculture&amp;subcategory=flexible-spaces">Flexible Spaces</a> 
       </div> 
      </div> 
-     <div class="tab"> 
-      <a class="btn-green">Government</a> 
-      <div class="dropdown-menu"> 
-       <a href="property-listings.html?category=government&subcategory=affordable-homes">Affordable Homes</a> 
+     <div class="tab"> <a class="btn-green">Government</a> 
+      <div class="dropdown-menu"> <a href="property-listings.html?category=government&amp;subcategory=affordable-homes">Affordable Homes</a> 
       </div> 
      </div> 
     </div> 
    </section> 
   </main> 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> 
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script> 
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
  </body>
