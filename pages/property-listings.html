@@ -193,3 +193,46 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script> 
 </body>
 </html>
+
+
+
+
+
+
+
+-size: 16px;
+        ="nav-
+          propertiesList.innerHTML = '';  // Clear the list first
+
+          if (properties) {
+              for (const key in properties) {
+                  const property = properties[key];
+                  const propertyCard = `
+                      <div class="col-md-4 property-card">
+                          <div class="card">
+                              <img src="${property.imageUrl}" class="card-img-top" alt="${property.name}">
+                              <div class="card-body">
+                                  <h5 class="card-title">${property.name}</h5>
+                                  <p class="card-text">${property.description}</p>
+                                  <p class="card-text"><strong>Price: </strong>${property.price}</p>
+                                  <a href="property-details.html?id=${key}" class="btn-green">View Details</a>
+                              </div>
+                          </div>
+                      </div>
+                  `;
+                  propertiesList.innerHTML += propertyCard;
+              }
+          } else {
+              propertiesList.innerHTML = `
+                  <div class="col-12">
+                      <p class="text-center" style="font-size: 18px; padding: 20px;">No properties found in this category.</p>
+                  </div>
+              `;
+          }
+      });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script> 
+</body>
+</html>
