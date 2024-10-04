@@ -11,85 +11,40 @@
             font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
         }
-
-        /* Navigation bar styles */
         .navbar {
             background-color: #002244;
             padding: 0;
         }
-
         .navbar-brand img {
-            width: 150px; /* Adjust size as needed */
+            width: 150px;
         }
-
-        .navbar-toggler {
-            border: none;
-            outline: none;
-        }
-
         .navbar-nav .nav-link {
             font-size: 18px;
             color: white;
             padding: 15px 20px;
         }
-
-        .navbar-nav .nav-link:hover {
-            background-color: #004080;
-        }
-
-        /* Main content styles */
         .main-content {
             padding: 40px 0;
         }
-
         .property-card {
             margin-bottom: 30px;
         }
-
-        .card-title {
-            font-size: 20px;
-            font-weight: 500;
-        }
-
-        .card-text {
-            font-size: 16px;
-        }
-
         .btn-green {
             background-color: green;
             color: white;
             padding: 10px 20px;
-            font-size: 16px;
             border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
             margin-top: 15px;
         }
-
-        .btn-green:hover {
-            background-color: darkgreen;
-        }
-
-        /* Footer styles */
         footer {
             background-color: #002244;
             color: #fff;
             padding: 20px;
             text-align: center;
         }
-
-        footer a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="index.html">
@@ -109,7 +64,6 @@
         </div>
     </nav>
 
-    <!-- Main content area -->
     <div class="container main-content">
         <h2 class="text-center mb-5">Available Properties</h2>
         <div id="loading-message" class="text-center mb-4" style="font-size: 18px;">
@@ -120,90 +74,82 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <p>© 2024 Legacy Genuine Properties. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Firebase and JS integration -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js"></script>
 
-    <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics.js";
-      import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
+            authDomain: "legacy-genuine-properties.firebaseapp.com",
+            databaseURL: "https://legacy-genuine-properties-default-rtdb.firebaseio.com",
+            projectId: "legacy-genuine-properties",
+            storageBucket: "legacy-genuine-properties.appspot.com",
+            messagingSenderId: "795578734998",
+            appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
+            measurementId: "G-RRZ7M9TW8T"
+        };
 
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
-        authDomain: "legacy-genuine-properties.firebaseapp.com",
-        databaseURL: "https://legacy-genuine-properties-default-rtdb.firebaseio.com",
-        projectId: "legacy-genuine-properties",
-        storageBucket: "legacy-genuine-properties.appspot.com",
-        messagingSenderId: "795578734998",
-        appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
-        measurementId: "G-RRZ7M9TW8T"
-      };
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database(app);
 
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      const database = getDatabase(app);
+        // Get the category and subcategory from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+        const subcategory = urlParams.get('subcategory');
 
-      // Get the category and subcategory from the URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const category = urlParams.get('category');
-      const subcategory = urlParams.get('subcategory');
+        // Fetch and display properties based on category and subcategory
+        const propertiesList = document.getElementById('properties-list');
+        const loadingMessage = document.getElementById('loading-message');
 
-      // Fetch and display properties based on category and subcategory
-      const propertiesList = document.getElementById('properties-list');
-      const loadingMessage = document.getElementById('loading-message');
+        const propertiesRef = firebase.database().ref(`properties/${category}/${subcategory}`);
+        propertiesRef.on('value', (snapshot) => {
+            const properties = snapshot.val();
+            propertiesList.innerHTML = '';  // Clear the list first
+            loadingMessage.style.display = 'none';  // Hide loading message once data is fetched
 
-      const propertiesRef = ref(database, `properties/${category}/${subcategory}`);
-      onValue(propertiesRef, (snapshot) => {
-          const properties = snapshot.val();
-          propertiesList.innerHTML = '';  // Clear the list first
-          loadingMessage.style.display = 'none';  // Hide loading message once data is fetched
-
-          if (properties) {
-              for (const key in properties) {
-                  const property = properties[key];
-                  const propertyCard = `
-                      <div class="col-md-4 property-card mb-4">
-                          <div class="card">
-                              <img src="${property.imageUrl}" class="card-img-top" alt="${property.name}">
-                              <div class="card-body">
-                                  <h5 class="card-title">${property.name}</h5>
-                                  <p class="card-text">${property.description}</p>
-                                  <p class="card-text"><strong>Price: </strong>${property.price}</p>
-                                  <a href="property-details.html?id=${key}" class="btn-green">View Details</a>
-                              </div>
-                          </div>
-                      </div>
-                  `;
-                  propertiesList.innerHTML += propertyCard;
-              }
-          } else {
-              propertiesList.innerHTML = `
-                  <div class="col-12">
-                      <p class="text-center" style="font-size: 18px; padding: 20px;">No properties found in this category.</p>
-                  </div>
-              `;
-          }
-      }, (error) => {
-          console.error("Error fetching data:", error);
-          propertiesList.innerHTML = `
-              <div class="col-12">
-                  <p class="text-center" style="font-size: 18px; padding: 20px;">Error loading properties. Please try again later.</p>
-              </div>
-          `;
-          loadingMessage.style.display = 'none';
-      });
+            if (properties) {
+                for (const key in properties) {
+                    const property = properties[key];
+                    const propertyCard = `
+                        <div class="col-md-4 property-card mb-4">
+                            <div class="card">
+                                <img src="${property.imageUrl}" class="card-img-top" alt="${property.name}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${property.name}</h5>
+                                    <p class="card-text">${property.description}</p>
+                                    <p class="card-text"><strong>Price: </strong>${property.price}</p>
+                                    <a href="property-details.html?id=${key}" class="btn-green">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    propertiesList.innerHTML += propertyCard;
+                }
+            } else {
+                propertiesList.innerHTML = `
+                    <div class="col-12">
+                        <p class="text-center" style="font-size: 18px; padding: 20px;">No properties found in this category.</p>
+                    </div>
+                `;
+            }
+        }, (error) => {
+            console.error("Error fetching data:", error);
+            propertiesList.innerHTML = `
+                <div class="col-12">
+                    <p class="text-center" style="font-size: 18px; padding: 20px;">Error loading properties. Please try again later.</p>
+                </div>
+            `;
+            loadingMessage.style.display = 'none';
+        });
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
