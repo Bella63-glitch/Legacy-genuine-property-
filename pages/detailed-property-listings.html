@@ -149,12 +149,12 @@
     // Function to Display Property Details
     function displayPropertyDetails(property) {
       const detailsHtml = `
-        <img src="${property.imageUrls[0]}" alt="${property.title}">
+        <img src="${property.imageUrls ? property.imageUrls[0] : 'no-image.png'}" alt="${property.title}">
         <h1>${property.title}</h1>
         <p><strong>Price:</strong> ${property.price}</p>
         <p><strong>Location:</strong> ${property.location}</p>
-        <p><strong>Category:</strong> ${category}</p>
-        <p><strong>Subcategory:</strong> ${subcategory}</p>
+        <p><strong>Category:</strong> ${property.category}</p>
+        <p><strong>Subcategory:</strong> ${property.subcategory}</p>
         <p><strong>Description:</strong> ${property.description || 'No description available.'}</p>
       `;
       propertyDetails.innerHTML = detailsHtml;
