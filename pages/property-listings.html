@@ -156,3 +156,62 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+
+
+
+            subcategory from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+        const subcategory = urlParams.get('subcategory');
+
+        // Fetch and display properties based on category and subcategory
+        const propertiesList = document.getElementById('properties-list');
+        const loadingMessage = document.getElementById('loading-message');
+
+        const propertiesRef = database.ref(`categories/${category}/${subcategory}`);
+        propertiesRef.on('value', (snapshot) => {
+            const properties = snapshot.val();
+            propertiesList.innerHTML = '';  // Clear the list first
+            loadingMessage.style.display = 'none';  // Hide loading message once data is fetched
+
+            if (properties) {
+                for (const key in properties) {
+                    const property = properties[key];
+                    const propertyCard = `
+                        <div class="col-md-4 property-card mb-4">
+                            <div class="card">
+                                <img src="${property.imageUrls[0]}" class="card-img-top" alt="${property.title}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${property.title}</h5>
+                                    <p class="card-text">${property.description}</p>
+                                    <p class="card-text"><strong>Price: </strong>${property.price}</p>
+                                    <a href="pages/detailed-property-listings.html?category=${category}&subcategory=${subcategory}&id=${key}" class="btn-green">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    propertiesList.innerHTML += propertyCard;
+                }
+            } else {
+                propertiesList.innerHTML = `
+                    <div class="col-12">
+                        <p class="text-center" style="font-size: 18px; padding: 20px;">No properties found in this category.</p>
+                    </div>
+                `;
+            }
+        }, (error) => {
+            console.error("Error fetching data:", error);
+            propertiesList.innerHTML = `
+                <div class="col-12">
+                    <p class="text-center" style="font-size: 18px; padding: 20px;">Error loading properties. Please try again later.</p>
+                </div>
+            `;
+            loadingMessage.style.display = 'none';
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
