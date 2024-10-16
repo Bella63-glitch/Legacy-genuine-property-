@@ -101,8 +101,8 @@
 
   <script type="module">
     // Firebase Initialization
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
     // Your Firebase Configuration
     const firebaseConfig = {
@@ -121,7 +121,7 @@
 
     // DOM Elements
     const propertyDetails = document.getElementById('property-details');
-
+    
     // Get category, subcategory, and property ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
@@ -153,8 +153,8 @@
         <h1>${property.title}</h1>
         <p><strong>Price:</strong> ${property.price}</p>
         <p><strong>Location:</strong> ${property.location}</p>
-        <p><strong>Category:</strong> ${property.category}</p>
-        <p><strong>Subcategory:</strong> ${property.subcategory}</p>
+        <p><strong>Category:</strong> ${category}</p>
+        <p><strong>Subcategory:</strong> ${subcategory}</p>
         <p><strong>Description:</strong> ${property.description || 'No description available.'}</p>
       `;
       propertyDetails.innerHTML = detailsHtml;
