@@ -122,13 +122,15 @@
     // DOM Elements
     const propertyDetails = document.getElementById('property-details');
     
-    // Get property ID from URL
+    // Get category, subcategory, and property ID from URL
     const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    const subcategory = urlParams.get('subcategory');
     const propertyId = urlParams.get('id');
 
-    // Fetch property details from Firebase
-    if (propertyId) {
-      const propertyRef = ref(database, `properties/${propertyId}`);
+    // Fetch property details from Firebase based on category and subcategory
+    if (category && subcategory && propertyId) {
+      const propertyRef = ref(database, `categories/${category}/${subcategory}/${propertyId}`);
       get(propertyRef).then((snapshot) => {
         if (snapshot.exists()) {
           const property = snapshot.val();
@@ -141,17 +143,13 @@
         propertyDetails.innerHTML = '<p>Error fetching property details.</p>';
       });
     } else {
-      propertyDetails.innerHTML = '<p>Property ID not provided.</p>';
+      propertyDetails.innerHTML = '<p>Property details not provided correctly.</p>';
     }
 
     // Function to Display Property Details
     function displayPropertyDetails(property) {
-      const imageGallery = property.imageUrls
-        .map((url) => `<img src="${url}" alt="${property.title}">`)
-        .join('');
-
       const detailsHtml = `
-        ${imageGallery}
+        <img src="${property.imageUrls[0]}" alt="${property.title}">
         <h1>${property.title}</h1>
         <p><strong>Price:</strong> ${property.price}</p>
         <p><strong>Location:</strong> ${property.location}</p>
