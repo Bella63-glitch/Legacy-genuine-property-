@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en"> 
- <head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Property Details - Legacy Genuine Properties</title> 
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> 
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Details - Legacy Genuine Properties</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -80,52 +80,29 @@
       padding: 20px;
       margin-top: 40px;
     }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" onclick="window.location.href='../index.html';">
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../pages/property-listings.html">Property Listings</a>
+    </nav>
+  </header>
 
-    .related-properties {
-      margin-top: 40px;
-    }
+  <section class="property-details" id="property-details">
+    <!-- Property details will be dynamically inserted here -->
+  </section>
 
-    .related-properties h2 {
-      color: #002244;
-    }
+  <footer>
+    <p>© 2024 Legacy Genuine Properties. All Rights Reserved.</p>
+  </footer>
 
-    .related-properties .property {
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      margin-bottom: 15px;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .related-properties .property img {
-      width: 100%;
-      border-radius: 5px;
-    }
-
-    .contact-buttons {
-      margin-top: 20px;
-    }
-  </style> 
- </head> 
- <body> 
-  <header> 
-   <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" onclick="window.location.href='../index.html';"> 
-   <nav> <a href="../index.html">Home</a> <a href="../pages/property-listings.html">Property Listings</a> 
-   </nav> 
-  </header> 
-  <section class="property-details" id="property-details"> <!-- Property details will be dynamically inserted here --> 
-  </section> 
-  <section class="related-properties" id="related-properties"> <!-- Related properties will be dynamically inserted here --> 
-  </section> 
-  <footer> 
-   <p>© 2024 Legacy Genuine Properties. All Rights Reserved.</p> 
-  </footer> 
   <script type="module">
     // Firebase Initialization
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-    import { getDatabase, ref, get, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
     // Your Firebase Configuration
     const firebaseConfig = {
@@ -144,7 +121,6 @@
 
     // DOM Elements
     const propertyDetails = document.getElementById('property-details');
-    const relatedProperties = document.getElementById('related-properties');
     
     // Get category, subcategory, and property ID from URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -159,7 +135,6 @@
         if (snapshot.exists()) {
           const property = snapshot.val();
           displayPropertyDetails(property);
-          fetchRelatedProperties(category, subcategory, propertyId);
         } else {
           propertyDetails.innerHTML = '<p>No property found.</p>';
         }
@@ -173,50 +148,17 @@
 
     // Function to Display Property Details
     function displayPropertyDetails(property) {
-      const imagesHtml = property.imageUrls.map(url => `<img src="${url}" alt="${property.title}">`).join('');
       const detailsHtml = `
-        <div id="image-gallery">${imagesHtml}</div>
+        <img src="${property.imageUrls[0]}" alt="${property.title}">
         <h1>${property.title}</h1>
         <p><strong>Price:</strong> ${property.price}</p>
         <p><strong>Location:</strong> ${property.location}</p>
         <p><strong>Category:</strong> ${property.category}</p>
         <p><strong>Subcategory:</strong> ${property.subcategory}</p>
         <p><strong>Description:</strong> ${property.description || 'No description available.'}</p>
-        <div class="contact-buttons">
-          <button class="btn btn-primary">Contact Seller</button>
-          <button class="btn btn-secondary">Request More Info</button>
-        </div>
       `;
       propertyDetails.innerHTML = detailsHtml;
     }
-
-    // Fetch Related Properties
-    function fetchRelatedProperties(category, subcategory, propertyId) {
-      const relatedRef = query(ref(database, `categories/${category}/${subcategory}`), orderByChild('id'), equalTo(propertyId));
-      get(relatedRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          let relatedHtml = `<h2>Related Properties</h2>`;
-          snapshot.forEach((childSnapshot) => {
-            const relatedProperty = childSnapshot.val();
-            if (relatedProperty.id !== propertyId) { // Exclude current property
-              relatedHtml += `
-                <div class="property">
-                  <img src="${relatedProperty.imageUrls[0]}" alt="${relatedProperty.title}">
-                  <h3>${relatedProperty.title}</h3>
-                  <p><strong>Price:</strong> ${relatedProperty.price}</p>
-                  <a href="detailed-property-listings.html?category=${category}&subcategory=${subcategory}&id=${relatedProperty.id}" class="btn btn-link">View Details</a>
-                </div>`;
-            }
-          });
-          relatedProperties.innerHTML = relatedHtml;
-        } else {
-          relatedProperties.innerHTML = '<p>No related properties found.</p>';
-        }
-      }).catch((error) => {
-        console.error('Error fetching related properties:', error);
-        relatedProperties.innerHTML = '<p>Error fetching related properties.</p>';
-      });
-    }
-  </script> 
- </body>
+  </script>
+</body>
 </html>
