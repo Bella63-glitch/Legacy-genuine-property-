@@ -121,7 +121,7 @@
 
     // DOM Elements
     const propertyDetails = document.getElementById('property-details');
-    
+
     // Get category, subcategory, and property ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
@@ -156,39 +156,8 @@
         <p><strong>Category:</strong> ${property.category}</p>
         <p><strong>Subcategory:</strong> ${property.subcategory}</p>
         <p><strong>Description:</strong> ${property.description || 'No description available.'}</p>
-        <h3>Related Properties</h3>
-        <div id="related-properties"></div>
       `;
       propertyDetails.innerHTML = detailsHtml;
-
-      // Call the function to fetch related properties
-      fetchRelatedProperties(property.category, property.subcategory, propertyId);
-    }
-
-    // Function to Fetch Related Properties
-    function fetchRelatedProperties(category, subcategory, excludeId) {
-      const relatedRef = ref(database, `categories/${category}/${subcategory}`);
-      get(relatedRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          const relatedProperties = snapshot.val();
-          const relatedContainer = document.getElementById('related-properties');
-          for (const id in relatedProperties) {
-            if (id !== excludeId) { // Exclude the current property
-              const relatedProperty = relatedProperties[id];
-              const relatedHtml = `
-                <div>
-                  <h5>${relatedProperty.title}</h5>
-                  <p><strong>Price:</strong> ${relatedProperty.price}</p>
-                  <a href="detailed-property-listings.html?category=${category}&subcategory=${subcategory}&id=${id}" class="btn btn-primary">View Details</a>
-                </div>
-              `;
-              relatedContainer.innerHTML += relatedHtml;
-            }
-          }
-        }
-      }).catch((error) => {
-        console.error('Error fetching related properties:', error);
-      });
     }
   </script>
 </body>
