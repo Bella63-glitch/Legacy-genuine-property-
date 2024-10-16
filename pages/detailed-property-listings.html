@@ -146,8 +146,12 @@
 
     // Function to Display Property Details
     function displayPropertyDetails(property) {
+      const imageGallery = property.imageUrls
+        .map((url) => `<img src="${url}" alt="${property.title}">`)
+        .join('');
+
       const detailsHtml = `
-        <img src="${property.image}" alt="${property.title}">
+        ${imageGallery}
         <h1>${property.title}</h1>
         <p><strong>Price:</strong> ${property.price}</p>
         <p><strong>Location:</strong> ${property.location}</p>
