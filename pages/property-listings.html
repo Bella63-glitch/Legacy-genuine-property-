@@ -81,8 +81,8 @@
     </footer>
 
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-database-compat.js"></script>
 
     <script>
         // Your web app's Firebase configuration
@@ -98,8 +98,8 @@
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database(app);
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
         // Get the category and subcategory from the URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -110,7 +110,7 @@
         const propertiesList = document.getElementById('properties-list');
         const loadingMessage = document.getElementById('loading-message');
 
-        const propertiesRef = firebase.database().ref(`properties/${category}/${subcategory}`);
+        const propertiesRef = database.ref(`categories/${category}/${subcategory}`);
         propertiesRef.on('value', (snapshot) => {
             const properties = snapshot.val();
             propertiesList.innerHTML = '';  // Clear the list first
@@ -122,9 +122,9 @@
                     const propertyCard = `
                         <div class="col-md-4 property-card mb-4">
                             <div class="card">
-                                <img src="${property.imageUrl}" class="card-img-top" alt="${property.name}">
+                                <img src="${property.imageUrls[0]}" class="card-img-top" alt="${property.title}">
                                 <div class="card-body">
-                                    <h5 class="card-title">${property.name}</h5>
+                                    <h5 class="card-title">${property.title}</h5>
                                     <p class="card-text">${property.description}</p>
                                     <p class="card-text"><strong>Price: </strong>${property.price}</p>
                                     <a href="property-details.html?id=${key}" class="btn-green">View Details</a>
