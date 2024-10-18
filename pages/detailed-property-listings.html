@@ -73,6 +73,10 @@
       font-weight: bold;
     }
 
+    .contact-form {
+      margin-top: 30px;
+    }
+
     footer {
       background-color: #002244;
       color: white;
@@ -118,7 +122,7 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
-
+    
     // DOM Elements
     const propertyDetails = document.getElementById('property-details');
     
@@ -128,7 +132,7 @@
     const subcategory = urlParams.get('subcategory');
     const propertyId = urlParams.get('id');
 
-    // Fetch property details from Firebase based on category and subcategory
+    // Fetch property details from Firebase
     if (category && subcategory && propertyId) {
       const propertyRef = ref(database, `categories/${category}/${subcategory}/${propertyId}`);
       get(propertyRef).then((snapshot) => {
@@ -149,16 +153,57 @@
     // Function to Display Property Details
     function displayPropertyDetails(property) {
       const detailsHtml = `
-        <img src="${property.imageUrls ? property.imageUrls[0] : 'no-image.png'}" alt="${property.title}">
+        <div id="propertyCarousel" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            ${property.imageUrls.map((url, index) => `
+              <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                <img src="${url}" class="d-block w-100" alt="${property.title}">
+              </div>
+            `).join('')}
+          </div>
+          <a class="carousel-control-prev" href="#propertyCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#propertyCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
         <h1>${property.title}</h1>
         <p><strong>Price:</strong> ${property.price}</p>
         <p><strong>Location:</strong> ${property.location}</p>
         <p><strong>Category:</strong> ${property.category}</p>
         <p><strong>Subcategory:</strong> ${property.subcategory}</p>
         <p><strong>Description:</strong> ${property.description || 'No description available.'}</p>
+        <h5>Features:</h5>
+        <ul>
+          ${property.features ? property.features.map(feature => `<li>${feature}</li>`).join('') : '<li>No features available.</li>'}
+        </ul>
+        <div class="contact-form">
+          <h5>Contact Us:</h5>
+          <form>
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+              <label for="message">Message:</label>
+              <textarea class="form-control" id="message" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
       `;
       propertyDetails.innerHTML = detailsHtml;
     }
   </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
