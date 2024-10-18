@@ -121,6 +121,10 @@
         const category = urlParams.get('category');
         const subcategory = urlParams.get('subcategory');
 
+        // Check if category and subcategory are retrieved correctly
+        console.log("Category:", category);
+        console.log("Subcategory:", subcategory);
+
         // Fetch and display properties based on category and subcategory
         const propertiesList = document.getElementById('properties-list');
         const loadingMessage = document.getElementById('loading-message');
@@ -137,6 +141,10 @@
                     const imageUrl = property.imageUrls ? property.imageUrls[0] : 'default-image.jpg';  // Use a default image if none available
                     const truncatedDescription = property.description.length > 100 ? property.description.substring(0, 100) + '...' : property.description;
 
+                    // Log the property ID and the link for troubleshooting
+                    const detailsUrl = `pages/detailed-property-listings.html?category=${category}&subcategory=${subcategory}&id=${key}`;
+                    console.log(`Property ID: ${key}, Details URL: ${detailsUrl}`);
+
                     const propertyCard = `
                         <div class="col-md-4 property-card mb-4">
                             <div class="card">
@@ -145,7 +153,7 @@
                                     <h5 class="card-title">${property.title}</h5>
                                     <p class="card-text">${truncatedDescription}</p>
                                     <p class="card-text"><strong>Price: </strong>${property.price}</p>
-                                    <a href="pages/detailed-property-listings.html?category=${category}&subcategory=${subcategory}&id=${key}" class="btn-green">View Details</a>
+                                    <a href="${detailsUrl}" class="btn-green">View Details</a>
                                 </div>
                             </div>
                         </div>
