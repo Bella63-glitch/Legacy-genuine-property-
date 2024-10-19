@@ -59,17 +59,14 @@
       font-size: 16px;
       margin: 10px 0;
     }
-    .property-details strong {
-      font-weight: bold;
-    }
-    .contact-form {
-      margin-top: 30px;
-    }
     footer {
       background-color: #002244;
       color: white;
       text-align: center;
       padding: 20px;
+      margin-top: 40px;
+    }
+    .similar-properties {
       margin-top: 40px;
     }
   </style>
@@ -85,6 +82,13 @@
 
   <section class="property-details" id="property-details">
     <!-- Property details will be dynamically inserted here -->
+  </section>
+
+  <section class="similar-properties" id="similar-properties">
+    <h3>Similar Properties</h3>
+    <div class="row" id="similar-properties-container">
+      <!-- Similar properties will be dynamically loaded here -->
+    </div>
   </section>
 
   <footer>
@@ -108,30 +112,12 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const propertyDetails = document.getElementById('property-details');
+    const similarPropertiesContainer = document.getElementById('similar-properties-container');
 
     const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get('category');
-    const subcategory = urlParams.get('subcategory');
+    const category = urlParams.get('category') || 'Unknown';
+    const subcategory = urlParams.get('subcategory') || 'Unknown';
     const propertyId = urlParams.get('id');
-
-    if (category && subcategory && propertyId) {
-      const propertyRef = ref(database, `categories/${category}/${subcategory}/${propertyId}`);
-      get(propertyRef)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            const property = snapshot.val();
-            displayPropertyDetails(property);
-          } else {
-            propertyDetails.innerHTML = '<p>No property found.</p>';
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching property:', error);
-          propertyDetails.innerHTML = '<p>Error fetching property details.</p>';
-        });
-    } else {
-      propertyDetails.innerHTML = '<p>Property details not provided correctly.</p>';
-    }
 
     function displayPropertyDetails(property) {
       const detailsHtml = `
@@ -155,33 +141,53 @@
         <h1>${property.title}</h1>
         <p><strong>Price:</strong> ${property.price}</p>
         <p><strong>Location:</strong> ${property.location}</p>
-        <p><strong>Category:</strong> ${property.category}</p>
-        <p><strong>Subcategory:</strong> ${property.subcategory}</p>
+        <p><strong>Category:</strong> ${property.category || 'N/A'}</p>
+        <p><strong>Subcategory:</strong> ${property.subcategory || 'N/A'}</p>
         <p><strong>Description:</strong> ${property.description || 'No description available.'}</p>
         <h5>Features:</h5>
         <ul>
           ${property.features ? property.features.map(feature => `<li>${feature}</li>`).join('') : '<li>No features available.</li>'}
         </ul>
-        <div class="contact-form">
-          <h5>Contact Us:</h5>
-          <form>
-            <div class="form-group">
-              <label for="name">Name:</label>
-              <input type="text" class="form-control" id="name" required>
-            </div>
-            <div class="form-group">
-              <label for="email">Email:</label>
-              <input type="email" class="form-control" id="email" required>
-            </div>
-            <div class="form-group">
-              <label for="message">Message:</label>
-              <textarea class="form-control" id="message" rows="3" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Send Message</button>
-          </form>
-        </div>
       `;
       propertyDetails.innerHTML = detailsHtml;
+    }
+
+    function loadSimilarProperties(category, subcategory) {
+      const similarRef = ref(database, `categories/${category}/${subcategory}`);
+      get(similarRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const properties = snapshot.val();
+          const similarHtml = Object.values(properties).map(property => `
+            <div class="col-md-4">
+              <div class="card">
+                <img src="${property.imageUrls[0]}" class="card-img-top" alt="${property.title}">
+                <div class="card-body">
+                  <h5 class="card-title">${property.title}</h5>
+                  <p class="card-text">Price: ${property.price}</p>
+                  <a href="property-details.html?category=${category}&subcategory=${subcategory}&id=${property.id}" class="btn btn-primary">View Details</a>
+                </div>
+              </div>
+            </div>
+          `).join('');
+          similarPropertiesContainer.innerHTML = similarHtml;
+        }
+      }).catch(error => console.error('Error loading similar properties:', error));
+    }
+
+    if (category && subcategory && propertyId) {
+      const propertyRef = ref(database, `categories/${category}/${subcategory}/${propertyId}`);
+      get(propertyRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const property = snapshot.val();
+          displayPropertyDetails(property);
+          loadSimilarProperties(category, subcategory);
+        } else {
+          propertyDetails.innerHTML = '<p>No property found.</p>';
+        }
+      }).catch(error => {
+        console.error('Error fetching property:', error);
+        propertyDetails.innerHTML = '<p>Error fetching property details.</p>';
+      });
     }
   </script>
 
