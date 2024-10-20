@@ -31,8 +31,8 @@
         }
         .property-card img {
             width: 100%; 
-            height: 300px; /* Consistent height for all images */
-            object-fit: cover; /* Ensures image fills the card without distortion */
+            height: 300px;
+            object-fit: cover;
             border-radius: 5px;
         }
         .btn-green {
@@ -125,7 +125,7 @@
         const propertiesList = document.getElementById('properties-list');
         const loadingMessage = document.getElementById('loading-message');
 
-        const propertiesRef = ref(database, `categories/${category}/${subcategory}`);
+        const propertiesRef = ref(database, `${category}/${subcategory}`);
         onValue(propertiesRef, (snapshot) => {
             const properties = snapshot.val();
             propertiesList.innerHTML = '';
