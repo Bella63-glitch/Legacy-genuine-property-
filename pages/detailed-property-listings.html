@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Property Details - Legacy Genuine Properties</title>
+
+  <!-- Bootstrap and Font Awesome -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,6 +16,7 @@
       margin: 0;
       padding: 0;
     }
+
     header {
       background-color: #002244;
       color: white;
@@ -21,53 +25,75 @@
       justify-content: space-between;
       align-items: center;
     }
+
     header img {
       height: 50px;
       cursor: pointer;
     }
-    nav {
-      display: flex;
-      gap: 20px;
-    }
+
     nav a {
       color: white;
       text-decoration: none;
-      font-size: 16px;
+      margin: 0 10px;
     }
-    nav a:hover {
-      text-decoration: underline;
-    }
+
     .property-details {
       max-width: 900px;
-      margin: 40px auto;
+      margin: 20px auto;
       padding: 20px;
       background-color: white;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
-    .property-details img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
+
+    /* Carousel Styling */
+    .carousel {
       margin-bottom: 20px;
     }
-    .property-details h1 {
-      margin-top: 0;
-      color: #002244;
+
+    .carousel-item img {
+      width: 100%;
+      height: 350px; /* Adjust to maintain a good aspect ratio */
+      object-fit: cover;
+      border-radius: 10px;
     }
-    .property-details p {
-      font-size: 16px;
-      margin: 10px 0;
+
+    /* Thumbnail Image Styling */
+    .thumbnail-gallery {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
     }
+
+    .thumbnail-gallery img {
+      width: 100px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .thumbnail-gallery img:hover {
+      transform: scale(1.1);
+    }
+
+    .property-features {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+
+    .property-features div {
+      text-align: center;
+    }
+
     footer {
       background-color: #002244;
       color: white;
       text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-    }
-    .similar-properties {
-      margin-top: 40px;
+      padding: 10px;
     }
   </style>
 </head>
@@ -84,40 +110,54 @@
     <!-- Property details will be dynamically inserted here -->
   </section>
 
-  <section class="similar-properties" id="similar-properties">
-    <h3>Similar Properties</h3>
-    <div class="row" id="similar-properties-container">
-      <!-- Similar properties will be dynamically loaded here -->
-    </div>
-  </section>
-
   <footer>
     <p>© 2024 Legacy Genuine Properties. All Rights Reserved.</p>
   </footer>
 
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
   <script type="module">
+    // Firebase Initialization
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
+      apiKey: "YOUR_API_KEY",
       authDomain: "legacy-genuine-properties.firebaseapp.com",
       databaseURL: "https://legacy-genuine-properties-default-rtdb.firebaseio.com",
       projectId: "legacy-genuine-properties",
       storageBucket: "legacy-genuine-properties.appspot.com",
       messagingSenderId: "795578734998",
-      appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
+      appId: "1:795578734998:web:5a06078443af3bec4ee5b7"
     };
 
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
-    const propertyDetails = document.getElementById('property-details');
-    const similarPropertiesContainer = document.getElementById('similar-properties-container');
 
+    const propertyDetails = document.getElementById('property-details');
     const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get('category') || 'Unknown';
-    const subcategory = urlParams.get('subcategory') || 'Unknown';
     const propertyId = urlParams.get('id');
+
+    // Fetch property details
+    if (propertyId) {
+      const propertyRef = ref(database, `properties/${propertyId}`);
+      get(propertyRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const property = snapshot.val();
+          displayPropertyDetails(property);
+        } else {
+          propertyDetails.innerHTML = '<p>No property found.</p>';
+        }
+      }).catch((error) => {
+        console.error('Error fetching property:', error);
+        propertyDetails.innerHTML = '<p>Error fetching property details.</p>';
+      });
+    } else {
+      propertyDetails.innerHTML = '<p>Property details not provided correctly.</p>';
+    }
 
     function displayPropertyDetails(property) {
       const detailsHtml = `
@@ -125,7 +165,7 @@
           <div class="carousel-inner">
             ${property.imageUrls.map((url, index) => `
               <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                <img src="${url}" class="d-block w-100" alt="${property.title}">
+                <img src="${url}" alt="${property.title}">
               </div>
             `).join('')}
           </div>
@@ -138,61 +178,28 @@
             <span class="sr-only">Next</span>
           </a>
         </div>
+
+        <div class="thumbnail-gallery">
+          ${property.imageUrls.map(url => `<img src="${url}" onclick="changeCarouselImage('${url}')">`).join('')}
+        </div>
+
         <h1>${property.title}</h1>
-        <p><strong>Price:</strong> ${property.price}</p>
-        <p><strong>Location:</strong> ${property.location}</p>
-        <p><strong>Category:</strong> ${property.category || 'N/A'}</p>
-        <p><strong>Subcategory:</strong> ${property.subcategory || 'N/A'}</p>
+        <p><strong>Price:</strong> Ksh ${property.price}</p>
+
+        <div class="property-features">
+          <div><i class="fas fa-bed"></i> ${property.bedrooms} Bedrooms</div>
+          <div><i class="fas fa-bath"></i> ${property.bathrooms} Bathrooms</div>
+          <div><i class="fas fa-car"></i> ${property.garage || 0} Garage</div>
+        </div>
+
         <p><strong>Description:</strong> ${property.description || 'No description available.'}</p>
-        <h5>Features:</h5>
-        <ul>
-          ${property.features ? property.features.map(feature => `<li>${feature}</li>`).join('') : '<li>No features available.</li>'}
-        </ul>
       `;
       propertyDetails.innerHTML = detailsHtml;
     }
 
-    function loadSimilarProperties(category, subcategory) {
-      const similarRef = ref(database, `categories/${category}/${subcategory}`);
-      get(similarRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          const properties = snapshot.val();
-          const similarHtml = Object.values(properties).map(property => `
-            <div class="col-md-4">
-              <div class="card">
-                <img src="${property.imageUrls[0]}" class="card-img-top" alt="${property.title}">
-                <div class="card-body">
-                  <h5 class="card-title">${property.title}</h5>
-                  <p class="card-text">Price: ${property.price}</p>
-                  <a href="property-details.html?category=${category}&subcategory=${subcategory}&id=${property.id}" class="btn btn-primary">View Details</a>
-                </div>
-              </div>
-            </div>
-          `).join('');
-          similarPropertiesContainer.innerHTML = similarHtml;
-        }
-      }).catch(error => console.error('Error loading similar properties:', error));
-    }
-
-    if (category && subcategory && propertyId) {
-      const propertyRef = ref(database, `categories/${category}/${subcategory}/${propertyId}`);
-      get(propertyRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          const property = snapshot.val();
-          displayPropertyDetails(property);
-          loadSimilarProperties(category, subcategory);
-        } else {
-          propertyDetails.innerHTML = '<p>No property found.</p>';
-        }
-      }).catch(error => {
-        console.error('Error fetching property:', error);
-        propertyDetails.innerHTML = '<p>Error fetching property details.</p>';
-      });
+    function changeCarouselImage(url) {
+      document.querySelector('.carousel-item.active img').src = url;
     }
   </script>
-
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
