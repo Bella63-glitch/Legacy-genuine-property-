@@ -111,15 +111,19 @@
         firebase.initializeApp(firebaseConfig);
         const dbRef = firebase.database().ref("categories/lands");
 
-        function renderProperty(category, name) {
+        function renderProperty(category, property) {
+            const name = property.name || "Unnamed Property";
+            const imageUrl = property.image || "https://via.placeholder.com/300";
+            const propertyId = property.id || "#";
+
             return `
                 <div class="col-md-4 property-card">
                     <div class="card">
-                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="${name}">
+                        <img src="${imageUrl}" class="card-img-top" alt="${name}">
                         <div class="card-body">
                             <h5 class="card-title">${name}</h5>
                             <p class="card-text">Category: ${category}</p>
-                            <a href="#" class="btn btn-green">View Details</a>
+                            <a href="property-details.html?id=${propertyId}" class="btn btn-green">View Details</a>
                         </div>
                     </div>
                 </div>
@@ -132,8 +136,8 @@
             snapshot.forEach((childSnapshot) => {
                 const category = childSnapshot.key;
                 childSnapshot.forEach((subChild) => {
-                    const name = subChild.key;
-                    propertiesContainer.innerHTML += renderProperty(category, name);
+                    const property = subChild.val();  // Fetching property details properly
+                    propertiesContainer.innerHTML += renderProperty(category, property);
                 });
             });
             document.getElementById("loading-message").style.display = "none";
