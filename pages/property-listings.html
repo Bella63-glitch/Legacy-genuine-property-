@@ -126,10 +126,8 @@
         const propertiesList = document.getElementById('properties-list');
         const loadingMessage = document.getElementById('loading-message');
 
-        // Firebase reference to the selected category and subcategory
         const propertiesRef = ref(database, `categories/${category}/${subcategory}`);
 
-        // Fetch and display properties
         onValue(propertiesRef, (snapshot) => {
             const properties = snapshot.val();
             propertiesList.innerHTML = '';
@@ -138,11 +136,10 @@
             if (properties) {
                 for (const key in properties) {
                     const property = properties[key];
-                    const imageUrl = property.imageUrls ? property.imageUrls[0] : 'default-image.jpg';
-                    const truncatedDescription = property.description && property.description.length > 100 
-                        ? property.description.substring(0, 100) + '...' 
-                        : property.description || 'No description available';
+                    if (!property || !property.title) continue; // Skip undefined or empty properties
 
+                    const imageUrl = property.imageUrls ? property.imageUrls[0] : 'default-image.jpg';
+                    const truncatedDescription = property.description?.substring(0, 100) + '...' || 'No description available';
                     const detailsUrl = `detailed-property-listings.html?category=${category}&subcategory=${subcategory}&id=${key}`;
 
                     const propertyCard = `
@@ -182,3 +179,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
+
+
+
+
