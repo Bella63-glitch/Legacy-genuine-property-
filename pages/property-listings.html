@@ -30,7 +30,7 @@
             margin-bottom: 30px;
         }
         .property-card img {
-            width: 100%; 
+            width: 100%;
             height: 300px;
             object-fit: cover;
             border-radius: 5px;
@@ -103,7 +103,6 @@
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
             authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -120,8 +119,8 @@
         const database = getDatabase(app);
 
         const urlParams = new URLSearchParams(window.location.search);
-        const category = urlParams.get('category') || 'lands'; // Default category 'lands'
-        const subcategory = urlParams.get('subcategory') || 'commercialLands'; // Default to 'commercialLands'
+        const category = urlParams.get('category') || 'lands'; // Ensure lowercase 'lands'
+        const subcategory = urlParams.get('subcategory') || 'commercialLands';
 
         const propertiesList = document.getElementById('properties-list');
         const loadingMessage = document.getElementById('loading-message');
@@ -136,10 +135,11 @@
             if (properties) {
                 for (const key in properties) {
                     const property = properties[key];
-                    if (!property || !property.title) continue; // Skip undefined or empty properties
+                    if (!property || !property.title) continue; // Skip empty or undefined properties
 
                     const imageUrl = property.imageUrls ? property.imageUrls[0] : 'default-image.jpg';
-                    const truncatedDescription = property.description?.substring(0, 100) + '...' || 'No description available';
+                    const description = property.description || 'No description available';
+                    const price = property.price || 'Price not available';
                     const detailsUrl = `detailed-property-listings.html?category=${category}&subcategory=${subcategory}&id=${key}`;
 
                     const propertyCard = `
@@ -148,8 +148,8 @@
                                 <img src="${imageUrl}" class="card-img-top" alt="${property.title}">
                                 <div class="card-body">
                                     <h5 class="card-title">${property.title}</h5>
-                                    <p class="card-text">${truncatedDescription}</p>
-                                    <p class="card-text"><strong>Price: </strong>${property.price}</p>
+                                    <p class="card-text">${description}</p>
+                                    <p class="card-text"><strong>Price: </strong>${price}</p>
                                     <a href="${detailsUrl}" class="btn-green" target="_self">View Details</a>
                                 </div>
                             </div>
@@ -179,7 +179,3 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
-
-
-
-
