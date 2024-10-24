@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Properties - Legacy Genuine Properties</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -30,7 +30,7 @@
             margin-bottom: 30px;
         }
         .property-card img {
-            width: 100%;
+            width: 100%; 
             height: 300px;
             object-fit: cover;
             border-radius: 5px;
@@ -103,6 +103,7 @@
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
 
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
             authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -119,24 +120,28 @@
         const database = getDatabase(app);
 
         const urlParams = new URLSearchParams(window.location.search);
-        const category = urlParams.get('category') || 'agriculture'; // Default to 'agriculture'
-        const subcategory = urlParams.get('subcategory') || 'greenHomes'; // Default to 'greenHomes'
+        const category = urlParams.get('category') || 'lands'; // Default category 'lands'
+        const subcategory = urlParams.get('subcategory') || 'commercialLands'; // Default to 'commercialLands'
 
         const propertiesList = document.getElementById('properties-list');
         const loadingMessage = document.getElementById('loading-message');
 
+        // Firebase reference to the selected category and subcategory
         const propertiesRef = ref(database, `categories/${category}/${subcategory}`);
-        
+
+        // Fetch and display properties
         onValue(propertiesRef, (snapshot) => {
             const properties = snapshot.val();
             propertiesList.innerHTML = '';
             loadingMessage.style.display = 'none';
 
             if (properties) {
-                Object.keys(properties).forEach((key) => {
+                for (const key in properties) {
                     const property = properties[key];
                     const imageUrl = property.imageUrls ? property.imageUrls[0] : 'default-image.jpg';
-                    const truncatedDescription = property.description ? property.description.substring(0, 100) + '...' : 'No description available.';
+                    const truncatedDescription = property.description && property.description.length > 100 
+                        ? property.description.substring(0, 100) + '...' 
+                        : property.description || 'No description available';
 
                     const detailsUrl = `detailed-property-listings.html?category=${category}&subcategory=${subcategory}&id=${key}`;
 
@@ -154,7 +159,7 @@
                         </div>
                     `;
                     propertiesList.innerHTML += propertyCard;
-                });
+                }
             } else {
                 propertiesList.innerHTML = `
                     <div class="col-12">
