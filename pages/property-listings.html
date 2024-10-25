@@ -6,12 +6,12 @@
     <title>Properties - Legacy Genuine Properties</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script type="module">
-        // Import the functions you need from the SDKs you need
+        // Import the functions you need from the SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
         import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
-        // Your web app's Firebase configuration
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
             authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -29,10 +29,10 @@
         const database = getDatabase(app);
 
         document.addEventListener("DOMContentLoaded", function () {
-            // Get the category and subcategory from the URL parameters
+            // Get category and subcategory from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
-            const selectedCategory = urlParams.get('category')?.replace(/\s+/g, '').toLowerCase(); // Clean and lowercase
-            const selectedSubcategory = urlParams.get('subcategory')?.replace(/\s+/g, '').toLowerCase(); // Clean and lowercase
+            const selectedCategory = urlParams.get('category')?.replace(/\s+/g, '').toLowerCase();
+            const selectedSubcategory = urlParams.get('subcategory')?.replace(/\s+/g, '').toLowerCase();
 
             // Validate category and subcategory
             if (!selectedCategory || !selectedSubcategory) {
@@ -40,7 +40,7 @@
                 return;
             }
 
-            // Correct path to fetch properties dynamically based on categories and subcategories
+            // Fetch properties from the correct path
             const propertiesRef = ref(database, `categories/${selectedCategory}/${selectedSubcategory}`);
             get(propertiesRef)
                 .then(snapshot => {
@@ -61,7 +61,7 @@
                 });
         });
 
-        // Function to render a property card
+        // Render property cards
         function renderProperty(propertyData, container) {
             const propertyCard = document.createElement('div');
             propertyCard.classList.add('col-md-4', 'property-card');
@@ -79,7 +79,7 @@
             container.appendChild(propertyCard);
         }
 
-        // Function to display error messages
+        // Display error messages
         function showError(message) {
             document.getElementById('loading').classList.add('d-none');
             const errorMessage = document.getElementById('error-message');
