@@ -50,9 +50,8 @@
 
                     const propertiesContainer = document.getElementById('properties-container');
 
-                    // Iterate over properties using auto-generated IDs
-                    Object.values(properties).forEach(propertyData => {
-                        renderProperty(propertyData, propertiesContainer);
+                    Object.entries(properties).forEach(([key, propertyData]) => {
+                        renderProperty(key, propertyData, propertiesContainer);
                     });
                 } else {
                     console.log('No properties found at this path.');
@@ -64,7 +63,7 @@
             }
         });
 
-        function renderProperty(propertyData, container) {
+        function renderProperty(key, propertyData, container) {
             const propertyCard = document.createElement('div');
             propertyCard.classList.add('col-md-4', 'property-card', 'mb-4');
             propertyCard.innerHTML = `
@@ -74,7 +73,7 @@
                         <h5 class="card-title">${propertyData.title}</h5>
                         <p class="card-text">Location: ${propertyData.location}</p>
                         <p class="card-text">Price: KES ${propertyData.price}</p>
-                        <a href="#" class="btn btn-success">View Details</a>
+                        <a href="property-details.html?propertyId=${key}" class="btn btn-success">View Details</a>
                     </div>
                 </div>
             `;
