@@ -9,7 +9,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
         import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
             authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -20,7 +19,6 @@
             appId: "1:795578734998:web:5a06078443af3bec4ee5b7"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
@@ -29,29 +27,23 @@
             const selectedCategory = urlParams.get('category');
             const selectedSubcategory = urlParams.get('subcategory');
 
-            // Validate URL parameters
             if (!selectedCategory || !selectedSubcategory) {
                 showError('Invalid category or subcategory!');
                 return;
             }
 
-            // Debug: Confirm the selected category and subcategory
-            console.log(`Category: ${selectedCategory}, Subcategory: ${selectedSubcategory}`);
+            console.log(`Fetching: categories/${selectedCategory}/${selectedSubcategory}`); // Debug
 
             try {
-                // Firebase reference based on user input
                 const propertiesRef = ref(database, `categories/${selectedCategory}/${selectedSubcategory}`);
                 const snapshot = await get(propertiesRef);
-                document.getElementById('loading').classList.add('d-none'); // Hide loading spinner
+                document.getElementById('loading').classList.add('d-none');
 
                 if (snapshot.exists()) {
+                    console.log('Properties found:', snapshot.val()); // Debug
                     const propertiesContainer = document.getElementById('properties-container');
                     const properties = snapshot.val();
 
-                    // Debug: Confirm data retrieval
-                    console.log('Fetched properties:', properties);
-
-                    // Render all properties
                     Object.entries(properties).forEach(([key, propertyData]) => {
                         renderProperty(propertyData, propertiesContainer);
                     });
@@ -64,7 +56,6 @@
             }
         });
 
-        // Function to render property cards
         function renderProperty(propertyData, container) {
             const propertyCard = document.createElement('div');
             propertyCard.classList.add('col-md-4', 'property-card', 'mb-4');
@@ -83,63 +74,22 @@
             container.appendChild(propertyCard);
         }
 
-        // Function to display error messages
         function showError(message) {
-            document.getElementById('loading').classList.add('d-none'); // Hide spinner
+            document.getElementById('loading').classList.add('d-none');
             const errorMessage = document.getElementById('error-message');
             errorMessage.textContent = message;
-            errorMessage.classList.remove('d-none'); // Show error message
+            errorMessage.classList.remove('d-none');
         }
     </script>
 
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-        }
-        .navbar {
-            background-color: #002244;
-            padding: 0;
-        }
-        .navbar-brand img {
-            width: 150px;
-        }
-        .navbar-nav .nav-link {
-            font-size: 18px;
-            color: white;
-            padding: 15px 20px;
-        }
-        .main-content {
-            padding: 40px 0;
-        }
-        .property-card img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .btn-green {
-            background-color: green;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin-top: 15px;
-            text-align: center;
-            display: block;
-        }
-        .btn-green:hover {
-            background-color: darkgreen;
-        }
-        footer {
-            background-color: #002244;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .spinner-border {
-            width: 3rem;
-            height: 3rem;
-        }
+        body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; }
+        .navbar { background-color: #002244; }
+        .navbar-brand img { width: 150px; }
+        .property-card img { width: 100%; height: 300px; object-fit: cover; border-radius: 5px; }
+        .btn-green { background-color: green; color: white; border-radius: 5px; }
+        .btn-green:hover { background-color: darkgreen; }
+        footer { background-color: #002244; color: white; text-align: center; padding: 20px; }
     </style>
 </head>
 <body>
@@ -168,7 +118,7 @@
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <div id="error-message" class="alert alert-danger d-none" role="alert">
+        <div id="error-message" class="alert alert-danger d-none">
             Something went wrong. Please try again later.
         </div>
     </div>
