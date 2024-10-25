@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Properties - Legacy Genuine Properties</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <script type="module">
-        // Import Firebase SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
         import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
             authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -22,17 +20,14 @@
             appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        // Main logic to fetch and display properties
         document.addEventListener("DOMContentLoaded", async function () {
             const urlParams = new URLSearchParams(window.location.search);
-            const selectedCategory = urlParams.get('category');  // e.g., 'lands'
-            const selectedSubcategory = urlParams.get('subcategory');  // e.g., 'residentialLands'
+            const selectedCategory = urlParams.get('category');
+            const selectedSubcategory = urlParams.get('subcategory'); 
 
-            // Validate the category and subcategory
             if (!selectedCategory || !selectedSubcategory) {
                 showError('Invalid category or subcategory!');
                 return;
@@ -45,7 +40,7 @@
                 const propertiesRef = ref(database, path);
                 const snapshot = await get(propertiesRef);
 
-                document.getElementById('loading').classList.add('d-none');  // Hide spinner
+                document.getElementById('loading').classList.add('d-none');  
 
                 if (snapshot.exists()) {
                     const properties = snapshot.val();
@@ -70,7 +65,6 @@
             }
         });
 
-        // Function to render each property as a card
         function renderProperty(propertyData, container) {
             const propertyCard = document.createElement('div');
             propertyCard.classList.add('col-md-4', 'property-card', 'mb-4');
@@ -90,9 +84,8 @@
             container.appendChild(propertyCard);
         }
 
-        // Function to show error messages
         function showError(message) {
-            document.getElementById('loading').classList.add('d-none');  // Hide spinner
+            document.getElementById('loading').classList.add('d-none');
             const errorMessage = document.getElementById('error-message');
             errorMessage.textContent = message;
             errorMessage.classList.remove('d-none');
