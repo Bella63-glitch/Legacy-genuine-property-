@@ -6,10 +6,11 @@
     <title>Properties - Legacy Genuine Properties</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script type="module">
+        // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
         import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
             authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -17,57 +18,59 @@
             projectId: "legacy-genuine-properties",
             storageBucket: "legacy-genuine-properties.appspot.com",
             messagingSenderId: "795578734998",
-            appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
-            measurementId: "G-RRZ7M9TW8T"
+            appId: "1:795578734998:web:5a06078443af3bec4ee5b7"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const database = getDatabase(app);
 
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", async function () {
             const urlParams = new URLSearchParams(window.location.search);
             const selectedCategory = urlParams.get('category');
             const selectedSubcategory = urlParams.get('subcategory');
 
-            // Validate the category and subcategory
+            // Validate URL parameters
             if (!selectedCategory || !selectedSubcategory) {
                 showError('Invalid category or subcategory!');
                 return;
             }
 
-            // Fetch properties using the exact case from the database
-            const propertiesRef = ref(database, `categories/${selectedCategory}/${selectedSubcategory}`);
-            get(propertiesRef)
-                .then(snapshot => {
-                    const propertiesContainer = document.getElementById('properties-container');
-                    document.getElementById('loading').classList.add('d-none');
+            try {
+                // Fetch properties from Firebase
+                const propertiesRef = ref(database, `categories/${selectedCategory}/${selectedSubcategory}`);
+                const snapshot = await get(propertiesRef);
+                document.getElementById('loading').classList.add('d-none'); // Hide loading spinner
 
-                    if (snapshot.exists()) {
-                        snapshot.forEach(propertySnapshot => {
-                            const propertyData = propertySnapshot.val();
-                            renderProperty(propertyData, propertiesContainer);
-                        });
-                    } else {
-                        showError('No properties found in this category.');
-                    }
-                })
-                .catch(error => {
-                    showError('Error loading properties: ' + error.message);
-                });
+                if (snapshot.exists()) {
+                    const propertiesContainer = document.getElementById('properties-container');
+                    const properties = snapshot.val();
+
+                    // Render each property
+                    Object.values(properties).forEach(propertyData => {
+                        renderProperty(propertyData, propertiesContainer);
+                    });
+                } else {
+                    showError('No properties found in this category.');
+                }
+            } catch (error) {
+                console.error("Error fetching properties:", error);
+                showError('Error loading properties: ' + error.message);
+            }
         });
 
-        // Render property cards dynamically
+        // Function to render a property card
         function renderProperty(propertyData, container) {
             const propertyCard = document.createElement('div');
             propertyCard.classList.add('col-md-4', 'property-card');
             propertyCard.innerHTML = `
                 <div class="card">
-                    <img src="${propertyData.imageUrls[0]}" class="card-img-top" alt="Property Image">
+                    <img src="${propertyData.imageUrls?.[0] || 'placeholder.jpg'}" 
+                         class="card-img-top" alt="${propertyData.title || 'Property Image'}">
                     <div class="card-body">
-                        <h5 class="card-title">${propertyData.title}</h5>
-                        <p class="card-text">Location: ${propertyData.location}</p>
-                        <p class="card-text">Price: KES ${propertyData.price}</p>
+                        <h5 class="card-title">${propertyData.title || 'Untitled Property'}</h5>
+                        <p class="card-text">Location: ${propertyData.location || 'Unknown'}</p>
+                        <p class="card-text">Price: KES ${propertyData.price || 'N/A'}</p>
                         <a href="#" class="btn-green">View Details</a>
                     </div>
                 </div>
@@ -75,12 +78,12 @@
             container.appendChild(propertyCard);
         }
 
-        // Display error messages
+        // Function to display error messages
         function showError(message) {
-            document.getElementById('loading').classList.add('d-none');
+            document.getElementById('loading').classList.add('d-none'); // Hide spinner
             const errorMessage = document.getElementById('error-message');
             errorMessage.textContent = message;
-            errorMessage.classList.remove('d-none');
+            errorMessage.classList.remove('d-none'); // Show error message
         }
     </script>
 
@@ -119,15 +122,15 @@
             padding: 10px 20px;
             border-radius: 5px;
             margin-top: 15px;
-            text-align: center;
             display: block;
+            text-align: center;
         }
         .btn-green:hover {
             background-color: darkgreen;
         }
         footer {
             background-color: #002244;
-            color: #fff;
+            color: white;
             padding: 20px;
             text-align: center;
         }
@@ -143,7 +146,7 @@
             <a class="navbar-brand" href="index.html">
                 <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo">
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
