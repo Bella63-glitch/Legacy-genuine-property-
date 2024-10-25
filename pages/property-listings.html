@@ -31,8 +31,8 @@
         document.addEventListener("DOMContentLoaded", function () {
             // Get the category and subcategory from the URL parameters
             const urlParams = new URLSearchParams(window.location.search);
-            const selectedCategory = urlParams.get('category'); // e.g., 'lands'
-            const selectedSubcategory = urlParams.get('subcategory'); // e.g., 'residentialLands'
+            const selectedCategory = urlParams.get('category')?.replace(/\s+/g, '').toLowerCase(); // Clean and lowercase
+            const selectedSubcategory = urlParams.get('subcategory')?.replace(/\s+/g, '').toLowerCase(); // Clean and lowercase
 
             // Validate category and subcategory
             if (!selectedCategory || !selectedSubcategory) {
