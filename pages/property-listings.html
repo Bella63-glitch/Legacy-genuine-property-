@@ -29,60 +29,65 @@
         const database = getDatabase(app);
 
         document.addEventListener("DOMContentLoaded", function () {
-            // Get the category and subcategory from URL (ensure they're valid)
+            // Get the category and subcategory from the URL parameters
             const urlParams = new URLSearchParams(window.location.search);
-            const selectedCategory = urlParams.get('category');
-            const selectedSubcategory = urlParams.get('subcategory');
+            const selectedCategory = urlParams.get('category'); // e.g., 'lands'
+            const selectedSubcategory = urlParams.get('subcategory'); // e.g., 'residentialLands'
 
-            // Ensure category and subcategory are valid
+            // Validate category and subcategory
             if (!selectedCategory || !selectedSubcategory) {
-                document.getElementById('loading').classList.add('d-none');
-                document.getElementById('error-message').textContent = 'Invalid category or subcategory!';
-                document.getElementById('error-message').classList.remove('d-none');
-            } else {
-                // Fetch properties from Firebase
-                const propertiesRef = ref(database, `categories/${selectedCategory}/${selectedSubcategory}`);
-                get(propertiesRef)
-                    .then(snapshot => {
-                        const propertiesContainer = document.getElementById('properties-container');
-                        const loadingSpinner = document.getElementById('loading');
-
-                        // Clear loading spinner
-                        loadingSpinner.classList.add('d-none');
-
-                        // Check if there are any properties
-                        if (snapshot.exists()) {
-                            snapshot.forEach(propertySnapshot => {
-                                const propertyData = propertySnapshot.val();
-                                const propertyCard = document.createElement('div');
-                                propertyCard.classList.add('col-md-4', 'property-card');
-                                propertyCard.innerHTML = `
-                                    <div class="card">
-                                        <img src="${propertyData.imageUrls[0]}" class="card-img-top" alt="Property Image">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${propertyData.title}</h5>
-                                            <p class="card-text">Location: ${propertyData.location}</p>
-                                            <p class="card-text">Price: KES ${propertyData.price}</p>
-                                            <a href="#" class="btn-green">View Details</a>
-                                        </div>
-                                    </div>
-                                `;
-                                propertiesContainer.appendChild(propertyCard);
-                            });
-                        } else {
-                            document.getElementById('error-message').textContent = 'No properties found in this category.';
-                            document.getElementById('error-message').classList.remove('d-none');
-                        }
-                    })
-                    .catch(error => {
-                        // Handle error
-                        document.getElementById('loading').classList.add('d-none');
-                        document.getElementById('error-message').textContent = 'Error loading properties: ' + error.message;
-                        document.getElementById('error-message').classList.remove('d-none');
-                    });
+                showError('Invalid category or subcategory!');
+                return;
             }
+
+            // Correct path to fetch properties dynamically based on categories and subcategories
+            const propertiesRef = ref(database, `categories/${selectedCategory}/${selectedSubcategory}`);
+            get(propertiesRef)
+                .then(snapshot => {
+                    const propertiesContainer = document.getElementById('properties-container');
+                    document.getElementById('loading').classList.add('d-none'); // Hide loading spinner
+
+                    if (snapshot.exists()) {
+                        snapshot.forEach(propertySnapshot => {
+                            const propertyData = propertySnapshot.val();
+                            renderProperty(propertyData, propertiesContainer);
+                        });
+                    } else {
+                        showError('No properties found in this category.');
+                    }
+                })
+                .catch(error => {
+                    showError('Error loading properties: ' + error.message);
+                });
         });
+
+        // Function to render a property card
+        function renderProperty(propertyData, container) {
+            const propertyCard = document.createElement('div');
+            propertyCard.classList.add('col-md-4', 'property-card');
+            propertyCard.innerHTML = `
+                <div class="card">
+                    <img src="${propertyData.imageUrls[0]}" class="card-img-top" alt="Property Image">
+                    <div class="card-body">
+                        <h5 class="card-title">${propertyData.title}</h5>
+                        <p class="card-text">Location: ${propertyData.location}</p>
+                        <p class="card-text">Price: KES ${propertyData.price}</p>
+                        <a href="#" class="btn-green">View Details</a>
+                    </div>
+                </div>
+            `;
+            container.appendChild(propertyCard);
+        }
+
+        // Function to display error messages
+        function showError(message) {
+            document.getElementById('loading').classList.add('d-none');
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('d-none');
+        }
     </script>
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -147,9 +152,9 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"> <a class="nav-link" href="index.html">Home</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="category.html">Categories</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="contact.html">Contact</a> </li>
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="category.html">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                 </ul>
             </div>
         </div>
