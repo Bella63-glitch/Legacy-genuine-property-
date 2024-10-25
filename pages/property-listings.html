@@ -10,6 +10,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
         import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
             authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -20,13 +21,14 @@
             appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
         document.addEventListener("DOMContentLoaded", async function () {
             const urlParams = new URLSearchParams(window.location.search);
             const selectedCategory = urlParams.get('category');
-            const selectedSubcategory = urlParams.get('subcategory'); 
+            const selectedSubcategory = urlParams.get('subcategory');
 
             if (!selectedCategory || !selectedSubcategory) {
                 showError('Invalid category or subcategory!');
@@ -34,29 +36,26 @@
             }
 
             const path = `categories/${selectedCategory}/${selectedSubcategory}`;
-            console.log(`Fetching properties from: ${path}`);
+            console.log(`Querying path: ${path}`); // Log the queried path
 
             try {
                 const propertiesRef = ref(database, path);
                 const snapshot = await get(propertiesRef);
 
-                document.getElementById('loading').classList.add('d-none');  
+                document.getElementById('loading').classList.add('d-none');
 
                 if (snapshot.exists()) {
                     const properties = snapshot.val();
-                    console.log('Fetched properties:', properties);
+                    console.log('Properties data:', properties); // Log the snapshot data
 
                     const propertiesContainer = document.getElementById('properties-container');
 
-                    if (Object.keys(properties).length === 0) {
-                        showError('No properties found in this subcategory.');
-                        return;
-                    }
-
-                    Object.entries(properties).forEach(([key, propertyData]) => {
+                    // Iterate over properties using auto-generated IDs
+                    Object.values(properties).forEach(propertyData => {
                         renderProperty(propertyData, propertiesContainer);
                     });
                 } else {
+                    console.log('No properties found at this path.');
                     showError('No properties found.');
                 }
             } catch (error) {
@@ -68,16 +67,14 @@
         function renderProperty(propertyData, container) {
             const propertyCard = document.createElement('div');
             propertyCard.classList.add('col-md-4', 'property-card', 'mb-4');
-
-            const imageUrl = propertyData.imageUrls?.[0] || 'https://via.placeholder.com/300';
             propertyCard.innerHTML = `
                 <div class="card">
-                    <img src="${imageUrl}" class="card-img-top" alt="${propertyData.title || 'Property Image'}">
+                    <img src="${propertyData.imageUrls[0]}" class="card-img-top" alt="Property Image">
                     <div class="card-body">
-                        <h5 class="card-title">${propertyData.title || 'Untitled Property'}</h5>
-                        <p class="card-text">Location: ${propertyData.location || 'Unknown'}</p>
-                        <p class="card-text">Price: KES ${propertyData.price || 'N/A'}</p>
-                        <a href="#" class="btn-green">View Details</a>
+                        <h5 class="card-title">${propertyData.title}</h5>
+                        <p class="card-text">Location: ${propertyData.location}</p>
+                        <p class="card-text">Price: KES ${propertyData.price}</p>
+                        <a href="#" class="btn btn-success">View Details</a>
                     </div>
                 </div>
             `;
@@ -99,45 +96,30 @@
         }
         .navbar {
             background-color: #002244;
-            padding: 0;
         }
         .navbar-brand img {
             width: 150px;
         }
         .navbar-nav .nav-link {
-            font-size: 18px;
             color: white;
-            padding: 15px 20px;
-        }
-        .main-content {
-            padding: 40px 0;
         }
         .property-card img {
             width: 100%;
-            height: 300px;
+            height: 200px;
             object-fit: cover;
-            border-radius: 5px;
         }
-        .btn-green {
-            background-color: green;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-align: center;
-            display: block;
-        }
-        .btn-green:hover {
-            background-color: darkgreen;
-        }
-        footer {
-            background-color: #002244;
-            color: white;
-            padding: 20px;
-            text-align: center;
+        .btn-success {
+            margin-top: 10px;
         }
         .spinner-border {
             width: 3rem;
             height: 3rem;
+        }
+        footer {
+            background-color: #002244;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
         }
     </style>
 </head>
@@ -147,11 +129,11 @@
             <a class="navbar-brand" href="index.html">
                 <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo">
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="category.html">Categories</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
@@ -160,14 +142,14 @@
         </div>
     </nav>
 
-    <div class="container main-content">
-        <div id="properties-container" class="row"></div>
-        <div id="loading" class="text-center my-5">
+    <div class="container my-5">
+        <div id="loading" class="text-center">
             <div class="spinner-border" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
         <div id="error-message" class="alert alert-danger d-none"></div>
+        <div id="properties-container" class="row"></div>
     </div>
 
     <footer>
