@@ -109,36 +109,35 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        const dbRef = firebase.database().ref("categories/lands");
+        const dbRef = firebase.database().ref("categories");
 
-        function renderProperty(category, property) {
-            const name = property.name || "Unnamed Property";
-            const imageUrl = property.image || "https://via.placeholder.com/300";
-            const propertyId = property.id || "#";
+        // Fetch the selected category and subcategory from localStorage
+        const selectedCategory = localStorage.getItem('selectedCategory');
+        const selectedSubcategory = localStorage.getItem('selectedSubcategory');
 
+        function renderProperty(property) {
             return `
                 <div class="col-md-4 property-card">
                     <div class="card">
-                        <img src="${imageUrl}" class="card-img-top" alt="${name}">
+                        <img src="${property.imageUrls || 'https://via.placeholder.com/300'}" class="card-img-top" alt="${property.title}">
                         <div class="card-body">
-                            <h5 class="card-title">${name}</h5>
-                            <p class="card-text">Category: ${category}</p>
-                            <a href="property-details.html?id=${propertyId}" class="btn btn-green">View Details</a>
+                            <h5 class="card-title">${property.title}</h5>
+                            <p><strong>Location:</strong> ${property.location}</p>
+                            <p><strong>Price:</strong> ${property.price}</p>
+                            <a href="#" class="btn btn-green">View Details</a>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        dbRef.once("value", (snapshot) => {
+        // Fetch properties based on selected category and subcategory
+        dbRef.child(selectedCategory).child(selectedSubcategory).once("value", (snapshot) => {
             const propertiesContainer = document.getElementById("properties-container");
             propertiesContainer.innerHTML = "";
-            snapshot.forEach((childSnapshot) => {
-                const category = childSnapshot.key;
-                childSnapshot.forEach((subChild) => {
-                    const property = subChild.val();  // Fetching property details properly
-                    propertiesContainer.innerHTML += renderProperty(category, property);
-                });
+            snapshot.forEach((propertySnapshot) => {
+                const propertyData = propertySnapshot.val();
+                propertiesContainer.innerHTML += renderProperty(propertyData);
             });
             document.getElementById("loading-message").style.display = "none";
         });
