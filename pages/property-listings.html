@@ -25,20 +25,23 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
+        // Load properties based on category and subcategory
         document.addEventListener("DOMContentLoaded", async function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const selectedCategory = urlParams.get('category');
-            const selectedSubcategory = urlParams.get('subcategory');
-
-            if (!selectedCategory || !selectedSubcategory) {
-                showError('Invalid category or subcategory!');
-                return;
-            }
-
-            const path = `categories/${selectedCategory}/${selectedSubcategory}`;
-            console.log(`Querying path: ${path}`); // Log the queried path
-
             try {
+                const { category, subcategory } = getQueryParams();
+
+                console.log('Current URL:', window.location.href); 
+                console.log('Parsed Category:', category);
+                console.log('Parsed Subcategory:', subcategory);
+
+                if (!category || !subcategory) {
+                    showError('Select a valid category and subcategory.');
+                    return;
+                }
+
+                const path = `categories/${category}/${subcategory}`;
+                console.log(`Querying path: ${path}`);
+
                 const propertiesRef = ref(database, path);
                 const snapshot = await get(propertiesRef);
 
@@ -46,16 +49,17 @@
 
                 if (snapshot.exists()) {
                     const properties = snapshot.val();
-                    console.log('Properties data:', properties); // Log the snapshot data
+                    console.log('Fetched properties:', properties);
 
                     const propertiesContainer = document.getElementById('properties-container');
+                    propertiesContainer.innerHTML = ''; // Clear previous content
 
                     Object.entries(properties).forEach(([key, propertyData]) => {
                         renderProperty(key, propertyData, propertiesContainer);
                     });
                 } else {
-                    console.log('No properties found at this path.');
-                    showError('No properties found.');
+                    console.log('No properties found.');
+                    showError('No properties found for this category.');
                 }
             } catch (error) {
                 console.error('Error fetching properties:', error);
@@ -63,16 +67,27 @@
             }
         });
 
+        // Parse query parameters from URL
+        function getQueryParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                category: urlParams.get('category'),
+                subcategory: urlParams.get('subcategory')
+            };
+        }
+
+        // Render a single property card
         function renderProperty(key, propertyData, container) {
             const propertyCard = document.createElement('div');
             propertyCard.classList.add('col-md-4', 'property-card', 'mb-4');
             propertyCard.innerHTML = `
                 <div class="card">
-                    <img src="${propertyData.imageUrls[0]}" class="card-img-top" alt="Property Image">
+                    <img src="${propertyData.imageUrls?.[0] || 'https://via.placeholder.com/150'}" 
+                         class="card-img-top" alt="Property Image">
                     <div class="card-body">
-                        <h5 class="card-title">${propertyData.title}</h5>
-                        <p class="card-text">Location: ${propertyData.location}</p>
-                        <p class="card-text">Price: KES ${propertyData.price}</p>
+                        <h5 class="card-title">${propertyData.title || 'Untitled Property'}</h5>
+                        <p class="card-text">Location: ${propertyData.location || 'Unknown'}</p>
+                        <p class="card-text">Price: KES ${propertyData.price || 'Not available'}</p>
                         <a href="property-details.html?propertyId=${key}" class="btn btn-success">View Details</a>
                     </div>
                 </div>
@@ -80,6 +95,7 @@
             container.appendChild(propertyCard);
         }
 
+        // Display an error message
         function showError(message) {
             document.getElementById('loading').classList.add('d-none');
             const errorMessage = document.getElementById('error-message');
@@ -128,7 +144,8 @@
             <a class="navbar-brand" href="index.html">
                 <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo">
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -154,5 +171,8 @@
     <footer>
         <p>&copy; 2024 Legacy Genuine Properties. All Rights Reserved.</p>
     </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
