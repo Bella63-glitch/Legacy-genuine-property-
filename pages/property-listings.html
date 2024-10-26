@@ -25,17 +25,15 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        // Load properties based on category and subcategory
+        // Main function to load properties on page load
         document.addEventListener("DOMContentLoaded", async function () {
             try {
                 const { category, subcategory } = getQueryParams();
-
-                console.log('Current URL:', window.location.href); 
                 console.log('Parsed Category:', category);
                 console.log('Parsed Subcategory:', subcategory);
 
                 if (!category || !subcategory) {
-                    showError('Select a valid category and subcategory.');
+                    showError('Invalid or missing category or subcategory!');
                     return;
                 }
 
@@ -52,14 +50,12 @@
                     console.log('Fetched properties:', properties);
 
                     const propertiesContainer = document.getElementById('properties-container');
-                    propertiesContainer.innerHTML = ''; // Clear previous content
-
                     Object.entries(properties).forEach(([key, propertyData]) => {
                         renderProperty(key, propertyData, propertiesContainer);
                     });
                 } else {
                     console.log('No properties found.');
-                    showError('No properties found for this category.');
+                    showError('No properties found.');
                 }
             } catch (error) {
                 console.error('Error fetching properties:', error);
@@ -67,7 +63,7 @@
             }
         });
 
-        // Parse query parameters from URL
+        // Function to parse query parameters from URL
         function getQueryParams() {
             const urlParams = new URLSearchParams(window.location.search);
             return {
@@ -76,26 +72,41 @@
             };
         }
 
-        // Render a single property card
+        // Function to render a property card
         function renderProperty(key, propertyData, container) {
             const propertyCard = document.createElement('div');
             propertyCard.classList.add('col-md-4', 'property-card', 'mb-4');
             propertyCard.innerHTML = `
                 <div class="card">
-                    <img src="${propertyData.imageUrls?.[0] || 'https://via.placeholder.com/150'}" 
-                         class="card-img-top" alt="Property Image">
+                    <div id="carousel-${key}" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            ${propertyData.imageUrls.map((url, index) => `
+                                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                                    <img src="${url}" class="d-block w-100" alt="Property Image">
+                                </div>
+                            `).join('')}
+                        </div>
+                        <a class="carousel-control-prev" href="#carousel-${key}" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carousel-${key}" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">${propertyData.title || 'Untitled Property'}</h5>
                         <p class="card-text">Location: ${propertyData.location || 'Unknown'}</p>
                         <p class="card-text">Price: KES ${propertyData.price || 'Not available'}</p>
-                        <a href="property-details.html?propertyId=${key}" class="btn btn-success">View Details</a>
+                        <a href="pages/detailed-property-listings.html?propertyId=${key}" class="btn btn-success">View Details</a>
                     </div>
                 </div>
             `;
             container.appendChild(propertyCard);
         }
 
-        // Display an error message
+        // Function to display error messages
         function showError(message) {
             document.getElementById('loading').classList.add('d-none');
             const errorMessage = document.getElementById('error-message');
@@ -119,8 +130,7 @@
             color: white;
         }
         .property-card img {
-            width: 100%;
-            height: 200px;
+            height: 200px; /* Adjusted height for property images */
             object-fit: cover;
         }
         .btn-success {
