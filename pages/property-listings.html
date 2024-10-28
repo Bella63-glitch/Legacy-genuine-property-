@@ -33,6 +33,7 @@
                     return;
                 }
 
+                // Build path dynamically to match your Firebase structure
                 const path = `categories/${category}/${subcategory}`;
                 const propertiesRef = ref(database, path);
                 const snapshot = await get(propertiesRef);
