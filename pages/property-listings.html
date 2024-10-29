@@ -70,7 +70,7 @@
       const propertyCard = document.createElement('div');
       propertyCard.classList.add('col-md-4', 'property-card', 'mb-4');
       propertyCard.innerHTML = `
-        <div class="card">
+        <div class="card clickable-card" data-id="${key}">
           <div id="carousel-${key}" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
               ${propertyData.imageUrls.map((url, index) => `
@@ -92,12 +92,17 @@
             <h5 class="card-title">${propertyData.title || 'Untitled Property'}</h5>
             <p class="card-text">Location: ${propertyData.location || 'Unknown'}</p>
             <p class="card-text">Price: KES ${propertyData.price || 'Not available'}</p>
-            <a href="./detailed-property-listings.html?propertyId=${key}&category=${getQueryParams().category}&subcategory=${getQueryParams().subcategory}" 
-               class="btn btn-success">View Details</a>
           </div>
         </div>
       `;
       container.appendChild(propertyCard);
+
+      // Add event listener to redirect to the detailed property page
+      propertyCard.querySelector('.clickable-card').addEventListener('click', function () {
+        const propertyId = this.getAttribute('data-id');
+        const { category, subcategory } = getQueryParams();
+        window.location.href = `./detailed-property-listings.html?propertyId=${propertyId}&category=${category}&subcategory=${subcategory}`;
+      });
     }
 
     function showError(message) {
@@ -125,6 +130,9 @@
       height: 200px;
       object-fit: cover;
       width: 100%;
+    }
+    .clickable-card {
+      cursor: pointer;
     }
     .btn-success {
       margin-top: 10px;
