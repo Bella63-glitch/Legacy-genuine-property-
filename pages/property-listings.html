@@ -7,11 +7,9 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <script type="module">
-      // Import Firebase modules
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
       import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
-      // Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
         authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -22,11 +20,9 @@
         appId: "1:795578734998:web:5a06078443af3bec4ee5b7"
       };
 
-      // Initialize Firebase
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
 
-      // Run this when the DOM is fully loaded
       document.addEventListener("DOMContentLoaded", async function () {
         try {
           const { category, subcategory } = getQueryParams();
@@ -60,7 +56,6 @@
         }
       });
 
-      // Helper function to get query parameters from URL
       function getQueryParams() {
         const urlParams = new URLSearchParams(window.location.search);
         return {
@@ -69,7 +64,6 @@
         };
       }
 
-      // Render each property card with a working "View Details" button
       function renderProperty(key, propertyData, container, category, subcategory) {
         const propertyCard = document.createElement('div');
         propertyCard.classList.add('col-md-4', 'property-card', 'mb-4');
@@ -96,21 +90,38 @@
               <h5 class="card-title">${propertyData.title || 'Untitled Property'}</h5>
               <p class="card-text">Location: ${propertyData.location || 'Unknown'}</p>
               <p class="card-text">Price: KES ${propertyData.price || 'Not available'}</p>
-              <a href="./detailed-property-listings.html?propertyId=${key}&category=${category}&subcategory=${subcategory}" 
-                 class="btn btn-success view-details-btn">View Details</a>
+              <a href="#" 
+                 class="btn btn-success view-details-btn" 
+                 data-id="${key}" 
+                 data-category="${category}" 
+                 data-subcategory="${subcategory}">
+                 View Details
+              </a>
             </div>
           </div>
         `;
         container.appendChild(propertyCard);
       }
 
-      // Show error messages in a user-friendly way
       function showError(message) {
         document.getElementById('loading').classList.add('d-none');
         const errorMessage = document.getElementById('error-message');
         errorMessage.textContent = message;
         errorMessage.classList.remove('d-none');
       }
+
+      // Attach click listeners to View Details buttons dynamically
+      document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('view-details-btn')) {
+          event.preventDefault(); // Prevent page refresh
+          const propertyId = event.target.getAttribute('data-id');
+          const category = event.target.getAttribute('data-category');
+          const subcategory = event.target.getAttribute('data-subcategory');
+
+          // Redirect to detailed property listings page with query parameters
+          window.location.href = `./detailed-property-listings.html?propertyId=${propertyId}&category=${category}&subcategory=${subcategory}`;
+        }
+      });
     </script>
 
     <style>
@@ -184,4 +195,4 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
-</html>
+  </html>
