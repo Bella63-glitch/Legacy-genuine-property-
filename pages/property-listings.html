@@ -7,9 +7,11 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <script type="module">
+      // Import Firebase modules
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
       import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
+      // Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
         authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -20,9 +22,11 @@
         appId: "1:795578734998:web:5a06078443af3bec4ee5b7"
       };
 
+      // Initialize Firebase
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
 
+      // Run this when the DOM is fully loaded
       document.addEventListener("DOMContentLoaded", async function () {
         try {
           const { category, subcategory } = getQueryParams();
@@ -56,6 +60,7 @@
         }
       });
 
+      // Helper function to get query parameters from URL
       function getQueryParams() {
         const urlParams = new URLSearchParams(window.location.search);
         return {
@@ -64,20 +69,20 @@
         };
       }
 
+      // Render each property card with a working "View Details" button
       function renderProperty(key, propertyData, container, category, subcategory) {
         const propertyCard = document.createElement('div');
         propertyCard.classList.add('col-md-4', 'property-card', 'mb-4');
-
-        const imageCarousel = propertyData.imageUrls.map((url, index) => `
-          <div class="carousel-item ${index === 0 ? 'active' : ''}">
-            <img src="${url}" class="d-block w-100 property-image" alt="Property Image">
-          </div>
-        `).join('');
-
         propertyCard.innerHTML = `
           <div class="card">
             <div id="carousel-${key}" class="carousel slide" data-ride="carousel">
-              <div class="carousel-inner">${imageCarousel}</div>
+              <div class="carousel-inner">
+                ${propertyData.imageUrls.map((url, index) => `
+                  <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                    <img src="${url}" class="d-block w-100 property-image" alt="Property Image">
+                  </div>
+                `).join('')}
+              </div>
               <a class="carousel-control-prev" href="#carousel-${key}" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
@@ -91,20 +96,15 @@
               <h5 class="card-title">${propertyData.title || 'Untitled Property'}</h5>
               <p class="card-text">Location: ${propertyData.location || 'Unknown'}</p>
               <p class="card-text">Price: KES ${propertyData.price || 'Not available'}</p>
-              <button class="btn btn-success" onclick="navigateToDetails('${key}', '${category}', '${subcategory}');">
-                View Details
-              </button>
+              <a href="./detailed-property-listings.html?propertyId=${key}&category=${category}&subcategory=${subcategory}" 
+                 class="btn btn-success view-details-btn">View Details</a>
             </div>
           </div>
         `;
         container.appendChild(propertyCard);
       }
 
-      function navigateToDetails(propertyId, category, subcategory) {
-        const url = `./detailed-property-listings.html?propertyId=${propertyId}&category=${category}&subcategory=${subcategory}`;
-        window.location.href = url;
-      }
-
+      // Show error messages in a user-friendly way
       function showError(message) {
         document.getElementById('loading').classList.add('d-none');
         const errorMessage = document.getElementById('error-message');
