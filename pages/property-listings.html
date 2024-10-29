@@ -7,7 +7,7 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
     // Firebase configuration
     const firebaseConfig = {
@@ -17,13 +17,14 @@
       projectId: "legacy-genuine-properties",
       storageBucket: "legacy-genuine-properties.appspot.com",
       messagingSenderId: "795578734998",
-      appId: "YOUR_APP_ID",
+      appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
     };
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
+    // Main function to load properties on page load
     document.addEventListener("DOMContentLoaded", async function () {
       try {
         const { category, subcategory } = getQueryParams();
@@ -32,16 +33,19 @@
           return;
         }
 
+        // Build path dynamically to match your Firebase structure
         const path = `categories/${category}/${subcategory}`;
         const propertiesRef = ref(database, path);
         const snapshot = await get(propertiesRef);
+
+        console.log("Snapshot data:", snapshot.val()); // Debugging line
 
         document.getElementById('loading').classList.add('d-none');
 
         if (snapshot.exists()) {
           const properties = snapshot.val();
           const propertiesContainer = document.getElementById('properties-container');
-          propertiesContainer.innerHTML = '';
+          propertiesContainer.innerHTML = ''; // Clear existing content if any
 
           Object.entries(properties).forEach(([key, propertyData]) => {
             if (propertyData && propertyData.imageUrls) {
@@ -59,6 +63,7 @@
       }
     });
 
+    // Function to parse query parameters from URL
     function getQueryParams() {
       const urlParams = new URLSearchParams(window.location.search);
       return {
@@ -67,6 +72,7 @@
       };
     }
 
+    // Function to render a property card with image carousel
     function renderProperty(key, propertyData, container) {
       const propertyCard = document.createElement('div');
       propertyCard.classList.add('col-md-4', 'property-card', 'mb-4');
@@ -100,6 +106,7 @@
       container.appendChild(propertyCard);
     }
 
+    // Function to display error messages
     function showError(message) {
       document.getElementById('loading').classList.add('d-none');
       const errorMessage = document.getElementById('error-message');
@@ -123,7 +130,7 @@
     }
     .property-card img {
       height: 200px;
-      object-fit: cover;
+      object-fit: cover; /* Ensure images cover without zooming */
       width: 100%;
     }
     .btn-success {
