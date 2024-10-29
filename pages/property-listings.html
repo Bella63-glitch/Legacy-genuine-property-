@@ -103,7 +103,8 @@
 
         // Add click event listener to the button
         const viewDetailsBtn = propertyCard.querySelector('.view-details-btn');
-        viewDetailsBtn.addEventListener('click', () => {
+        viewDetailsBtn.addEventListener('click', (event) => {
+          event.preventDefault(); // Prevent page refresh
           navigateToDetails(key, category, subcategory);
         });
       }
