@@ -90,17 +90,27 @@
               <h5 class="card-title">${propertyData.title || 'Untitled Property'}</h5>
               <p class="card-text">Location: ${propertyData.location || 'Unknown'}</p>
               <p class="card-text">Price: KES ${propertyData.price || 'Not available'}</p>
-              <a href="#" 
-                 class="btn btn-success view-details-btn" 
-                 data-id="${key}" 
-                 data-category="${category}" 
-                 data-subcategory="${subcategory}">
-                 View Details
-              </a>
+              <button class="btn btn-success view-details-btn"
+                data-id="${key}" 
+                data-category="${category}" 
+                data-subcategory="${subcategory}">
+                View Details
+              </button>
             </div>
           </div>
         `;
         container.appendChild(propertyCard);
+
+        // Add click event listener to the button
+        const viewDetailsBtn = propertyCard.querySelector('.view-details-btn');
+        viewDetailsBtn.addEventListener('click', () => {
+          navigateToDetails(key, category, subcategory);
+        });
+      }
+
+      function navigateToDetails(propertyId, category, subcategory) {
+        const url = `./detailed-property-listings.html?propertyId=${propertyId}&category=${category}&subcategory=${subcategory}`;
+        window.location.href = url;
       }
 
       function showError(message) {
@@ -109,19 +119,6 @@
         errorMessage.textContent = message;
         errorMessage.classList.remove('d-none');
       }
-
-      // Attach click listeners to View Details buttons dynamically
-      document.addEventListener('click', function (event) {
-        if (event.target.classList.contains('view-details-btn')) {
-          event.preventDefault(); // Prevent page refresh
-          const propertyId = event.target.getAttribute('data-id');
-          const category = event.target.getAttribute('data-category');
-          const subcategory = event.target.getAttribute('data-subcategory');
-
-          // Redirect to detailed property listings page with query parameters
-          window.location.href = `./detailed-property-listings.html?propertyId=${propertyId}&category=${category}&subcategory=${subcategory}`;
-        }
-      });
     </script>
 
     <style>
@@ -195,4 +192,4 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
-  </html>
+</html>
