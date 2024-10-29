@@ -7,11 +7,9 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <script type="module">
-      // Import Firebase SDKs
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
       import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
-      // Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
         authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -22,7 +20,6 @@
         appId: "1:795578734998:web:5a06078443af3bec4ee5b7"
       };
 
-      // Initialize Firebase
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
 
@@ -94,9 +91,9 @@
               <h5 class="card-title">${propertyData.title || 'Untitled Property'}</h5>
               <p class="card-text">Location: ${propertyData.location || 'Unknown'}</p>
               <p class="card-text">Price: KES ${propertyData.price || 'Not available'}</p>
-              <a href="#" class="btn btn-success" onclick="navigateToDetails('${key}', '${category}', '${subcategory}');">
+              <button class="btn btn-success" onclick="navigateToDetails('${key}', '${category}', '${subcategory}');">
                 View Details
-              </a>
+              </button>
             </div>
           </div>
         `;
