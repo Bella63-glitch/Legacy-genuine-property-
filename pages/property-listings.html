@@ -97,7 +97,7 @@
             <h5 class="card-title">${propertyData.title || 'Untitled Property'}</h5>
             <p class="card-text">Location: ${propertyData.location || 'Unknown'}</p>
             <p class="card-text">Price: KES ${propertyData.price || 'Not available'}</p>
-            <a href="pages/detailed-property-listings.html?propertyId=${key}" class="btn btn-success">View Details</a>
+            <a href="./pages/detailed-property-listings.html?propertyId=${key}" class="btn btn-success">View Details</a>
           </div>
         </div>
       `;
@@ -128,7 +128,8 @@
     }
     .property-card img {
       height: 200px;
-      object-fit: cover; /* Ensures images are not squeezed */
+      object-fit: cover; /* Ensure images cover without zooming */
+      width: 100%;
     }
     .btn-success {
       margin-top: 10px;
