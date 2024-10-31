@@ -72,6 +72,9 @@
           <img src="${url}" class="d-block w-100" alt="Property Image">
         </div>
       `).join('');
+
+      // Make property details visible
+      document.getElementById("property-details").classList.remove("d-none");
     }
 
     function showError(message) {
