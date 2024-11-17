@@ -25,24 +25,31 @@
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
 
+      // Fetch properties on page load
       document.addEventListener("DOMContentLoaded", async function () {
         try {
           const { category, subcategory } = getQueryParams();
+          console.log("Category:", category, "Subcategory:", subcategory);
+
           if (!category || !subcategory) {
-            showError('Invalid or missing category or subcategory!');
+            showError("Invalid or missing category or subcategory!");
             return;
           }
 
-          const path = `categories/${category}/${subcategory}/properties`; // Updated path to point to 'properties'
+          const path = `categories/${category}/${subcategory}/properties`;
+          console.log("Fetching path:", path);
+
           const propertiesRef = ref(database, path);
           const snapshot = await get(propertiesRef);
 
-          document.getElementById('loading').classList.add('d-none');
+          document.getElementById("loading").classList.add("d-none");
 
           if (snapshot.exists()) {
             const properties = snapshot.val();
-            const propertiesContainer = document.getElementById('properties-container');
-            propertiesContainer.innerHTML = '';
+            console.log("Fetched Properties:", properties);
+
+            const propertiesContainer = document.getElementById("properties-container");
+            propertiesContainer.innerHTML = "";
 
             Object.entries(properties).forEach(([key, propertyData]) => {
               if (propertyData && propertyData.imageUrl) {
@@ -50,31 +57,33 @@
               }
             });
           } else {
-            showError(`No properties found in the selected category: ${category}, subcategory: ${subcategory}`);
+            showError(`No properties found for category: ${category}, subcategory: ${subcategory}`);
           }
         } catch (error) {
-          console.error('Error fetching properties:', error);
-          showError('Error loading properties: ' + error.message);
+          console.error("Error fetching properties:", error);
+          showError("Error loading properties: " + error.message);
         }
       });
 
+      // Get query parameters from the URL
       function getQueryParams() {
         const urlParams = new URLSearchParams(window.location.search);
         return {
-          category: urlParams.get('category'),
-          subcategory: urlParams.get('subcategory')
+          category: urlParams.get("category"),
+          subcategory: urlParams.get("subcategory"),
         };
       }
 
+      // Render a single property card
       function renderProperty(key, propertyData, container, category, subcategory) {
-        const propertyCard = document.createElement('div');
-        propertyCard.classList.add('col-md-4', 'property-card', 'mb-4');
+        const propertyCard = document.createElement("div");
+        propertyCard.classList.add("col-md-4", "property-card", "mb-4");
         propertyCard.innerHTML = `
           <div class="card">
             <img src="${propertyData.imageUrl}" class="d-block w-100 property-image" alt="Property Image">
             <div class="card-body">
-              <h5 class="card-title">${propertyData.description || 'Untitled Property'}</h5>
-              <p class="card-text">Status: ${propertyData.status || 'Unknown'}</p>
+              <h5 class="card-title">${propertyData.description || "Untitled Property"}</h5>
+              <p class="card-text">Status: ${propertyData.status || "Unknown"}</p>
               <button class="btn btn-success view-details-btn"
                 data-id="${key}" 
                 data-category="${category}" 
@@ -87,22 +96,24 @@
         container.appendChild(propertyCard);
 
         // Add click event listener to the button
-        const viewDetailsBtn = propertyCard.querySelector('.view-details-btn');
-        viewDetailsBtn.addEventListener('click', () => {
+        const viewDetailsBtn = propertyCard.querySelector(".view-details-btn");
+        viewDetailsBtn.addEventListener("click", () => {
           navigateToDetails(key, category, subcategory);
         });
       }
 
+      // Navigate to detailed property page
       function navigateToDetails(propertyId, category, subcategory) {
         const url = `./detailed-property-listings.html?propertyId=${propertyId}&category=${category}&subcategory=${subcategory}`;
         window.location.href = url;
       }
 
+      // Show error messages
       function showError(message) {
-        document.getElementById('loading').classList.add('d-none');
-        const errorMessage = document.getElementById('error-message');
+        document.getElementById("loading").classList.add("d-none");
+        const errorMessage = document.getElementById("error-message");
         errorMessage.textContent = message;
-        errorMessage.classList.remove('d-none');
+        errorMessage.classList.remove("d-none");
       }
     </script>
 
@@ -177,4 +188,4 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
-</html>
+</html/>
