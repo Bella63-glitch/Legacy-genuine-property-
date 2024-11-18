@@ -3,11 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Property Details</title>
+  <title>Property Details - Legacy Genuine Properties</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    header {
+      background-color: #002245;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    header img {
+      height: 50px;
+      margin-right: 10px;
+    }
+    header h1 {
+      font-size: 1.2rem;
+      margin: 0;
+      flex-grow: 1;
+    }
+    main {
+      padding: 20px;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    .property-card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .property-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    footer {
+      background-color: #002245;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+    .contact {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .contact a {
+      color: #002245;
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://i.postimg.cc/P5281PcV/ei-1731930984053-removebg-preview-1.png" alt="Logo">
+    <h1>Legacy Genuine Properties</h1>
+  </header>
+
+  <main>
+    <div id="property-details"></div>
+    <div class="contact">
+      <a href="https://wa.me/254789033037" target="_blank" title="Contact on WhatsApp">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    © 2024 Legacy Genuine Properties. All Rights Reserved.
+  </footer>
+
   <script type="module">
+    // Import the Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
     import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
       authDomain: "legacy-genuine-properties.firebaseapp.com",
@@ -19,128 +106,61 @@
       measurementId: "G-RRZ7M9TW8T"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const propertyId = new URLSearchParams(window.location.search).get("id");
-      const propertyContainer = document.getElementById("property-details");
-      const imagesContainer = document.getElementById("property-images");
+    // Get property ID from URL
+    const params = new URLSearchParams(window.location.search);
+    const propertyId = params.get("id");
 
-      if (propertyId) {
-        const propertyRef = ref(db, `categories`);
-        get(propertyRef)
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              const categories = snapshot.val();
-              let found = false;
+    // DOM elements
+    const propertyDetailsContainer = document.getElementById("property-details");
 
-              for (const category in categories) {
-                if (categories[category][propertyId]) {
-                  found = true;
-                  const property = categories[category][propertyId];
-                  document.getElementById("property-title").textContent = property.title;
-                  document.getElementById("property-location").textContent = property.location;
-                  document.getElementById("property-price").textContent = `KSH ${property.price}`;
-                  document.getElementById("property-type").textContent = category;
-                  document.getElementById("property-status").textContent = property.status;
+    if (!propertyId) {
+      propertyDetailsContainer.innerHTML = `<p class="error">Error: No property ID provided in the URL.</p>`;
+    } else {
+      // Fetch property details from Firebase
+      const propertyRef = ref(db, "categories");
+      get(propertyRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const categories = snapshot.val();
+            let propertyFound = false;
 
-                  if (property.images && property.images.length > 0) {
-                    property.images.forEach((imageUrl) => {
-                      const img = document.createElement("img");
-                      img.src = imageUrl;
-                      img.alt = property.title;
-                      img.className = "slideshow-image";
-                      imagesContainer.appendChild(img);
-                    });
-                  } else {
-                    imagesContainer.innerHTML = "<p>No images available</p>";
-                  }
-                  break;
-                }
+            // Search through categories for the property ID
+            for (const category in categories) {
+              const properties = categories[category];
+              if (properties[propertyId]) {
+                propertyFound = true;
+                const property = properties[propertyId];
+
+                // Populate property details
+                propertyDetailsContainer.innerHTML = `
+                  <div class="property-card">
+                    <h2>${property.title || "Property Title"}</h2>
+                    <p><strong>Location:</strong> ${property.location || "N/A"}</p>
+                    <p><strong>Price:</strong> Ksh ${property.price || "N/A"}</p>
+                    <p><strong>Status:</strong> ${property.status || "N/A"}</p>
+                    ${property.images ? `<img src="${property.images}" alt="${property.title}">` : "<p>No image available.</p>"}
+                  </div>
+                `;
+                break;
               }
-
-              if (!found) {
-                propertyContainer.innerHTML = `<p class="error">Property not found!</p>`;
-              }
-            } else {
-              propertyContainer.innerHTML = `<p class="error">No properties available!</p>`;
             }
-          })
-          .catch((error) => {
-            propertyContainer.innerHTML = `<p class="error">Error loading property details: ${error.message}</p>`;
-          });
-      } else {
-        propertyContainer.innerHTML = `<p class="error">No property ID provided in the URL!</p>`;
-      }
-    });
+
+            if (!propertyFound) {
+              propertyDetailsContainer.innerHTML = `<p class="error">Error: Property not found.</p>`;
+            }
+          } else {
+            propertyDetailsContainer.innerHTML = `<p class="error">Error: No properties found in the database.</p>`;
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching property details:", error);
+          propertyDetailsContainer.innerHTML = `<p class="error">Error loading property details. Please try again later.</p>`;
+        });
+    }
   </script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #002245;
-      color: white;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-    }
-    header img {
-      height: 50px;
-      margin-right: 15px;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 24px;
-      flex-grow: 1;
-      text-align: right;
-    }
-    footer {
-      background-color: #002245;
-      color: white;
-      text-align: center;
-      padding: 10px 0;
-    }
-    .container {
-      padding: 20px;
-    }
-    .slideshow-image {
-      max-width: 100%;
-      margin-bottom: 10px;
-    }
-    .error {
-      color: red;
-    }
-    .whatsapp-icon {
-      margin-top: 20px;
-      display: inline-block;
-      text-decoration: none;
-      background-color: #25d366;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 5px;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <img src="https://i.postimg.cc/P5281PcV/ei-1731930984053-removebg-preview-1.png" alt="Logo">
-    <h1>Legacy Genuine Properties</h1>
-  </header>
-  <div class="container" id="property-details">
-    <h2 id="property-title">Loading...</h2>
-    <p><strong>Location:</strong> <span id="property-location"></span></p>
-    <p><strong>Price:</strong> <span id="property-price"></span></p>
-    <p><strong>Type:</strong> <span id="property-type"></span></p>
-    <p><strong>Status:</strong> <span id="property-status"></span></p>
-    <div id="property-images"></div>
-    <a href="https://wa.me/254789033037" class="whatsapp-icon">WhatsApp Us</a>
-  </div>
-  <footer>
-    <p>© 2024 Legacy Genuine Properties. All Rights Reserved.</p>
-  </footer>
 </body>
 </html>
