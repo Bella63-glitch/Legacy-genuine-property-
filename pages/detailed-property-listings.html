@@ -1,152 +1,138 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Details - Legacy Genuine Properties</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
+    /* Theme colors */
+    body {
+      font-family: Arial, sans-serif;
+      color: #002244;
+      background-color: #f9f9f9;
+    }
 
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-      import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+    .navbar {
+      background-color: #002244;
+      padding: 10px;
+    }
 
-      // Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBFcaYolaeuZ5QRUt5qS9gTFf4GW-LYIZY",
-        authDomain: "legacy-genuine-properties.firebaseapp.com",
-        databaseURL: "https://legacy-genuine-properties-default-rtdb.firebaseio.com",
-        projectId: "legacy-genuine-properties",
-        storageBucket: "legacy-genuine-properties.appspot.com",
-        messagingSenderId: "795578734998",
-        appId: "1:795578734998:web:5a06078443af3bec4ee5b7",
-      };
+    .navbar-brand img {
+      height: 40px;
+    }
 
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const database = getDatabase(app);
+    .navbar .navbar-text {
+      color: white;
+      font-size: 18px;
+      margin-left: 10px;
+    }
 
-      // Fetch property details on page load
-      document.addEventListener("DOMContentLoaded", async function () {
-        try {
-          const { propertyId, category, subcategory } = getQueryParams();
+    .property-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
 
-          if (!propertyId || !category || !subcategory) {
-            showError("Invalid or missing property ID, category, or subcategory!");
-            return;
-          }
+    .property-location {
+      color: #555;
+    }
 
-          const propertyRef = ref(database, `categories/${category}/${subcategory}/${propertyId}`);
-          const snapshot = await get(propertyRef);
+    .carousel img {
+      height: 400px;
+      object-fit: cover;
+      width: 100%;
+    }
 
-          document.getElementById("loading").classList.add("d-none");
+    .property-card {
+      background-color: white;
+      border: 1px solid #e6e6e6;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
 
-          if (snapshot.exists()) {
-            const property = snapshot.val();
-            renderPropertyDetails(property);
-          } else {
-            showError(`Property not found!`);
-          }
-        } catch (error) {
-          console.error("Error fetching property details:", error);
-          showError("Error loading property details: " + error.message);
-        }
-      });
+    .card-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
-      // Get query parameters from the URL
-      function getQueryParams() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return {
-          propertyId: urlParams.get("propertyId"),
-          category: urlParams.get("category"),
-          subcategory: urlParams.get("subcategory"),
-        };
-      }
+    .card-details {
+      font-size: 16px;
+      color: #444;
+    }
 
-      // Render property details on the page
-      function renderPropertyDetails(property) {
-        const container = document.getElementById("property-details");
-        container.innerHTML = `
-          <h1>${property.title || "Untitled Property"}</h1>
-          <div class="row">
-            <div class="col-md-6">
-              <img src="${property.images[0]}" alt="Property Image" class="img-fluid mb-3">
-            </div>
-            <div class="col-md-6">
-              <p><strong>Status:</strong> ${property.status || "Unknown"}</p>
-              <p><strong>Price:</strong> ${property.price || "N/A"}</p>
-              <p><strong>Location:</strong> ${property.location || "Unknown"}</p>
-              <p><strong>Description:</strong> ${property.description || "No description available."}</p>
-            </div>
-          </div>
-        `;
-      }
+    .price {
+      color: green;
+      font-size: 22px;
+      font-weight: bold;
+    }
 
-      // Show error messages
-      function showError(message) {
-        document.getElementById("loading").classList.add("d-none");
-        const errorMessage = document.getElementById("error-message");
-        errorMessage.textContent = message;
-        errorMessage.classList.remove("d-none");
-      }
-    </script>
+    footer {
+      background-color: #002244;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="#">
+      <img src="https://i.postimg.cc/5twPJNcf/ei-1731930984053-removebg-preview-1.png" alt="Legacy Genuine Properties Logo">
+    </a>
+    <span class="navbar-text">Legacy Genuine Properties</span>
+  </nav>
 
-    <style>
-      body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f8f9fa;
-      }
-      .navbar {
-        background-color: #002244;
-      }
-      .navbar-brand img {
-        width: 150px;
-      }
-      .navbar-nav .nav-link {
-        color: white;
-      }
-      footer {
-        background-color: #002244;
-        color: white;
-        text-align: center;
-        padding: 10px 0;
-      }
-    </style>
-  </head>
+  <div class="container">
+    <!-- Property Title -->
+    <h1 class="property-title">Elegant and Modern Moroccan Themed Villa</h1>
+    <p class="property-location">Mukoma Road, Nairobi, Kenya</p>
 
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">
-          <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="category.html">Categories</a></li>
-            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-          </ul>
+    <!-- Image Carousel -->
+    <div id="propertyCarousel" class="carousel slide mt-4" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="image1.jpg" class="d-block w-100" alt="Property Image">
+        </div>
+        <div class="carousel-item">
+          <img src="image2.jpg" class="d-block w-100" alt="Property Image">
+        </div>
+        <div class="carousel-item">
+          <img src="image3.jpg" class="d-block w-100" alt="Property Image">
         </div>
       </div>
-    </nav>
-
-    <div class="container my-5">
-      <div id="loading" class="text-center">
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-      <div id="error-message" class="alert alert-danger d-none"></div>
-      <div id="property-details"></div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
 
-    <footer>
-      <p>© 2024 Legacy Genuine Properties. All Rights Reserved.</p>
-    </footer>
+    <!-- Property Details Card -->
+    <div class="property-card mt-4">
+      <h2 class="card-title">Property Details</h2>
+      <div class="card-details">
+        <p><strong>Price:</strong> <span class="price">Ksh 4,450</span></p>
+        <p><strong>Property Type:</strong> Shared Plot</p>
+        <p><strong>Property Status:</strong> For Rent</p>
+        <p><strong>Location:</strong> Mukoma Road, Nairobi, Kenya</p>
+      </div>
+    </div>
+  </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+  <!-- Footer -->
+  <footer>
+    © 2024 Legacy Genuine Properties. All Rights Reserved.
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
