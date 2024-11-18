@@ -1,9 +1,3 @@
-
-
-
-
-
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -31,34 +25,27 @@
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
 
-      // Fetch property details on page load
       document.addEventListener("DOMContentLoaded", async function () {
-        try {
-          const { propertyId, category, subcategory } = getQueryParams();
+        const { propertyId, category, subcategory } = getQueryParams();
 
-          if (!propertyId || !category || !subcategory) {
-            showError("Invalid or missing property ID, category, or subcategory!");
-            return;
-          }
+        if (!propertyId || !category || !subcategory) {
+          showError("Invalid or missing property details!");
+          return;
+        }
 
-          const propertyRef = ref(database, `categories/${category}/${subcategory}/${propertyId}`);
-          const snapshot = await get(propertyRef);
+        const propertyRef = ref(database, `categories/${category}/${subcategory}/${propertyId}`);
+        const snapshot = await get(propertyRef);
 
-          document.getElementById("loading").classList.add("d-none");
+        document.getElementById("loading").classList.add("d-none");
 
-          if (snapshot.exists()) {
-            const property = snapshot.val();
-            renderPropertyDetails(property);
-          } else {
-            showError(`Property not found!`);
-          }
-        } catch (error) {
-          console.error("Error fetching property details:", error);
-          showError("Error loading property details: " + error.message);
+        if (snapshot.exists()) {
+          const property = snapshot.val();
+          renderPropertyDetails(property);
+        } else {
+          showError("Property not found!");
         }
       });
 
-      // Get query parameters from the URL
       function getQueryParams() {
         const urlParams = new URLSearchParams(window.location.search);
         return {
@@ -68,31 +55,38 @@
         };
       }
 
-      // Render property details on the page
       function renderPropertyDetails(property) {
         const container = document.getElementById("property-details");
+        let thumbnails = property.images.map((image, index) => `
+          <img src="${image}" class="thumbnail" alt="Thumbnail ${index}" onclick="changeMainImage('${image}')">
+        `).join("");
+
         container.innerHTML = `
           <h1>${property.title || "Untitled Property"}</h1>
-          <div class="row">
-            <div class="col-md-6">
-              <img src="${property.images[0]}" alt="Property Image" class="img-fluid mb-3">
-            </div>
-            <div class="col-md-6">
-              <p><strong>Status:</strong> ${property.status || "Unknown"}</p>
-              <p><strong>Price:</strong> Ksh ${property.price || "N/A"}</p>
-              <p><strong>Location:</strong> ${property.location || "Unknown"}</p>
-              <p><strong>Description:</strong> ${property.description || "No description available."}</p>
-            </div>
+          <div class="main-image">
+            <img id="main-image" src="${property.images[0]}" alt="Main Image" class="img-fluid mb-3">
+          </div>
+          <div class="thumbnails">
+            ${thumbnails}
+          </div>
+          <div class="property-info">
+            <p><strong>Status:</strong> ${property.status || "Unknown"}</p>
+            <p><strong>Price:</strong> Ksh ${property.price || "N/A"}</p>
+            <p><strong>Location:</strong> ${property.location || "Unknown"}</p>
+            <p><strong>Description:</strong> ${property.description || "No description available."}</p>
           </div>
         `;
       }
 
-      // Show error messages
       function showError(message) {
         document.getElementById("loading").classList.add("d-none");
         const errorMessage = document.getElementById("error-message");
         errorMessage.textContent = message;
         errorMessage.classList.remove("d-none");
+      }
+
+      function changeMainImage(image) {
+        document.getElementById("main-image").src = image;
       }
     </script>
 
@@ -101,43 +95,34 @@
         font-family: 'Poppins', sans-serif;
         background-color: #f8f9fa;
       }
-      .navbar {
-        background-color: #002244;
+      .main-image img {
+        width: 100%;
+        max-height: 450px;
+        object-fit: cover;
       }
-      .navbar-brand img {
-        width: 150px;
+      .thumbnails {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
       }
-      .navbar-nav .nav-link {
-        color: white;
+      .thumbnails .thumbnail {
+        width: 100px;
+        height: 80px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.3s ease;
       }
-      footer {
-        background-color: #002244;
-        color: white;
-        text-align: center;
-        padding: 10px 0;
+      .thumbnails .thumbnail:hover {
+        border-color: #002244;
+      }
+      .property-info {
+        margin-top: 20px;
       }
     </style>
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">
-          <img src="https://i.postimg.cc/5twPJNcf/ei-1731930984053-removebg-preview-1.png" alt="Legacy Genuine Properties Logo">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="category.html">Categories</a></li>
-            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
     <div class="container my-5">
       <div id="loading" class="text-center">
         <div class="spinner-border" role="status">
