@@ -41,7 +41,7 @@
 
         if (snapshot.exists()) {
           const propertyData = snapshot.val();
-          renderPropertyDetails(propertyData);
+          renderPropertyDetails(propertyData, category);
         } else {
           showError("Property details not found.");
         }
@@ -60,11 +60,12 @@
       };
     }
 
-    function renderPropertyDetails(propertyData) {
+    function renderPropertyDetails(propertyData, category) {
       document.getElementById("property-title").textContent = propertyData.title || "Untitled Property";
       document.getElementById("property-location").textContent = propertyData.location || "Unknown";
-      document.getElementById("property-price").textContent = "USD " + (propertyData.price || "Not available");
+      document.getElementById("property-price").textContent = "KSH " + (propertyData.price || "Not available");
       document.getElementById("property-description").textContent = propertyData.description || "No description available.";
+      document.getElementById("property-type").textContent = category || "Unknown";
 
       const carouselInner = document.getElementById("property-images");
       if (propertyData.imageUrls && propertyData.imageUrls.length) {
@@ -80,13 +81,6 @@
           </div>
         `;
       }
-
-      // Render other details
-      document.getElementById("property-type").textContent = propertyData.type || "N/A";
-      document.getElementById("property-bedrooms").textContent = propertyData.bedrooms || "N/A";
-      document.getElementById("property-bathrooms").textContent = propertyData.bathrooms || "N/A";
-      document.getElementById("property-year").textContent = propertyData.yearBuilt || "N/A";
-      document.getElementById("property-status").textContent = propertyData.status || "N/A";
 
       document.getElementById("property-details").classList.remove("d-none");
     }
@@ -182,10 +176,6 @@
       <!-- Overview -->
       <div class="property-overview mb-4">
         <p><strong>Property Type:</strong> <span id="property-type"></span></p>
-        <p><strong>Bedrooms:</strong> <span id="property-bedrooms"></span></p>
-        <p><strong>Bathrooms:</strong> <span id="property-bathrooms"></span></p>
-        <p><strong>Year Built:</strong> <span id="property-year"></span></p>
-        <p><strong>Status:</strong> <span id="property-status"></span></p>
       </div>
 
       <div>
@@ -203,4 +193,3 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
