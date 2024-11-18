@@ -24,7 +24,7 @@
       margin-right: 10px;
     }
     header h1 {
-      font-size: 1.2rem;
+      font-size: 1rem;
       margin: 0;
       flex-grow: 1;
     }
@@ -120,33 +120,40 @@
     if (!propertyId) {
       propertyDetailsContainer.innerHTML = `<p class="error">Error: No property ID provided in the URL.</p>`;
     } else {
-      // Fetch property details from Firebase
-      const propertyRef = ref(db, "categories");
-      get(propertyRef)
+      // Fetch categories
+      const categoriesRef = ref(db, "categories");
+      get(categoriesRef)
         .then((snapshot) => {
           if (snapshot.exists()) {
             const categories = snapshot.val();
             let propertyFound = false;
 
-            // Search through categories for the property ID
+            // Loop through all categories and subcategories
             for (const category in categories) {
-              const properties = categories[category];
-              if (properties[propertyId]) {
-                propertyFound = true;
-                const property = properties[propertyId];
+              const subcategories = categories[category];
+              for (const subcategory in subcategories) {
+                const properties = subcategories[subcategory];
+                for (const key in properties) {
+                  if (key === propertyId) {
+                    propertyFound = true;
+                    const property = properties[key];
 
-                // Populate property details
-                propertyDetailsContainer.innerHTML = `
-                  <div class="property-card">
-                    <h2>${property.title || "Property Title"}</h2>
-                    <p><strong>Location:</strong> ${property.location || "N/A"}</p>
-                    <p><strong>Price:</strong> Ksh ${property.price || "N/A"}</p>
-                    <p><strong>Status:</strong> ${property.status || "N/A"}</p>
-                    ${property.images ? `<img src="${property.images}" alt="${property.title}">` : "<p>No image available.</p>"}
-                  </div>
-                `;
-                break;
+                    // Populate property details
+                    propertyDetailsContainer.innerHTML = `
+                      <div class="property-card">
+                        <h2>${property.title || "Property Title"}</h2>
+                        <p><strong>Location:</strong> ${property.location || "N/A"}</p>
+                        <p><strong>Price:</strong> Ksh ${property.price || "N/A"}</p>
+                        <p><strong>Status:</strong> ${property.status || "N/A"}</p>
+                        ${property.images ? `<img src="${property.images}" alt="${property.title}">` : "<p>No image available.</p>"}
+                      </div>
+                    `;
+                    break;
+                  }
+                }
+                if (propertyFound) break;
               }
+              if (propertyFound) break;
             }
 
             if (!propertyFound) {
