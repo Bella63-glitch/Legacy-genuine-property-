@@ -62,8 +62,8 @@
 
     function renderPropertyDetails(propertyData) {
       document.getElementById("property-title").textContent = propertyData.title || "Untitled Property";
-      document.getElementById("property-location").textContent = "Location: " + (propertyData.location || "Unknown");
-      document.getElementById("property-price").textContent = "Price: KES " + (propertyData.price || "Not available");
+      document.getElementById("property-location").textContent = propertyData.location || "Unknown";
+      document.getElementById("property-price").textContent = "USD " + (propertyData.price || "Not available");
       document.getElementById("property-description").textContent = propertyData.description || "No description available.";
 
       const carouselInner = document.getElementById("property-images");
@@ -73,7 +73,13 @@
         </div>
       `).join('');
 
-      // Make property details visible
+      // Render other details
+      document.getElementById("property-type").textContent = propertyData.type || "N/A";
+      document.getElementById("property-bedrooms").textContent = propertyData.bedrooms || "N/A";
+      document.getElementById("property-bathrooms").textContent = propertyData.bathrooms || "N/A";
+      document.getElementById("property-year").textContent = propertyData.yearBuilt || "N/A";
+      document.getElementById("property-status").textContent = propertyData.status || "N/A";
+
       document.getElementById("property-details").classList.remove("d-none");
     }
 
@@ -90,28 +96,43 @@
       font-family: 'Poppins', sans-serif;
       background-color: #f8f9fa;
     }
-    .navbar {
-      background-color: #002244;
+    .property-title {
+      font-size: 1.75rem;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
-    .navbar-brand img {
-      width: 150px;
+    .property-location {
+      font-size: 1rem;
+      color: #666;
     }
-    .navbar-nav .nav-link {
-      color: white;
+    .property-price {
+      font-size: 1.5rem;
+      color: #007bff;
+      font-weight: bold;
+      margin-bottom: 20px;
     }
-    .carousel-item img {
+    .carousel-inner img {
       height: 400px;
       object-fit: cover;
     }
-    .spinner-border {
-      width: 3rem;
-      height: 3rem;
+    .property-overview, .property-details {
+      font-size: 0.9rem;
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ddd;
     }
     footer {
       background-color: #002244;
       color: white;
       text-align: center;
       padding: 10px 0;
+    }
+    nav.navbar {
+      background-color: #0056b3 !important; /* Theme blue color */
+    }
+    .navbar-brand img {
+      height: 40px;
+      margin-right: 10px;
     }
   </style>
 </head>
@@ -120,18 +141,8 @@
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
       <a class="navbar-brand" href="index.html">
-        <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo">
+        <img src="https://i.postimg.cc/yYqntZkJ/IMG-20241118-144958.jpg" alt="Logo"> Legacy Genuine Properties
       </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="category.html">Categories</a></li>
-          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-        </ul>
-      </div>
     </div>
   </nav>
 
@@ -144,11 +155,11 @@
     <div id="error-message" class="alert alert-danger d-none"></div>
 
     <div id="property-details" class="d-none">
-      <h2 id="property-title"></h2>
-      <div id="property-location" class="mb-3"></div>
-      <div id="property-price" class="mb-3"></div>
-      <div id="property-description" class="mb-3"></div>
+      <h1 id="property-title" class="property-title"></h1>
+      <p id="property-location" class="property-location"></p>
+      <p id="property-price" class="property-price"></p>
 
+      <!-- Carousel -->
       <div id="property-carousel" class="carousel slide mb-4" data-ride="carousel">
         <div id="property-images" class="carousel-inner"></div>
         <a class="carousel-control-prev" href="#property-carousel" role="button" data-slide="prev">
@@ -159,6 +170,20 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="sr-only">Next</span>
         </a>
+      </div>
+
+      <!-- Overview -->
+      <div class="property-overview mb-4">
+        <p><strong>Property Type:</strong> <span id="property-type"></span></p>
+        <p><strong>Bedrooms:</strong> <span id="property-bedrooms"></span></p>
+        <p><strong>Bathrooms:</strong> <span id="property-bathrooms"></span></p>
+        <p><strong>Year Built:</strong> <span id="property-year"></span></p>
+        <p><strong>Status:</strong> <span id="property-status"></span></p>
+      </div>
+
+      <div>
+        <h3>Description</h3>
+        <p id="property-description"></p>
       </div>
     </div>
   </div>
