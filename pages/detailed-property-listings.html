@@ -63,13 +63,13 @@
 
         container.innerHTML = `
           <h1>${property.title || "Untitled Property"}</h1>
-          <div class="main-image">
-            <img id="main-image" src="${property.images[0]}" alt="Main Image" class="img-fluid mb-3">
+          <div class="main-image mb-3">
+            <img id="main-image" src="${property.images[0]}" alt="Main Image" class="img-fluid">
           </div>
           <div class="thumbnails">
             ${thumbnails}
           </div>
-          <div class="property-info">
+          <div class="property-info mt-3">
             <p><strong>Status:</strong> ${property.status || "Unknown"}</p>
             <p><strong>Price:</strong> Ksh ${property.price || "N/A"}</p>
             <p><strong>Location:</strong> ${property.location || "Unknown"}</p>
@@ -97,17 +97,18 @@
       }
       .main-image img {
         width: 100%;
-        max-height: 450px;
+        max-height: 350px;
         object-fit: cover;
       }
       .thumbnails {
         display: flex;
         gap: 10px;
         margin-top: 10px;
+        overflow-x: auto;
       }
       .thumbnails .thumbnail {
-        width: 100px;
-        height: 80px;
+        width: 80px;
+        height: 60px;
         object-fit: cover;
         cursor: pointer;
         border: 2px solid transparent;
@@ -119,10 +120,26 @@
       .property-info {
         margin-top: 20px;
       }
+      header, footer {
+        background-color: #002244;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+      }
+      header img {
+        height: 50px;
+      }
+      footer {
+        font-size: 14px;
+      }
     </style>
   </head>
 
   <body>
+    <header>
+      <img src="https://i.postimg.cc/5twPJNcf/ei-1731930984053-removebg-preview-1.png" alt="Legacy Genuine Properties Logo">
+    </header>
+
     <div class="container my-5">
       <div id="loading" class="text-center">
         <div class="spinner-border" role="status">
@@ -140,4 +157,4 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
-</html>
+</html/>
