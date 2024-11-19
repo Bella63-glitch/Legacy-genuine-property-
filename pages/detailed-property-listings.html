@@ -40,6 +40,7 @@
 
         if (snapshot.exists()) {
           const property = snapshot.val();
+          console.log(property); // Log the property data to check if the description exists
           renderPropertyDetails(property);
         } else {
           showError("Property not found!");
@@ -89,6 +90,7 @@
       }
 
       function changeMainImage(image) {
+        console.log("Changing image to: ", image); // Log to verify if the function is being called
         document.getElementById("main-image").src = image;
       }
     </script>
