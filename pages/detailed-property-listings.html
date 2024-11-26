@@ -60,6 +60,11 @@
         };
       }
 
+      function formatPrice(price) {
+        if (isNaN(price)) return price;
+        return Number(price).toLocaleString();
+      }
+
       function renderPropertyDetails(property) {
         const container = document.getElementById("property-details");
         const thumbnails = property.images.map((image, index) => `
@@ -84,7 +89,7 @@
           </div>
           <div class="property-info mt-3">
             <p><strong>Status:</strong> ${property.status || "Unknown"}</p>
-            <p><strong>Price:</strong> Ksh ${property.price || "N/A"}</p>
+            <p><strong>Price:</strong> Ksh ${formatPrice(property.price) || "N/A"}</p>
             <p><strong>Location:</strong> ${property.location || "Unknown"}</p>
             <p><strong>Description:</strong></p>
             ${formattedDescription}
