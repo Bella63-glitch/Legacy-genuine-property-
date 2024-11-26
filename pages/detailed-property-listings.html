@@ -77,7 +77,7 @@
         container.innerHTML = `
           <h1>${property.title || "Untitled Property"}</h1>
           <div class="main-image mb-3">
-            <img id="main-image" src="${property.images[0]}" alt="Main Image" class="img-fluid" onclick="openFullscreenModal('${property.images[0]}')" style="cursor: pointer;">
+            <img id="main-image" src="${property.images[0]}" alt="Main Image" class="img-fluid" onclick="openFullscreenModal()" style="cursor: pointer;">
           </div>
           <div class="thumbnails">
             ${thumbnails}
@@ -108,12 +108,14 @@
       }
 
       window.changeMainImage = function (image) {
-        document.getElementById("main-image").src = image;
+        const mainImage = document.getElementById("main-image");
+        mainImage.src = image;
       };
 
-      window.openFullscreenModal = function (image) {
+      window.openFullscreenModal = function () {
+        const mainImage = document.getElementById("main-image");
         const modalImage = document.getElementById("modal-image");
-        modalImage.src = image;
+        modalImage.src = mainImage.src;
         $('#fullscreenModal').modal('show');
       };
     </script>
