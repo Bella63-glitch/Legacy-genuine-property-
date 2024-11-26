@@ -69,6 +69,11 @@
         const youtubeLink = property.youtube ? 
           `<p><strong>Video Tour:</strong> <a href="${property.youtube}" target="_blank">Watch Video</a></p>` : "";
 
+        // Format description into paragraphs
+        const formattedDescription = property.description
+          ? property.description.split('\n').map(paragraph => `<p>${paragraph}</p>`).join("")
+          : "No description available.";
+
         container.innerHTML = `
           <h1>${property.title || "Untitled Property"}</h1>
           <div class="main-image mb-3">
@@ -81,8 +86,16 @@
             <p><strong>Status:</strong> ${property.status || "Unknown"}</p>
             <p><strong>Price:</strong> Ksh ${property.price || "N/A"}</p>
             <p><strong>Location:</strong> ${property.location || "Unknown"}</p>
-            <p><strong>Description:</strong> ${property.description || "No description available."}</p>
+            <p><strong>Description:</strong></p>
+            ${formattedDescription}
             ${youtubeLink}
+          </div>
+          <div class="talk-to-us mt-4">
+            <h5>Talk to Us</h5>
+            <a href="https://wa.me/254789033037" target="_blank" class="btn btn-success mt-2">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon" style="width: 20px; height: 20px; margin-right: 5px;">
+              Chat on WhatsApp
+            </a>
           </div>
         `;
       }
@@ -128,6 +141,19 @@
       }
       .property-info {
         margin-top: 20px;
+      }
+      .talk-to-us h5 {
+        color: #002244;
+      }
+      .talk-to-us .btn-success {
+        display: flex;
+        align-items: center;
+        background-color: #25D366;
+        border-color: #25D366;
+      }
+      .talk-to-us .btn-success:hover {
+        background-color: #1C9E4A;
+        border-color: #1C9E4A;
       }
       header, footer {
         background-color: #002244;
