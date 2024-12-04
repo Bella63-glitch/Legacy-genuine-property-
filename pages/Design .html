@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Design Studio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #002244;
+            padding: 10px 0;
+            text-align: center;
+            color: white;
+        }
+
+        header img {
+            width: 150px;
+            height: auto;
+        }
+
+        .hero-section {
+            position: relative;
+            background-image: url('https://i.postimg.cc/pXnyGZDb/604ecc77bd5f204aec146900c557b554.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-section h1,
+        .hero-section p {
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .hero-section p {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .hero-section .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+        }
+
+        .cta-button {
+            background-color: green;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-size: 1.2em;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background-color: darkgreen;
+        }
+
+        section {
+            padding: 40px;
+            text-align: center;
+            background-color: white;
+            margin-top: 20px;
+        }
+
+        h2 {
+            color: #002244;
+        }
+
+        /* Card Container */
+        .card-container {
+            display: flex;
+            flex-direction: column; /* Stack cards vertically */
+            gap: 20px;
+            margin-top: 40px;
+            align-items: center;
+        }
+
+        /* Cards Styling */
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            color: #333;
+            opacity: 0; /* Initial state: invisible */
+            transform: translateY(50px); /* Move down initially */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            width: 80%; /* Ensure the cards take up most of the screen width */
+            max-width: 800px; /* Max width for larger screens */
+        }
+
+        .card h3 {
+            color: #002244;
+            font-size: 1.5em;
+        }
+
+        .card p {
+            font-size: 1.1em;
+            line-height: 1.6em;
+            color: #555;
+        }
+
+        /* Animation when card is in view */
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0); /* Slide up to the original position */
+        }
+
+        footer {
+            background-color: #002244;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <img src="https://i.postimg.cc/KvmzDMZx/IMG-20241203-125044.png" alt="Design Studio Logo">
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>Transform Your Space with Expert Design</h1>
+            <p>Our professional design services will bring your vision to life, creating spaces that inspire.</p>
+            <a href="https://wa.me/254789033037" class="cta-button">Book Consultation</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section>
+        <h2>Our Design Process</h2>
+        <p>Whether you're building a new space or renovating an existing one, our design process ensures a smooth and professional journey from start to finish. Here's how we do it:</p>
+
+        <div class="card-container">
+            <div class="card">
+                <h3>1. Programming: Needs &amp; Dreams</h3>
+                <p>This is our initial meeting, where we discuss your goals and dreams for the space. We’ll create a detailed design brief that captures your vision and the style you want. We also assess the site to consider factors like views, sunlight, and layout.</p>
+            </div>
+
+            <div class="card">
+                <h3>2. Schematic Design: Foundations &amp; Flow</h3>
+                <p>During this phase, we prepare initial floor plans, focusing on room sizes, flow, and window placement. We aim to make sure the design works well with the site and fits your needs.</p>
+            </div>
+
+            <div class="card">
+                <h3>3. Design Development: Decisions &amp; Details</h3>
+                <p>Here, we refine the design by finalizing exterior and interior details such as finishes, cabinetry, and layout. We’ll also review lighting and other essential elements.</p>
+            </div>
+
+            <div class="card">
+                <h3>4. Contract Documents: Specs &amp; Drawings</h3>
+                <p>We’ll create detailed construction drawings and specifications for the project. These ensure that everyone from the builder to the contractor understands how to bring the design to life.</p>
+            </div>
+
+            <div class="card">
+                <h3>5. Tender: Bids &amp; Builders</h3>
+                <p>We will assist in the contractor selection process, review bids, and ensure that the chosen builder aligns with your project’s vision and budget.</p>
+            </div>
+
+            <div class="card">
+                <h3>6. Project Administration: Questions &amp; Answers</h3>
+                <p>Throughout the construction phase, we’ll be there to answer any questions, make adjustments, and ensure the project stays on track. Our involvement continues until completion, ensuring everything is up to standard.</p>
+            </div>
+        </div>
+
+        <h2>Book a Free Consultation</h2>
+        <p>We’d love to discuss your project and how we can help bring your vision to life. Click the button below to book a consultation with our design team:</p>
+        <a href="https://wa.me/254789033037" class="cta-button">Book Consultation</a>
+    </section>
+
+    <footer>
+        <p>© 2024 Your Design Studio. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to detect when the card enters the viewport
+        const cards = document.querySelectorAll('.card');
+
+        function checkVisibility() {
+            cards.forEach(card => {
+                const cardPosition = card.getBoundingClientRect();
+                if (cardPosition.top < window.innerHeight && cardPosition.bottom >= 0) {
+                    card.classList.add('visible');
+                }
+            });
+        }
+
+        // Listen for scroll event and check visibility
+        window.addEventListener('scroll', checkVisibility);
+
+        // Initial check in case the page is already scrolled
+        checkVisibility();
+    </script>
+
+
+
+</body></html>
