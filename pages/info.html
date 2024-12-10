@@ -1,108 +1,296 @@
 <!doctype html>
-<html lang="en"> 
- <head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Building and Construction Info</title> 
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> 
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building and Construction Info</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
-      .bg-dark-blue {
-        background-color: #002250 !important;
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    /* Gradient Header */
+    header {
+      background: linear-gradient(135deg, #004e92, #000428);
+      color: white;
+      padding: 50px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    header p {
+      margin: 10px 0 0;
+      font-size: 1.2rem;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: #f4f4f9;
+      border-top-left-radius: 50% 20px;
+      border-top-right-radius: 50% 20px;
+    }
+
+    /* Intro Section */
+    .intro {
+      text-align: center;
+      padding: 50px 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+    }
+
+    .intro h2 {
+      font-size: 2.5rem;
+      color: #004e92;
+      margin-bottom: 20px;
+    }
+
+    .intro p {
+      font-size: 1.2rem;
+      color: #555;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Image Section */
+    .image-section {
+      text-align: center;
+      margin: 50px 0;
+    }
+
+    .image-section img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Gradient Process Section */
+    .process {
+      padding: 50px 20px;
+    }
+
+    .process h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #004e92;
+      margin-bottom: 40px;
+    }
+
+    .process .step-card {
+      background: linear-gradient(135deg, #004e92, #000428); /* Gradient background */
+      border: none;
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+      color: white; /* White text */
+      opacity: 0;
+      transform: translateY(20px);
+      animation: bounceInUp 1s forwards;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .process .step-card:nth-child(1) {
+      animation-delay: 0.2s;
+    }
+
+    .process .step-card:nth-child(2) {
+      animation-delay: 0.4s;
+    }
+
+    .process .step-card:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+
+    .process .step-card:nth-child(4) {
+      animation-delay: 0.8s;
+    }
+
+    .process .step-card:nth-child(5) {
+      animation-delay: 1s;
+    }
+
+    .process .step-card:nth-child(6) {
+      animation-delay: 1.2s;
+    }
+
+    .process .step-card h5 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .process .step-card p {
+      font-size: 1rem;
+    }
+
+    .process .row {
+      gap: 30px;
+    }
+
+    /* Contact Section */
+    .contact {
+      background: #27A844; /* New green color */
+      color: black; /* Text color set to black */
+      padding: 20px 20px;
+      text-align: center;
+      border-top-left-radius: 50px; /* Curve at the top */
+      border-top-right-radius: 50px; /* Curve at the top */
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+    }
+
+    .contact h2 {
+      font-size: 1.5rem; /* Smaller heading */
+      margin-bottom: 10px;
+    }
+
+    .contact p {
+      font-size: 0.9rem; /* Smaller text */
+      margin-bottom: 10px;
+    }
+
+    .contact a {
+      color: black; /* Text color set to black */
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem; /* Adjusted font size */
+    }
+
+    .contact a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #002250;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
-      .text-white {
-        color: white !important;
+    }
+
+    @keyframes bounceInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
       }
-      .section-title {
-        text-align: center;
-        margin-bottom: 30px;
-        color: #002250;
+      50% {
+        opacity: 1;
+        transform: translateY(-10px);
       }
-      .whatsapp-icon {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #25D366;
-        color: white;
-        border-radius: 50%;
-        padding: 15px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-        z-index: 1000;
+      100% {
+        opacity: 1;
+        transform: translateY(0);
       }
-      .whatsapp-icon:hover {
-        background-color: #128C7E;
-        color: white;
-      }
-      footer {
-        margin-top: 40px;
-      }
-    </style> 
- </head> 
- <body> 
-  <!-- Header --> 
-  <header class="bg-dark-blue text-white py-3"> 
-   <div class="container d-flex justify-content-between align-items-center"> 
-    <a class="navbar-brand" href="index.html"> 
-      <img src="https://i.postimg.cc/Bvdrr3NZ/IMG-20240817-175902.png" alt="Logo" width="120"> 
-    </a> 
-   </div> 
-  </header> 
-  <!-- Main Content Section --> 
-  <section class="py-5"> 
-   <div class="container"> 
-    <h1 class="section-title">Building and Construction Process</h1> 
-    <div class="row"> 
-     <div class="col-md-12"> 
-      <div class="mb-4"> <i class="fas fa-lightbulb text-primary mr-2"></i> <strong>Project Concept and Initiation:</strong> 
-       <p>A client has an idea and calls in consultants to see what’s possible. This initial stage sets the foundation for the entire construction process.</p> 
-      </div> 
-      <div class="mb-4"> <i class="fas fa-pencil-ruler text-success mr-2"></i> <strong>Design and Planning:</strong> 
-       <p>Consultants begin designing and planning the structure, selecting materials, and estimating costs. This may include a 3D visualization of the design. Consultants award the project to the best contractors for the job, following a tender process.</p> 
-      </div> 
-      <div class="mb-4"> <i class="fas fa-mountain text-danger mr-2"></i> <strong>Geo Technical and Earthworks:</strong> 
-       <p>Soil mechanics and rock mechanics investigate the conditions of the grounds where the structure will be placed to ensure it is safe and suitable.</p> 
-      </div> 
-      <div class="mb-4"> <i class="fas fa-building text-warning mr-2"></i> <strong>Demolition and Deconstruction:</strong> 
-       <p>Sometimes, demolition of a previous structure must be carried out before construction begins. This work is done by trained demolition operatives.</p> 
-      </div> 
-      <div class="mb-4"> <i class="fas fa-archway text-info mr-2"></i> <strong>Substructure and Superstructure:</strong> 
-       <p>The substructure is the part of the building under the ground, while the superstructure is everything above ground. Engineers calculate stress loads and determine the best materials for support beams and foundations.</p> 
-      </div> 
-      <div class="mb-4"> <i class="fas fa-water text-primary mr-2"></i> <strong>Drainage &amp; Utilities:</strong> 
-       <p>These systems ensure the building is safe for its intended purpose and the environment. Drainage engineers design systems to drain water and sewage correctly and safely.</p> 
-      </div> 
-      <div class="mb-4"> <i class="fas fa-hammer text-secondary mr-2"></i> <strong>Construction:</strong> 
-       <p>This stage involves building work such as brickwork, electrics, and cladding, once safety and efficiency are confirmed.</p> 
-      </div> 
-      <div class="mb-4"> <i class="fas fa-paint-roller text-success mr-2"></i> <strong>Fixings &amp; Finish:</strong> 
-       <p>After the exterior is complete, interior work like painting, decorating, and fitting bathrooms and kitchens begins.</p> 
-      </div> 
-      <div class="mb-4"> <i class="fas fa-cogs text-danger mr-2"></i> <strong>Operation, Repair, Maintenance &amp; Management:</strong> 
-       <p>The building’s operation is tested to ensure it is fit for purpose. Ongoing maintenance and management keep the building safe and efficient.</p> 
-      </div> 
-     </div> 
-    </div> 
-   </div> 
-  </section> 
-  <!-- Contact Us Section --> 
-  <section class="py-5 bg-light"> 
-   <div class="container"> 
-    <h2 class="section-title">Contact Us</h2> 
-    <p class="text-center"> Reach us via WhatsApp: <a href="https://wa.me/254789033037" class="text-success">+254 789 033 037</a> </p> 
-   </div> 
-  </section> 
-  <!-- WhatsApp Icon --> 
-  <a href="https://wa.me/254789033037" class="whatsapp-icon"> 
-    <i class="fab fa-whatsapp fa-2x"></i> 
-  </a> 
-  <!-- Footer --> 
-  <footer class="bg-dark-blue text-white py-3"> 
-   <div class="container text-center"> 
-    <p>© 2024 Legacy Genuine Properties. All rights reserved.</p> 
-   </div> 
-  </footer> 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script> 
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>Building & Construction Guide</h1>
+    <p>Your journey from foundation to finish</p>
+  </header>
+
+  <!-- Intro Section -->
+  <section class="intro">
+    <h2>Welcome to Building Excellence</h2>
+    <p>We guide you through the intricate process of construction. From planning and groundwork to finishing and operation, our expertise ensures your vision becomes a reality.</p>
+  </section>
+
+  <!-- Image Section -->
+  <section class="image-section">
+    <img src="https://i.postimg.cc/xjZMLDCQ/The-Future-of-Construction-Scheduling-A-Collaborative-Journey-with-AI.jpg" alt="Construction Image">
+  </section>
+
+  <!-- Process Section -->
+  <section class="process">
+    <div class="container">
+      <h2>The Construction Journey</h2>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+        <div class="col">
+          <div class="step-card">
+            <h5>1. Concept & Initiation</h5>
+            <p>Clients collaborate with consultants to turn ideas into actionable plans.</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="step-card">
+            <h5>2. Design & Planning</h5>
+            <p>Blueprints, material selection, and cost estimation are finalized.</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="step-card">
+            <h5>3. Earthworks</h5>
+            <p>Ground investigations ensure a safe and stable foundation.</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="step-card">
+            <h5>4. Demolition</h5>
+            <p>Existing structures are safely removed for the new build.</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="step-card">
+            <h5>5. Structural Build</h5>
+            <p>Foundations, walls, and superstructures are constructed.</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="step-card">
+            <h5>6. Finishing</h5>
+            <p>Painting, plumbing, and decoration complete the project.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact">
+    <h2>Get In Touch</h2>
+    <p>Need help or have questions? We're here for you.</p>
+    <p>Reach us on WhatsApp: <a href="https://wa.me/254789033037">+254 789 033 037</a></p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2024 Legacy Genuine Properties. Crafted with care.</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
