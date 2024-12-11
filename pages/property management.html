@@ -14,24 +14,12 @@
       position: relative;
     }
 
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(200, 200, 200, 0.3); /* Light grey overlay */
-      z-index: 1;
-    }
-
     .hero-section {
-      height: 300px; /* Adjusted height */
-      background-image: url('https://i.postimg.cc/VvbXhD65/IMG-20241203-WA0023.jpg');
+      height: 350px;
+      background-image: url('https://i.postimg.cc/4xwtBhrH/IMG-20241203-WA0029-3.jpg');
       background-size: cover;
       background-position: center;
       position: relative;
-      border-bottom: 5px solid #002250; /* Added a border for a stronger look */
-      z-index: 2;
     }
 
     .hero-section::before {
@@ -41,7 +29,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.4); /* Slightly transparent black overlay */
+      background-color: rgba(0, 0, 0, 0.5); /* Black overlay */
     }
 
     .hero-content {
@@ -52,20 +40,19 @@
       color: white;
       text-align: center;
       padding: 20px;
-      background-color: rgba(0, 0, 0, 0.5); /* Translucent background for readability */
-      border-radius: 10px; /* Rounded corners */
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
     }
 
     .hero-content h1 {
-      font-size: 36px; /* Larger font size */
+      font-size: 36px;
       font-weight: bold;
       margin: 0;
     }
 
     .container {
       position: relative;
-      padding: 40px 15px; /* Increased padding */
-      z-index: 3;
+      padding: 40px 15px;
     }
 
     .content-section {
@@ -73,17 +60,13 @@
       padding: 30px;
       border-radius: 8px;
       box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
-      margin-bottom: 40px; /* Spacing between sections */
-      color: black; /* Text color */
+      margin-bottom: 40px;
+      color: black;
     }
 
     .content-section h2,
     .content-section h3 {
-      color: #002C63; /* Dark blue for headings */
-    }
-
-    .content-section p {
-      line-height: 1.6;
+      color: #002C63;
     }
 
     .content-section ul {
@@ -94,19 +77,28 @@
       margin-bottom: 10px;
     }
 
+    .contact-section {
+      background-color: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      color: #002C63;
+      border-top: 2px solid #ddd;
+    }
+
     footer {
-      background-color: #002D63; /* Updated footer color */
-      color: white; /* Text color */
+      background-color: #002D63;
+      color: white;
       text-align: center;
       padding: 15px 0;
-      margin-top: 20px;
       font-size: 14px;
     }
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .hero-content h1 {
-        font-size: 28px; /* Smaller font size for smaller screens */
+        font-size: 28px;
       }
 
       .container {
@@ -116,9 +108,6 @@
   </style>
 </head>
 <body>
-
-  <!-- Overlay -->
-  <div class="overlay"></div>
 
   <!-- Hero Section -->
   <section class="hero-section">
@@ -156,6 +145,11 @@
         additional security and exclusivity.
       </p>
     </div>
+  </div>
+
+  <!-- Contact Section -->
+  <div class="contact-section">
+    Contact Us: +254 789 033037
   </div>
 
   <!-- Footer -->
