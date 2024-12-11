@@ -16,7 +16,7 @@
 
     .hero-section {
       height: 350px;
-      background-image: url('https://i.postimg.cc/4xwtBhrH/IMG-20241203-WA0029-3.jpg');
+      background-image: url('https://i.postimg.cc/mDqhy59z/IMG-20241211-WA0028.jpg');
       background-size: cover;
       background-position: center;
       position: relative;
@@ -81,10 +81,22 @@
       background-color: #f8f9fa;
       padding: 20px;
       text-align: center;
-      font-size: 16px;
+    }
+
+    .contact-section a {
+      display: inline-block;
+      text-decoration: none;
+      background-color: #25D366; /* WhatsApp green */
+      color: white;
       font-weight: bold;
-      color: #002C63;
-      border-top: 2px solid #ddd;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .contact-section a:hover {
+      background-color: #1DA851; /* Darker green on hover */
     }
 
     footer {
@@ -149,7 +161,7 @@
 
   <!-- Contact Section -->
   <div class="contact-section">
-    Contact Us: +254 789 033037
+    <a href="https://wa.me/254789033037" target="_blank">Contact Us on WhatsApp</a>
   </div>
 
   <!-- Footer -->
